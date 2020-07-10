@@ -1,0 +1,15 @@
+x86/
+x64/
+packages/
+Debug/
+Release/
+ipch/
+obj/
+.vs/
+
+*.ilk
+*.obj
+*.user
+*.VC.*
+*.opendb
+*.suo

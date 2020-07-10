@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{776651CF-C381-415B-8AD0-6300D1275E1C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GluonTestResultsCs</RootNamespace>
+    <AssemblyName>GluonTestResultsCs</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\GluonTestResults\cs\ABI\ConversionUnitTest.abi.cs">
+      <Link>ABI\ConversionUnitTest.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\Converters.abi.cs">
+      <Link>ABI\Converters.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\DummyClass.abi.cs">
+      <Link>ABI\DummyClass.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\Generator.abi.cs">
+      <Link>ABI\Generator.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\GTone.abi.cs">
+      <Link>ABI\GTone.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\GWhiteNoise.abi.cs">
+      <Link>ABI\GWhiteNoise.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\ITestClass.abi.cs">
+      <Link>ABI\ITestClass.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\Native.abi.cs">
+      <Link>ABI\Native.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\NoiseEngine.abi.cs">
+      <Link>ABI\NoiseEngine.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\SawtoothLeftWaveform.abi.cs">
+      <Link>ABI\SawtoothLeftWaveform.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\SawtoothRightWaveform.abi.cs">
+      <Link>ABI\SawtoothRightWaveform.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\SinusoidalWaveform.abi.cs">
+      <Link>ABI\SinusoidalWaveform.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\SquareWaveform.abi.cs">
+      <Link>ABI\SquareWaveform.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\TriangleWaveform.abi.cs">
+      <Link>ABI\TriangleWaveform.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\ValueTypes.abi.cs">
+      <Link>ABI\ValueTypes.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ABI\Waveform.abi.cs">
+      <Link>ABI\Waveform.abi.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ConversionUnitTest.cs">
+      <Link>ConversionUnitTest.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\DummyClass.cs">
+      <Link>DummyClass.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\Generator.cs">
+      <Link>Generator.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\GTone.cs">
+      <Link>GTone.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\GWhiteNoise.cs">
+      <Link>GWhiteNoise.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ITestClass.cs">
+      <Link>ITestClass.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\NoiseEngine.cs">
+      <Link>NoiseEngine.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\SawtoothLeftWaveform.cs">
+      <Link>SawtoothLeftWaveform.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\SawtoothRightWaveform.cs">
+      <Link>SawtoothRightWaveform.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\SignalBuffer.cs">
+      <Link>SignalBuffer.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\SinusoidalWaveform.cs">
+      <Link>SinusoidalWaveform.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\SquareWaveform.cs">
+      <Link>SquareWaveform.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\TriangleWaveform.cs">
+      <Link>TriangleWaveform.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\ValueTypes.cs">
+      <Link>ValueTypes.cs</Link>
+    </Compile>
+    <Compile Include="..\GluonTestResults\cs\Waveform.cs">
+      <Link>Waveform.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Public\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GluonAttributes\GluonRuntime.csproj">
+      <Project>{7c50d6b3-26ba-4692-994d-ca0419027c8b}</Project>
+      <Name>GluonRuntime</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup Label="Gluon Generated">
+    <Compile Include="..\GluonTestResults\cs\ABI\SignalBuffer.abi.cs">
+      <Link>ABI\SignalBuffer.abi.cs</Link>
+    </Compile>
+  </ItemGroup>
+</Project>
