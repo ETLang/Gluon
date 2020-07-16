@@ -147,7 +147,12 @@ namespace Gluon
                 switch (t.Type.ConstructType)
                 {
                     case AST.Construct.Primitive:
-                        return "MarshalAs(UnmanagedType.LPArray, SizeParamIndex = " + (paramIndex + 1).ToString() + ")";
+                    {
+                        if(t.Type.IsBool)
+                            return "MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1, SizeParamIndex = " + (paramIndex + 1).ToString() + ")";
+                        else
+                            return "MarshalAs(UnmanagedType.LPArray, SizeParamIndex = " + (paramIndex + 1).ToString() + ")";
+                    }
                     case AST.Construct.String:
                         return "MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = " + (paramIndex + 1).ToString() + ")";
                     case AST.Construct.Struct:
