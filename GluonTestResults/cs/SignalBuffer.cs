@@ -16,6 +16,7 @@ namespace GluonTest
     {
         static partial void StaticInit();
         partial void Init();
+        partial void PartialDispose(bool finalizing);
 
         static SignalBuffer()
         {
@@ -26,47 +27,70 @@ namespace GluonTest
         public SignalBuffer(int samples, int channels, int alignment)
             : this(new AbiPtr(Make(samples, channels, alignment)))
         {
+
             Init();
         }
 
         public SignalBuffer(int samples)
             : this(new AbiPtr(Make(samples)))
         {
+
             Init();
         }
 
-        public int ChannelCount {  get {  int x; Native.Throw(_vt.GetChannelCount(_i, out x)); return x; }  }  
+        protected override void OnDispose(bool finalizing)
+        {
+            PartialDispose(finalizing);
 
-        public int SampleCount {  get {  int x; Native.Throw(_vt.GetSampleCount(_i, out x)); return x; }  }  
+            IPtr = IntPtr.Zero;
+            base.OnDispose(finalizing);
+        }
+
+        public int ChannelCount {  get {  Check(); int x; Native.Throw(_vt.GetChannelCount(IPtr, out x)); return x; }  }  
+
+        public int SampleCount {  get {  Check(); int x; Native.Throw(_vt.GetSampleCount(IPtr, out x)); return x; }  }  
 
         public int CopyTo(double[] arr)
         {
+            Check();
             int ___ret;
-            Native.Throw(_vt.CopyTo1(_i, arr, arr.Length, out ___ret));
+            Native.Throw(_vt.CopyTo(IPtr, arr, arr.Length, out ___ret));
             return ___ret;
         }
 
         public int CopyTo(float[] arr)
         {
+            Check();
             int ___ret;
-            Native.Throw(_vt.CopyTo2(_i, arr, arr.Length, out ___ret));
+            Native.Throw(_vt.CopyTo_1(IPtr, arr, arr.Length, out ___ret));
             return ___ret;
         }
 
         public int CopyTo(short[] arr)
         {
+            Check();
             int ___ret;
-            Native.Throw(_vt.CopyTo3(_i, arr, arr.Length, out ___ret));
+            Native.Throw(_vt.CopyTo_2(IPtr, arr, arr.Length, out ___ret));
             return ___ret;
         }
 
         #region Internal
 
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void Check()
+        {
+            if (IPtr == IntPtr.Zero)
+                throw new ObjectDisposedException(GetType().Name + " has been disposed");
+        }
+
         internal SignalBuffer(AbiPtr i) : base(i)
         {
-            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out _i));
-            Marshal.Release(_i);
-            _vt = VTUnknown.GetVTable<ABI.GluonTest.SignalBuffer>(_i);
+            IntPtr iptr;
+            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out iptr));
+            Marshal.Release(iptr);
+            IPtr = iptr;
+            _vt = VTUnknown.GetVTable<ABI.GluonTest.SignalBuffer>(IPtr);
+
             Init();
         }
 
@@ -84,7 +108,7 @@ namespace GluonTest
             return instance_abi;
         }
 
-        IntPtr _i;
+        public IntPtr IPtr { get; private set; } //IntPtr _i;
         ABI.GluonTest.SignalBuffer _vt;
         static Guid _ID = new Guid("5a3af0d3-a2ee-3cbb-e6c5-ce3115e18d18");
 

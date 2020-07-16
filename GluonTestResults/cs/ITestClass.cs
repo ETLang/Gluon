@@ -18,6 +18,7 @@ namespace GluonTest
     {
         static partial void StaticInit();
         partial void Init();
+        partial void PartialDispose(bool finalizing);
 
         static ITestClass()
         {
@@ -25,12 +26,14 @@ namespace GluonTest
             StaticInit();
         }
 
-        public ITestClass() : this(new AbiPtr(Make())) {  _BigEvent_abi = D_5D02415C.Unwrap(_Call_BigEvent); Init(); }  
+        public ITestClass() : this(new AbiPtr(Make())) { _BigEvent_abi = D_5D02415F.Unwrap(_Call_BigEvent);  Init(); }  
 
         protected override void OnDispose(bool finalizing)
         {
-            if(_BigEvent != null) _vt.RemoveBigEventHandler(_i, _BigEvent_abi.Fn, _BigEvent_abi.Ctx);
+            PartialDispose(finalizing);
+            if(_BigEvent != null) _vt.RemoveBigEventHandler(IPtr, _BigEvent_abi.Fn, _BigEvent_abi.Ctx);
 
+            IPtr = IntPtr.Zero;
             base.OnDispose(finalizing);
         }
 
@@ -40,23 +43,31 @@ namespace GluonTest
         {
             add
             {
+                Check();
                 if(_BigEvent == null)
-                    _vt.AddBigEventHandler(_i, _BigEvent_abi.Fn, _BigEvent_abi.Ctx);
+                    _vt.AddBigEventHandler(IPtr, _BigEvent_abi.Fn, _BigEvent_abi.Ctx);
 
                 _BigEvent += value;
             }
-
             remove
             {
+                Check();
                 _BigEvent -= value;
                 if(_BigEvent == null)
-                    _vt.RemoveBigEventHandler(_i, _BigEvent_abi.Fn, _BigEvent_abi.Ctx);
+                    _vt.RemoveBigEventHandler(IPtr, _BigEvent_abi.Fn, _BigEvent_abi.Ctx);
             }
         }
 
         private void _Call_BigEvent(int obj)
         {
-            _BigEvent(obj);
+            try
+            {
+                _BigEvent(obj);
+            }
+            catch(Exception ___ex)
+            {
+                CallbackEventExceptionHandler?.Invoke(___ex);
+            }
         }
 
         private Action<int> _BigEvent;
@@ -66,87 +77,104 @@ namespace GluonTest
 
         public AddSomeShit Adder
         {
-            get {  IntPtr x_abi_fn; IntPtr x_abi_ctx; Native.Throw(_vt.GetAdder(_i, out x_abi_fn, out x_abi_ctx)); return D_668509AD.Wrap(x_abi_fn, x_abi_ctx); }   
-            set {  var value_abi = D_668509AD.Unwrap(value); Native.Throw(_vt.SetAdder(_i, value_abi.Fn, value_abi.Ctx)); }  
+            get {  Check(); IntPtr x_abi_fn; IntPtr x_abi_ctx; Native.Throw(_vt.GetAdder(IPtr, out x_abi_fn, out x_abi_ctx)); return D_668509AE.Wrap(x_abi_fn, x_abi_ctx); }   
+            set {  Check(); var value_abi = D_668509AE.Unwrap(value); Native.Throw(_vt.SetAdder(IPtr, value_abi.Fn, value_abi.Ctx)); }  
         }
 
         public int Property
         {
-            get {  int x; Native.Throw(_vt.GetProperty(_i, out x)); return x; }   
-            set {  Native.Throw(_vt.SetProperty(_i, value)); }  
+            get {  Check(); int x; Native.Throw(_vt.GetProperty(IPtr, out x)); return x; }   
+            set {  Check(); Native.Throw(_vt.SetProperty(IPtr, value)); }  
         }
 
-        public int ReadOnlyProperty {  get {  int x; Native.Throw(_vt.GetReadOnlyProperty(_i, out x)); return x; }  }  
+        public int ReadOnlyProperty {  get {  Check(); int x; Native.Throw(_vt.GetReadOnlyProperty(IPtr, out x)); return x; }  }  
 
         public TestStruct[] HardProperty
         {
-            get {  ArrayBlob x_abi; Native.Throw(_vt.GetHardProperty(_i, out x_abi.Ptr, out x_abi.Count)); return MConv.FromABI_463C8217(x_abi.Ptr, x_abi.Count); }   
-            set {  var value_abi = ABI.GluonTest.TestStruct.ToABI_Array(value); Native.Throw(_vt.SetHardProperty(_i, value_abi, value_abi.Length)); }  
+            get {  Check(); ArrayBlob x_abi; Native.Throw(_vt.GetHardProperty(IPtr, out x_abi.Ptr, out x_abi.Count)); return MConv.FromABI_463C8217(x_abi.Ptr, x_abi.Count); }   
+            set {  Check(); var value_abi = ABI.GluonTest.TestStruct.ToABI_Array(value); Native.Throw(_vt.SetHardProperty(IPtr, value_abi, value_abi.Length)); }  
         }
 
         public Func<char,int,string>[] HarderProperty
         {
-            get {  ArrayBlob x_abi; Native.Throw(_vt.GetHarderProperty(_i, out x_abi.Ptr, out x_abi.Count)); return MConv.FromABI_827F05B2(x_abi.Ptr, x_abi.Count); }   
-            set {  var value_abi = D_827F05B2.ToABI_Array(value); Native.Throw(_vt.SetHarderProperty(_i, value_abi, value_abi.Length)); }  
+            get {  Check(); ArrayBlob x_abi; Native.Throw(_vt.GetHarderProperty(IPtr, out x_abi.Ptr, out x_abi.Count)); return MConv.FromABI_827F05B4(x_abi.Ptr, x_abi.Count); }   
+            set {  Check(); var value_abi = D_827F05B4.ToABI_Array(value); Native.Throw(_vt.SetHarderProperty(IPtr, value_abi, value_abi.Length)); }  
         }
 
         public Func<string,char> DumbDelegate
         {
-            get {  IntPtr x_abi_fn; IntPtr x_abi_ctx; Native.Throw(_vt.GetDumbDelegate(_i, out x_abi_fn, out x_abi_ctx)); return D_2945414E.Wrap(x_abi_fn, x_abi_ctx); }   
-            set {  var value_abi = D_2945414E.Unwrap(value); Native.Throw(_vt.SetDumbDelegate(_i, value_abi.Fn, value_abi.Ctx)); }  
+            get {  Check(); IntPtr x_abi_fn; IntPtr x_abi_ctx; Native.Throw(_vt.GetDumbDelegate(IPtr, out x_abi_fn, out x_abi_ctx)); return D_29454153.Wrap(x_abi_fn, x_abi_ctx); }   
+            set {  Check(); var value_abi = D_29454153.Unwrap(value); Native.Throw(_vt.SetDumbDelegate(IPtr, value_abi.Fn, value_abi.Ctx)); }  
         }
 
         public void Methody()
         {
-            Native.Throw(_vt.Methody1(_i));
+            Check();
+            Native.Throw(_vt.Methody(IPtr));
         }
 
         public int RetMethod()
         {
+            Check();
             int ___ret;
-            Native.Throw(_vt.RetMethod2(_i, out ___ret));
+            Native.Throw(_vt.RetMethod(IPtr, out ___ret));
             return ___ret;
         }
 
         public void OutMethod(out int x)
         {
-            Native.Throw(_vt.OutMethod3(_i, out x));
+            Check();
+            Native.Throw(_vt.OutMethod(IPtr, out x));
         }
 
         public void RefMethod(ref string thing)
         {
-            Native.Throw(_vt.RefMethod4(_i, ref thing));
+            Check();
+            Native.Throw(_vt.RefMethod(IPtr, ref thing));
         }
 
         public void Ref2(ref ITestClass thing)
         {
-            var thing_abi = MConv_.ToABI_Object(thing);
-            Native.Throw(_vt.Ref25(_i, ref thing_abi));
+            Check();
+            var thing_abi = MConv_.ToABI_Object(thing == null ? IntPtr.Zero : ((ITestClass)thing).IPtr);
+            Native.Throw(_vt.Ref2(IPtr, ref thing_abi));
             thing = MConv_.FromABI_Object<ITestClass>(thing_abi);
         }
 
         public void Ref3(TestStruct thing)
         {
-            Native.Throw(_vt.Ref36(_i, ABI.GluonTest.TestStruct.ToABI(thing)));
+            Check();
+            Native.Throw(_vt.Ref3(IPtr, ABI.GluonTest.TestStruct.ToABI(thing)));
         }
 
         public int[] ComplexMethod(ref string a, IntPtr _dumb, IntPtr p, out char[] fart)
         {
+            Check();
             ArrayBlob fart_abi;
             ArrayBlob ___ret_abi;
-            Native.Throw(_vt.ComplexMethod7(_i, ref a, _dumb, p, out fart_abi.Ptr, out fart_abi.Count, out ___ret_abi.Ptr, out ___ret_abi.Count));
+            Native.Throw(_vt.ComplexMethod(IPtr, ref a, _dumb, p, out fart_abi.Ptr, out fart_abi.Count, out ___ret_abi.Ptr, out ___ret_abi.Count));
             fart = MConv_.FromABI_char(fart_abi.Ptr, fart_abi.Count);
             return MConv_.FromABI_int(___ret_abi.Ptr, ___ret_abi.Count);
         }
 
         #region Internal
 
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void Check()
+        {
+            if (IPtr == IntPtr.Zero)
+                throw new ObjectDisposedException(GetType().Name + " has been disposed");
+        }
+
         internal ITestClass(AbiPtr i) : base(i)
         {
-            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out _i));
-            Marshal.Release(_i);
-            _vt = VTUnknown.GetVTable<ABI.GluonTest.ITestClass>(_i);
-            _BigEvent_abi = D_5D02415C.Unwrap(_Call_BigEvent);
+            IntPtr iptr;
+            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out iptr));
+            Marshal.Release(iptr);
+            IPtr = iptr;
+            _vt = VTUnknown.GetVTable<ABI.GluonTest.ITestClass>(IPtr);
+            _BigEvent_abi = D_5D02415F.Unwrap(_Call_BigEvent);
+
             Init();
         }
 
@@ -157,7 +185,7 @@ namespace GluonTest
             return instance_abi;
         }
 
-        IntPtr _i;
+        public IntPtr IPtr { get; private set; } //IntPtr _i;
         ABI.GluonTest.ITestClass _vt;
         static Guid _ID = new Guid("4f2fe4fd-d08b-3cbb-e6c5-d40c17fc9837");
 

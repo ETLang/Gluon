@@ -8,5 +8,4 @@ using namespace GluonTest;
 
 TriangleWaveform::TriangleWaveform() : Base(DEFAULT_(Array<double>))
 {
-    Not_Implemented_Warning
 }

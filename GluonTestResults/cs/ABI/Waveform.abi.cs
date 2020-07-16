@@ -17,9 +17,9 @@ namespace ABI.GluonTest
         public readonly VTUnknown Unknown;
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Phase1_sig Phase1;
+        public readonly Phase_sig Phase;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Phase1_sig(IntPtr __i_, double t, out double ___ret);
+        public delegate int Phase_sig(IntPtr __i_, double t, out double ___ret);
     }
 
     internal static partial class Factory

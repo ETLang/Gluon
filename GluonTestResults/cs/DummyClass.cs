@@ -16,6 +16,7 @@ namespace GluonTest
     {
         static partial void StaticInit();
         partial void Init();
+        partial void PartialDispose(bool finalizing);
 
         static DummyClass()
         {
@@ -25,19 +26,37 @@ namespace GluonTest
 
         public DummyClass() : this(new AbiPtr(Make())) {  Init(); }  
 
+        protected override void OnDispose(bool finalizing)
+        {
+            PartialDispose(finalizing);
+
+            IPtr = IntPtr.Zero;
+            base.OnDispose(finalizing);
+        }
+
         public string Nugget
         {
-            get {  string x; Native.Throw(_vt.GetNugget(_i, out x)); return x; }   
-            set {  Native.Throw(_vt.SetNugget(_i, value)); }  
+            get {  Check(); string x; Native.Throw(_vt.GetNugget(IPtr, out x)); return x; }   
+            set {  Check(); Native.Throw(_vt.SetNugget(IPtr, value)); }  
         }
 
         #region Internal
 
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void Check()
+        {
+            if (IPtr == IntPtr.Zero)
+                throw new ObjectDisposedException(GetType().Name + " has been disposed");
+        }
+
         internal DummyClass(AbiPtr i) : base(i)
         {
-            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out _i));
-            Marshal.Release(_i);
-            _vt = VTUnknown.GetVTable<ABI.GluonTest.DummyClass>(_i);
+            IntPtr iptr;
+            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out iptr));
+            Marshal.Release(iptr);
+            IPtr = iptr;
+            _vt = VTUnknown.GetVTable<ABI.GluonTest.DummyClass>(IPtr);
+
             Init();
         }
 
@@ -48,7 +67,7 @@ namespace GluonTest
             return instance_abi;
         }
 
-        IntPtr _i;
+        public IntPtr IPtr { get; private set; } //IntPtr _i;
         ABI.GluonTest.DummyClass _vt;
         static Guid _ID = new Guid("4f2fe4fd-d08b-3cbb-e6c5-d92d1fe29537");
 

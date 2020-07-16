@@ -25,8 +25,8 @@ namespace ABI.GluonTest
             {
                 Name = MConv_.ToABI_string(x.Name),
                 Sub = x.Sub,
-                Obj = MConv_.ToABI_Object(x.Obj),
-                Del = ABI.GluonTest.D_827F05B1.Unwrap(x.Del)
+                Obj = MConv_.ToABI_Object(x.Obj == null ? IntPtr.Zero : ((global::GluonTest.DummyClass)x.Obj).IPtr),
+                Del = ABI.GluonTest.D_827F05B3.Unwrap(x.Del)
             };
         }
 
@@ -37,7 +37,7 @@ namespace ABI.GluonTest
                 Name = MConv_.FromABI_string(x.Name),
                 Sub = x.Sub,
                 Obj = GluonObject.Of<global::GluonTest.DummyClass>(x.Obj),
-                Del = ABI.GluonTest.D_827F05B1.Wrap(x.Del.Fn, x.Del.Ctx)
+                Del = ABI.GluonTest.D_827F05B3.Wrap(x.Del.Fn, x.Del.Ctx)
             };
         }
 
@@ -84,9 +84,9 @@ namespace ABI.GluonTest
                 String = MConv_.ToABI_string(x.String),
                 BlittableSt = x.BlittableSt,
                 ComplexSt = ComplexStruct.ToABI(x.ComplexSt),
-                Object = MConv_.ToABI_Object(x.Object),
-                NamedDelegate = ABI.GluonTest.D_BD6C0A4D.Unwrap(x.NamedDelegate),
-                GenericDelegate = ABI.GluonTest.D_2945414A.Unwrap(x.GenericDelegate)
+                Object = MConv_.ToABI_Object(x.Object == null ? IntPtr.Zero : ((global::GluonTest.DummyClass)x.Object).IPtr),
+                NamedDelegate = ABI.GluonTest.D_BD6C0A4E.Unwrap(x.NamedDelegate),
+                GenericDelegate = ABI.GluonTest.D_2945414F.Unwrap(x.GenericDelegate)
             };
         }
 
@@ -101,8 +101,8 @@ namespace ABI.GluonTest
                 BlittableSt = x.BlittableSt,
                 ComplexSt = ComplexStruct.FromABI(x.ComplexSt),
                 Object = GluonObject.Of<global::GluonTest.DummyClass>(x.Object),
-                NamedDelegate = ABI.GluonTest.D_BD6C0A4D.Wrap(x.NamedDelegate.Fn, x.NamedDelegate.Ctx),
-                GenericDelegate = ABI.GluonTest.D_2945414A.Wrap(x.GenericDelegate.Fn, x.GenericDelegate.Ctx)
+                NamedDelegate = ABI.GluonTest.D_BD6C0A4E.Wrap(x.NamedDelegate.Fn, x.NamedDelegate.Ctx),
+                GenericDelegate = ABI.GluonTest.D_2945414F.Wrap(x.GenericDelegate.Fn, x.GenericDelegate.Ctx)
             };
         }
 

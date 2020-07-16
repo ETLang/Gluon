@@ -17,19 +17,19 @@ namespace ABI.GluonTest
         public readonly VTUnknown Unknown;
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Initialize1_sig Initialize1;
+        public readonly Initialize_sig Initialize;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Initialize1_sig(IntPtr __i_, int channels, int sampleRate);
+        public delegate int Initialize_sig(IntPtr __i_, int channels, int sampleRate);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Eval2_sig Eval2;
+        public readonly Eval_sig Eval;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Eval2_sig(IntPtr __i_, double t, ref double outSample);
+        public delegate int Eval_sig(IntPtr __i_, double t, ref double outSample);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly EvalBuffer3_sig EvalBuffer3;
+        public readonly EvalBuffer_sig EvalBuffer;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int EvalBuffer3_sig(IntPtr __i_, double t, IntPtr inoutBuffer);
+        public delegate int EvalBuffer_sig(IntPtr __i_, double t, IntPtr inoutBuffer);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public readonly GetChannelCount_sig GetChannelCount;

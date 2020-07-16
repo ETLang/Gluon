@@ -12,12 +12,13 @@ using GluonTest;
 
 namespace ABI.GluonTest
 {
-    public class D_827F05B1 : Gluon.D_Base
+    public class D_827F05B3 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, int arg1, int arg2, out int ___ret);
+
         private static HResult Fn(IntPtr __i_, int arg1, int arg2, out int ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Func<int,int,int>;
@@ -35,7 +36,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_827F05B1(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_827F05B3(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -44,10 +45,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_827F05B1.FnPtr)
+            else if (fn == D_827F05B3.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Func<int,int,int>;
             else
-                return new D_827F05B1(fn, ctx).Call;
+                return new D_827F05B3(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Func<int,int,int> x)
@@ -82,12 +83,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_BD6C0A4D : Gluon.D_Base
+    public class D_BD6C0A4E : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string a, [MarshalAs(UnmanagedType.LPStr)] string b, out int ___ret);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string a, [MarshalAs(UnmanagedType.LPStr)] string b, out int ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.NamedDelegate;
@@ -105,7 +107,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_BD6C0A4D(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_BD6C0A4E(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -114,10 +116,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_BD6C0A4D.FnPtr)
+            else if (fn == D_BD6C0A4E.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.NamedDelegate;
             else
-                return new D_BD6C0A4D(fn, ctx).Call;
+                return new D_BD6C0A4E(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.NamedDelegate x)
@@ -152,12 +154,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_67C6D6DF : Gluon.D_Base
+    public class D_67C6D6E0 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.I1)] bool inTest, out char outTest, ref int refTest, out double ___ret);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.I1)] bool inTest, out char outTest, ref int refTest, out double ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.PrimitivesCB;
@@ -176,7 +179,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_67C6D6DF(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_67C6D6E0(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -185,10 +188,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_67C6D6DF.FnPtr)
+            else if (fn == D_67C6D6E0.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.PrimitivesCB;
             else
-                return new D_67C6D6DF(fn, ctx).Call;
+                return new D_67C6D6E0(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.PrimitivesCB x)
@@ -223,12 +226,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_7A2B6D2B : Gluon.D_Base
+    public class D_7A2B6D2C : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string inTest, [MarshalAs(UnmanagedType.LPStr)] out string outTest, [MarshalAs(UnmanagedType.LPStr)] ref string refTest, [MarshalAs(UnmanagedType.LPStr)] out string ___ret);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string inTest, [MarshalAs(UnmanagedType.LPStr)] out string outTest, [MarshalAs(UnmanagedType.LPStr)] ref string refTest, [MarshalAs(UnmanagedType.LPStr)] out string ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.StringsCB;
@@ -247,7 +251,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_7A2B6D2B(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_7A2B6D2C(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -256,10 +260,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_7A2B6D2B.FnPtr)
+            else if (fn == D_7A2B6D2C.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.StringsCB;
             else
-                return new D_7A2B6D2B(fn, ctx).Call;
+                return new D_7A2B6D2C(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.StringsCB x)
@@ -294,12 +298,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_DF8B3B28 : Gluon.D_Base
+    public class D_DF8B3B29 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, global::GluonTest.BlittableStruct inTest, out global::GluonTest.BlittableStruct outTest, ref global::GluonTest.BlittableStruct refTest, out global::GluonTest.BlittableStruct ___ret);
+
         private static HResult Fn(IntPtr __i_, global::GluonTest.BlittableStruct inTest, out global::GluonTest.BlittableStruct outTest, ref global::GluonTest.BlittableStruct refTest, out global::GluonTest.BlittableStruct ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.SimpleStructsCB;
@@ -318,7 +323,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_DF8B3B28(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_DF8B3B29(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -327,10 +332,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_DF8B3B28.FnPtr)
+            else if (fn == D_DF8B3B29.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.SimpleStructsCB;
             else
-                return new D_DF8B3B28(fn, ctx).Call;
+                return new D_DF8B3B29(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.SimpleStructsCB x)
@@ -365,12 +370,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_625CB5E : Gluon.D_Base
+    public class D_625CB5F : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, ComplexStruct inTest, out ComplexStruct outTest, ref ComplexStruct refTest, out ComplexStruct ___ret);
+
         private static HResult Fn(IntPtr __i_, ComplexStruct inTest, out ComplexStruct outTest, ref ComplexStruct refTest, out ComplexStruct ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.ComplexStructsCB;
@@ -394,7 +400,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_625CB5E(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_625CB5F(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -403,10 +409,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_625CB5E.FnPtr)
+            else if (fn == D_625CB5F.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.ComplexStructsCB;
             else
-                return new D_625CB5E(fn, ctx).Call;
+                return new D_625CB5F(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.ComplexStructsCB x)
@@ -445,12 +451,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_87064FFA : Gluon.D_Base
+    public class D_87064FFB : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, IntPtr inTest, out IntPtr outTest, ref IntPtr refTest, out IntPtr ___ret);
+
         private static HResult Fn(IntPtr __i_, IntPtr inTest, out IntPtr outTest, ref IntPtr refTest, out IntPtr ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.ObjectsCB;
@@ -460,9 +467,9 @@ namespace ABI.GluonTest
                 global::GluonTest.DummyClass outTest_wrap;
                 var refTest_wrap = GluonObject.Of<global::GluonTest.DummyClass>(refTest);
                 var ___ret_wrap = del(GluonObject.Of<global::GluonTest.DummyClass>(inTest), out outTest_wrap, ref refTest_wrap);
-                outTest = (outTest_wrap == null ? IntPtr.Zero : outTest_wrap.NativePtr);
-                var refTest_old = refTest; refTest = MConv_.ToABI_Object(refTest_wrap); if(refTest_old != IntPtr.Zero) Marshal.Release(refTest_old);
-                ___ret = (___ret_wrap == null ? IntPtr.Zero : ___ret_wrap.NativePtr);
+                outTest = (outTest_wrap == null ? IntPtr.Zero : ((global::GluonTest.DummyClass)outTest_wrap).IPtr);
+                var refTest_old = refTest; refTest = MConv_.ToABI_Object(refTest_wrap == null ? IntPtr.Zero : ((global::GluonTest.DummyClass)refTest_wrap).IPtr); if(refTest_old != IntPtr.Zero) Marshal.Release(refTest_old);
+                ___ret = (___ret_wrap == null ? IntPtr.Zero : ((global::GluonTest.DummyClass)___ret_wrap).IPtr);
                 return HResult.S_OK;
             }
 
@@ -474,7 +481,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_87064FFA(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_87064FFB(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -483,10 +490,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_87064FFA.FnPtr)
+            else if (fn == D_87064FFB.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.ObjectsCB;
             else
-                return new D_87064FFA(fn, ctx).Call;
+                return new D_87064FFB(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.ObjectsCB x)
@@ -516,34 +523,35 @@ namespace ABI.GluonTest
         private global::GluonTest.DummyClass Call(global::GluonTest.DummyClass inTest, out global::GluonTest.DummyClass outTest, ref global::GluonTest.DummyClass refTest)
         {
             IntPtr outTest_abi;
-            var refTest_abi = MConv_.ToABI_Object(refTest);
+            var refTest_abi = MConv_.ToABI_Object(refTest == null ? IntPtr.Zero : ((global::GluonTest.DummyClass)refTest).IPtr);
             IntPtr ___ret_abi;
-            Native.Throw((int)_abi(_ctx, (inTest == null ? IntPtr.Zero : inTest.NativePtr), out outTest_abi, ref refTest_abi, out ___ret_abi));
+            Native.Throw((int)_abi(_ctx, (inTest == null ? IntPtr.Zero : ((global::GluonTest.DummyClass)inTest).IPtr), out outTest_abi, ref refTest_abi, out ___ret_abi));
             outTest = GluonObject.Of<global::GluonTest.DummyClass>(outTest_abi);
             refTest = MConv_.FromABI_Object<global::GluonTest.DummyClass>(refTest_abi);
             return GluonObject.Of<global::GluonTest.DummyClass>(___ret_abi);
         }
     }
 
-    public class D_7451AE96 : Gluon.D_Base
+    public class D_7451AE97 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, IntPtr inTest, IntPtr inTest_context, out IntPtr outTest, out IntPtr outTest_context, ref IntPtr refTest, ref IntPtr refTest_context, out IntPtr ___ret, out IntPtr ___ret_context);
+
         private static HResult Fn(IntPtr __i_, IntPtr inTest, IntPtr inTest_context, out IntPtr outTest, out IntPtr outTest_context, ref IntPtr refTest, ref IntPtr refTest_context, out IntPtr ___ret, out IntPtr ___ret_context)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.NamedDelegatesCB;
 
             try
             {
-                var inTest_wrap = D_BD6C0A4D.Wrap(inTest, inTest_context);
+                var inTest_wrap = D_BD6C0A4E.Wrap(inTest, inTest_context);
                 global::GluonTest.NamedDelegate outTest_wrap;
-                var refTest_wrap = D_BD6C0A4D.Wrap(refTest, refTest_context);
+                var refTest_wrap = D_BD6C0A4E.Wrap(refTest, refTest_context);
                 var ___ret_wrap = del(inTest_wrap, out outTest_wrap, ref refTest_wrap);
-                var outTest_abi = D_BD6C0A4D.Unwrap(outTest_wrap); outTest = outTest_abi.Fn; outTest_context = outTest_abi.Ctx;
-                var refTest_abi = D_BD6C0A4D.Unwrap(refTest_wrap); refTest = refTest_abi.Fn; refTest_context = refTest_abi.Ctx;
-                var ___ret_abi = D_BD6C0A4D.Unwrap(___ret_wrap); ___ret = ___ret_abi.Fn; ___ret_context = ___ret_abi.Ctx;
+                var outTest_abi = D_BD6C0A4E.Unwrap(outTest_wrap); outTest = outTest_abi.Fn; outTest_context = outTest_abi.Ctx;
+                var refTest_abi = D_BD6C0A4E.Unwrap(refTest_wrap); refTest = refTest_abi.Fn; refTest_context = refTest_abi.Ctx;
+                var ___ret_abi = D_BD6C0A4E.Unwrap(___ret_wrap); ___ret = ___ret_abi.Fn; ___ret_context = ___ret_abi.Ctx;
                 return HResult.S_OK;
             }
 
@@ -557,7 +565,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_7451AE96(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_7451AE97(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -566,10 +574,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_7451AE96.FnPtr)
+            else if (fn == D_7451AE97.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.NamedDelegatesCB;
             else
-                return new D_7451AE96(fn, ctx).Call;
+                return new D_7451AE97(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.NamedDelegatesCB x)
@@ -598,36 +606,37 @@ namespace ABI.GluonTest
 
         private global::GluonTest.NamedDelegate Call(global::GluonTest.NamedDelegate inTest, out global::GluonTest.NamedDelegate outTest, ref global::GluonTest.NamedDelegate refTest)
         {
-            var inTest_abi = D_BD6C0A4D.Unwrap(inTest);
+            var inTest_abi = D_BD6C0A4E.Unwrap(inTest);
             IntPtr outTest_abi_fn; IntPtr outTest_abi_ctx;
-            var refTest_abi = D_BD6C0A4D.Unwrap(refTest);
+            var refTest_abi = D_BD6C0A4E.Unwrap(refTest);
             IntPtr ___ret_abi_fn; IntPtr ___ret_abi_ctx;
             Native.Throw((int)_abi(_ctx, inTest_abi.Fn, inTest_abi.Ctx, out outTest_abi_fn, out outTest_abi_ctx, ref refTest_abi.Fn, ref refTest_abi.Ctx, out ___ret_abi_fn, out ___ret_abi_ctx));
-            outTest = D_BD6C0A4D.Wrap(outTest_abi_fn, outTest_abi_ctx);
-            refTest = D_BD6C0A4D.Wrap(refTest_abi.Fn, refTest_abi.Ctx);
-            return D_BD6C0A4D.Wrap(___ret_abi_fn, ___ret_abi_ctx);
+            outTest = D_BD6C0A4E.Wrap(outTest_abi_fn, outTest_abi_ctx);
+            refTest = D_BD6C0A4E.Wrap(refTest_abi.Fn, refTest_abi.Ctx);
+            return D_BD6C0A4E.Wrap(___ret_abi_fn, ___ret_abi_ctx);
         }
     }
 
-    public class D_61217487 : Gluon.D_Base
+    public class D_61217488 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, IntPtr inTest, IntPtr inTest_context, out IntPtr outTest, out IntPtr outTest_context, ref IntPtr refTest, ref IntPtr refTest_context, out IntPtr ___ret, out IntPtr ___ret_context);
+
         private static HResult Fn(IntPtr __i_, IntPtr inTest, IntPtr inTest_context, out IntPtr outTest, out IntPtr outTest_context, ref IntPtr refTest, ref IntPtr refTest_context, out IntPtr ___ret, out IntPtr ___ret_context)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.GenericDelegatesCB;
 
             try
             {
-                var inTest_wrap = D_5D02415A.Wrap(inTest, inTest_context);
+                var inTest_wrap = D_5D02415D.Wrap(inTest, inTest_context);
                 Action<Func<int,int>> outTest_wrap;
-                var refTest_wrap = D_2945414B.Wrap(refTest, refTest_context);
+                var refTest_wrap = D_29454150.Wrap(refTest, refTest_context);
                 var ___ret_wrap = del(inTest_wrap, out outTest_wrap, ref refTest_wrap);
-                var outTest_abi = D_5D02415B.Unwrap(outTest_wrap); outTest = outTest_abi.Fn; outTest_context = outTest_abi.Ctx;
-                var refTest_abi = D_2945414B.Unwrap(refTest_wrap); refTest = refTest_abi.Fn; refTest_context = refTest_abi.Ctx;
-                var ___ret_abi = D_2945414C.Unwrap(___ret_wrap); ___ret = ___ret_abi.Fn; ___ret_context = ___ret_abi.Ctx;
+                var outTest_abi = D_5D02415E.Unwrap(outTest_wrap); outTest = outTest_abi.Fn; outTest_context = outTest_abi.Ctx;
+                var refTest_abi = D_29454150.Unwrap(refTest_wrap); refTest = refTest_abi.Fn; refTest_context = refTest_abi.Ctx;
+                var ___ret_abi = D_29454151.Unwrap(___ret_wrap); ___ret = ___ret_abi.Fn; ___ret_context = ___ret_abi.Ctx;
                 return HResult.S_OK;
             }
 
@@ -641,7 +650,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_61217487(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_61217488(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -650,10 +659,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_61217487.FnPtr)
+            else if (fn == D_61217488.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.GenericDelegatesCB;
             else
-                return new D_61217487(fn, ctx).Call;
+                return new D_61217488(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.GenericDelegatesCB x)
@@ -682,23 +691,24 @@ namespace ABI.GluonTest
 
         private Func<int,int> Call(Action<string> inTest, out Action<Func<int,int>> outTest, ref Func<char[],string[]> refTest)
         {
-            var inTest_abi = D_5D02415A.Unwrap(inTest);
+            var inTest_abi = D_5D02415D.Unwrap(inTest);
             IntPtr outTest_abi_fn; IntPtr outTest_abi_ctx;
-            var refTest_abi = D_2945414B.Unwrap(refTest);
+            var refTest_abi = D_29454150.Unwrap(refTest);
             IntPtr ___ret_abi_fn; IntPtr ___ret_abi_ctx;
             Native.Throw((int)_abi(_ctx, inTest_abi.Fn, inTest_abi.Ctx, out outTest_abi_fn, out outTest_abi_ctx, ref refTest_abi.Fn, ref refTest_abi.Ctx, out ___ret_abi_fn, out ___ret_abi_ctx));
-            outTest = D_5D02415B.Wrap(outTest_abi_fn, outTest_abi_ctx);
-            refTest = D_2945414B.Wrap(refTest_abi.Fn, refTest_abi.Ctx);
-            return D_2945414C.Wrap(___ret_abi_fn, ___ret_abi_ctx);
+            outTest = D_5D02415E.Wrap(outTest_abi_fn, outTest_abi_ctx);
+            refTest = D_29454150.Wrap(refTest_abi.Fn, refTest_abi.Ctx);
+            return D_29454151.Wrap(___ret_abi_fn, ___ret_abi_ctx);
         }
     }
 
-    public class D_2945414C : Gluon.D_Base
+    public class D_29454151 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, int arg, out int ___ret);
+
         private static HResult Fn(IntPtr __i_, int arg, out int ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Func<int,int>;
@@ -716,7 +726,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_2945414C(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_29454151(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -725,10 +735,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_2945414C.FnPtr)
+            else if (fn == D_29454151.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Func<int,int>;
             else
-                return new D_2945414C(fn, ctx).Call;
+                return new D_29454151(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Func<int,int> x)
@@ -763,12 +773,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_5D02415A : Gluon.D_Base
+    public class D_5D02415D : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string obj);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string obj)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Action<string>;
@@ -785,7 +796,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_5D02415A(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_5D02415D(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -794,10 +805,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_5D02415A.FnPtr)
+            else if (fn == D_5D02415D.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Action<string>;
             else
-                return new D_5D02415A(fn, ctx).Call;
+                return new D_5D02415D(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Action<string> x)
@@ -830,19 +841,20 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_5D02415B : Gluon.D_Base
+    public class D_5D02415E : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, IntPtr obj, IntPtr obj_context);
+
         private static HResult Fn(IntPtr __i_, IntPtr obj, IntPtr obj_context)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Action<Func<int,int>>;
 
             try
             {
-                var obj_wrap = D_2945414C.Wrap(obj, obj_context);
+                var obj_wrap = D_29454151.Wrap(obj, obj_context);
                 del(obj_wrap);
                 return HResult.S_OK;
             }
@@ -853,7 +865,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_5D02415B(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_5D02415E(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -862,10 +874,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_5D02415B.FnPtr)
+            else if (fn == D_5D02415E.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Action<Func<int,int>>;
             else
-                return new D_5D02415B(fn, ctx).Call;
+                return new D_5D02415E(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Action<Func<int,int>> x)
@@ -894,17 +906,18 @@ namespace ABI.GluonTest
 
         private void Call(Func<int,int> obj)
         {
-            var obj_abi = D_2945414C.Unwrap(obj);
+            var obj_abi = D_29454151.Unwrap(obj);
             Native.Throw((int)_abi(_ctx, obj_abi.Fn, obj_abi.Ctx));
         }
     }
 
-    public class D_2945414B : Gluon.D_Base
+    public class D_29454150 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] char[] arg, int arg_count, out IntPtr ___ret, out int ___ret_count);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] char[] arg, int arg_count, out IntPtr ___ret, out int ___ret_count)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Func<char[],string[]>;
@@ -924,7 +937,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_2945414B(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_29454150(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -933,10 +946,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_2945414B.FnPtr)
+            else if (fn == D_29454150.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Func<char[],string[]>;
             else
-                return new D_2945414B(fn, ctx).Call;
+                return new D_29454150(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Func<char[],string[]> x)
@@ -971,13 +984,14 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_2C74C8B4 : Gluon.D_Base
+    public class D_2C74C8B5 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
-        internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] bool[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
-        private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] bool[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count)
+        internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1, SizeParamIndex = 2)] bool[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+
+        private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1, SizeParamIndex = 2)] bool[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.PrimitiveArraysCB;
 
@@ -1001,7 +1015,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_2C74C8B4(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_2C74C8B5(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1010,10 +1024,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_2C74C8B4.FnPtr)
+            else if (fn == D_2C74C8B5.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.PrimitiveArraysCB;
             else
-                return new D_2C74C8B4(fn, ctx).Call;
+                return new D_2C74C8B5(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.PrimitiveArraysCB x)
@@ -1052,12 +1066,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_1061E859 : Gluon.D_Base
+    public class D_1061E85A : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 2)] string[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 2)] string[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.StringArraysCB;
@@ -1082,7 +1097,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_1061E859(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_1061E85A(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1091,10 +1106,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_1061E859.FnPtr)
+            else if (fn == D_1061E85A.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.StringArraysCB;
             else
-                return new D_1061E859(fn, ctx).Call;
+                return new D_1061E85A(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.StringArraysCB x)
@@ -1133,12 +1148,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_1C12DC57 : Gluon.D_Base
+    public class D_1C12DC58 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] global::GluonTest.BlittableStruct[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] global::GluonTest.BlittableStruct[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.SimpleStructArraysCB;
@@ -1163,7 +1179,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_1C12DC57(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_1C12DC58(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1172,10 +1188,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_1C12DC57.FnPtr)
+            else if (fn == D_1C12DC58.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.SimpleStructArraysCB;
             else
-                return new D_1C12DC57(fn, ctx).Call;
+                return new D_1C12DC58(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.SimpleStructArraysCB x)
@@ -1214,12 +1230,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_14F875F7 : Gluon.D_Base
+    public class D_14F875F8 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ComplexStruct[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ComplexStruct[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.ComplexStructArraysCB;
@@ -1244,7 +1261,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_14F875F7(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_14F875F8(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1253,10 +1270,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_14F875F7.FnPtr)
+            else if (fn == D_14F875F8.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.ComplexStructArraysCB;
             else
-                return new D_14F875F7(fn, ctx).Call;
+                return new D_14F875F8(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.ComplexStructArraysCB x)
@@ -1296,23 +1313,24 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_A1A08E73 : Gluon.D_Base
+    public class D_A1A08E74 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.ObjectArraysCB;
 
             try
             {
-                var refTest_wrap = MConv_.FromABI_Object<global::GluonTest.DummyClass>(refTest, refTest_count);
+                var refTest_wrap = MConv.FromABI_CAD799A2(refTest, refTest_count);
                 var ___ret_wrap = del(GluonObject.ArrayWrap<global::GluonTest.DummyClass>(inTest), out global::GluonTest.DummyClass[] outTest_wrap, ref refTest_wrap);
-                var outTest_abi = MConv_.ToABI_Object(outTest_wrap); outTest = outTest_abi.Ptr; outTest_count = outTest_abi.Count;
-                var refTest_abi = MConv_.ToABI_Object(refTest_wrap); refTest = refTest_abi.Ptr; refTest_count = refTest_abi.Count;
-                var ___ret_abi = MConv_.ToABI_Object(___ret_wrap); ___ret = ___ret_abi.Ptr; ___ret_count = ___ret_abi.Count;
+                var outTest_abi = MConv.ToABI_CAD799A2(outTest_wrap); outTest = outTest_abi.Ptr; outTest_count = outTest_abi.Count;
+                var refTest_abi = MConv.ToABI_CAD799A2(refTest_wrap); refTest = refTest_abi.Ptr; refTest_count = refTest_abi.Count;
+                var ___ret_abi = MConv.ToABI_CAD799A2(___ret_wrap); ___ret = ___ret_abi.Ptr; ___ret_count = ___ret_abi.Count;
                 return HResult.S_OK;
             }
 
@@ -1326,7 +1344,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_A1A08E73(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_A1A08E74(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1335,10 +1353,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_A1A08E73.FnPtr)
+            else if (fn == D_A1A08E74.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.ObjectArraysCB;
             else
-                return new D_A1A08E73(fn, ctx).Call;
+                return new D_A1A08E74(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.ObjectArraysCB x)
@@ -1369,32 +1387,33 @@ namespace ABI.GluonTest
         {
             var inTest_abi = GluonObject.ArrayUnwrap(inTest);
             ArrayBlob outTest_abi;
-            ArrayBlob refTest_abi = MConv_.ToABI_Object(refTest);
+            ArrayBlob refTest_abi = MConv.ToABI_CAD799A2(refTest);
             ArrayBlob ___ret_abi;
             Native.Throw((int)_abi(_ctx, inTest_abi, inTest_abi.Length, out outTest_abi.Ptr, out outTest_abi.Count, ref refTest_abi.Ptr, ref refTest_abi.Count, out ___ret_abi.Ptr, out ___ret_abi.Count));
-            outTest = MConv_.FromABI_Object<global::GluonTest.DummyClass>(outTest_abi.Ptr, outTest_abi.Count);
-            refTest = MConv_.FromABI_Object<global::GluonTest.DummyClass>(refTest_abi.Ptr, refTest_abi.Count);
-            return MConv_.FromABI_Object<global::GluonTest.DummyClass>(___ret_abi.Ptr, ___ret_abi.Count);
+            outTest = MConv.FromABI_CAD799A2(outTest_abi.Ptr, outTest_abi.Count);
+            refTest = MConv.FromABI_CAD799A2(refTest_abi.Ptr, refTest_abi.Count);
+            return MConv.FromABI_CAD799A2(___ret_abi.Ptr, ___ret_abi.Count);
         }
     }
 
-    public class D_B2A7C511 : Gluon.D_Base
+    public class D_B2A7C512 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DelegateBlob[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DelegateBlob[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.NamedDelegateArraysCB;
 
             try
             {
-                var refTest_wrap = MConv.FromABI_BD6C0A4D(refTest, refTest_count);
-                var ___ret_wrap = del(D_BD6C0A4D.FromABI_Array(inTest), out global::GluonTest.NamedDelegate[] outTest_wrap, ref refTest_wrap);
-                var outTest_abi = MConv.ToABI_BD6C0A4D(outTest_wrap); outTest = outTest_abi.Ptr; outTest_count = outTest_abi.Count;
-                var refTest_abi = MConv.ToABI_BD6C0A4D(refTest_wrap); refTest = refTest_abi.Ptr; refTest_count = refTest_abi.Count;
-                var ___ret_abi = MConv.ToABI_BD6C0A4D(___ret_wrap); ___ret = ___ret_abi.Ptr; ___ret_count = ___ret_abi.Count;
+                var refTest_wrap = MConv.FromABI_BD6C0A4E(refTest, refTest_count);
+                var ___ret_wrap = del(D_BD6C0A4E.FromABI_Array(inTest), out global::GluonTest.NamedDelegate[] outTest_wrap, ref refTest_wrap);
+                var outTest_abi = MConv.ToABI_BD6C0A4E(outTest_wrap); outTest = outTest_abi.Ptr; outTest_count = outTest_abi.Count;
+                var refTest_abi = MConv.ToABI_BD6C0A4E(refTest_wrap); refTest = refTest_abi.Ptr; refTest_count = refTest_abi.Count;
+                var ___ret_abi = MConv.ToABI_BD6C0A4E(___ret_wrap); ___ret = ___ret_abi.Ptr; ___ret_count = ___ret_abi.Count;
                 return HResult.S_OK;
             }
 
@@ -1408,7 +1427,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_B2A7C511(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_B2A7C512(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1417,10 +1436,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_B2A7C511.FnPtr)
+            else if (fn == D_B2A7C512.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.NamedDelegateArraysCB;
             else
-                return new D_B2A7C511(fn, ctx).Call;
+                return new D_B2A7C512(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.NamedDelegateArraysCB x)
@@ -1449,34 +1468,35 @@ namespace ABI.GluonTest
 
         private global::GluonTest.NamedDelegate[] Call(global::GluonTest.NamedDelegate[] inTest, out global::GluonTest.NamedDelegate[] outTest, ref global::GluonTest.NamedDelegate[] refTest)
         {
-            var inTest_abi = D_BD6C0A4D.ToABI_Array(inTest);
+            var inTest_abi = D_BD6C0A4E.ToABI_Array(inTest);
             ArrayBlob outTest_abi;
-            ArrayBlob refTest_abi = MConv.ToABI_BD6C0A4D(refTest);
+            ArrayBlob refTest_abi = MConv.ToABI_BD6C0A4E(refTest);
             ArrayBlob ___ret_abi;
             Native.Throw((int)_abi(_ctx, inTest_abi, inTest_abi.Length, out outTest_abi.Ptr, out outTest_abi.Count, ref refTest_abi.Ptr, ref refTest_abi.Count, out ___ret_abi.Ptr, out ___ret_abi.Count));
-            outTest = MConv.FromABI_BD6C0A4D(outTest_abi.Ptr, outTest_abi.Count);
-            refTest = MConv.FromABI_BD6C0A4D(refTest_abi.Ptr, refTest_abi.Count);
-            return MConv.FromABI_BD6C0A4D(___ret_abi.Ptr, ___ret_abi.Count);
+            outTest = MConv.FromABI_BD6C0A4E(outTest_abi.Ptr, outTest_abi.Count);
+            refTest = MConv.FromABI_BD6C0A4E(refTest_abi.Ptr, refTest_abi.Count);
+            return MConv.FromABI_BD6C0A4E(___ret_abi.Ptr, ___ret_abi.Count);
         }
     }
 
-    public class D_DC21B22B : Gluon.D_Base
+    public class D_DC21B22C : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DelegateBlob[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DelegateBlob[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.GenericDelegateArraysCB;
 
             try
             {
-                var refTest_wrap = MConv.FromABI_2945414B(refTest, refTest_count);
-                var ___ret_wrap = del(D_5D02415A.FromABI_Array(inTest), out Action<Func<int,int>>[] outTest_wrap, ref refTest_wrap);
-                var outTest_abi = MConv.ToABI_5D02415B(outTest_wrap); outTest = outTest_abi.Ptr; outTest_count = outTest_abi.Count;
-                var refTest_abi = MConv.ToABI_2945414B(refTest_wrap); refTest = refTest_abi.Ptr; refTest_count = refTest_abi.Count;
-                var ___ret_abi = MConv.ToABI_2945414C(___ret_wrap); ___ret = ___ret_abi.Ptr; ___ret_count = ___ret_abi.Count;
+                var refTest_wrap = MConv.FromABI_29454150(refTest, refTest_count);
+                var ___ret_wrap = del(D_5D02415D.FromABI_Array(inTest), out Action<Func<int,int>>[] outTest_wrap, ref refTest_wrap);
+                var outTest_abi = MConv.ToABI_5D02415E(outTest_wrap); outTest = outTest_abi.Ptr; outTest_count = outTest_abi.Count;
+                var refTest_abi = MConv.ToABI_29454150(refTest_wrap); refTest = refTest_abi.Ptr; refTest_count = refTest_abi.Count;
+                var ___ret_abi = MConv.ToABI_29454151(___ret_wrap); ___ret = ___ret_abi.Ptr; ___ret_count = ___ret_abi.Count;
                 return HResult.S_OK;
             }
 
@@ -1490,7 +1510,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_DC21B22B(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_DC21B22C(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1499,10 +1519,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_DC21B22B.FnPtr)
+            else if (fn == D_DC21B22C.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.GenericDelegateArraysCB;
             else
-                return new D_DC21B22B(fn, ctx).Call;
+                return new D_DC21B22C(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.GenericDelegateArraysCB x)
@@ -1531,23 +1551,24 @@ namespace ABI.GluonTest
 
         private Func<int,int>[] Call(Action<string>[] inTest, out Action<Func<int,int>>[] outTest, ref Func<char[],string[]>[] refTest)
         {
-            var inTest_abi = D_5D02415A.ToABI_Array(inTest);
+            var inTest_abi = D_5D02415D.ToABI_Array(inTest);
             ArrayBlob outTest_abi;
-            ArrayBlob refTest_abi = MConv.ToABI_2945414B(refTest);
+            ArrayBlob refTest_abi = MConv.ToABI_29454150(refTest);
             ArrayBlob ___ret_abi;
             Native.Throw((int)_abi(_ctx, inTest_abi, inTest_abi.Length, out outTest_abi.Ptr, out outTest_abi.Count, ref refTest_abi.Ptr, ref refTest_abi.Count, out ___ret_abi.Ptr, out ___ret_abi.Count));
-            outTest = MConv.FromABI_5D02415B(outTest_abi.Ptr, outTest_abi.Count);
-            refTest = MConv.FromABI_2945414B(refTest_abi.Ptr, refTest_abi.Count);
-            return MConv.FromABI_2945414C(___ret_abi.Ptr, ___ret_abi.Count);
+            outTest = MConv.FromABI_5D02415E(outTest_abi.Ptr, outTest_abi.Count);
+            refTest = MConv.FromABI_29454150(refTest_abi.Ptr, refTest_abi.Count);
+            return MConv.FromABI_29454151(___ret_abi.Ptr, ___ret_abi.Count);
         }
     }
 
-    public class D_2945414A : Gluon.D_Base
+    public class D_2945414F : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, double arg, out double ___ret);
+
         private static HResult Fn(IntPtr __i_, double arg, out double ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Func<double,double>;
@@ -1565,7 +1586,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_2945414A(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_2945414F(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1574,10 +1595,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_2945414A.FnPtr)
+            else if (fn == D_2945414F.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Func<double,double>;
             else
-                return new D_2945414A(fn, ctx).Call;
+                return new D_2945414F(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Func<double,double> x)
@@ -1612,12 +1633,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_2945414D : Gluon.D_Base
+    public class D_29454152 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] char[] arg, int arg_count, [MarshalAs(UnmanagedType.LPStr)] out string ___ret);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] char[] arg, int arg_count, [MarshalAs(UnmanagedType.LPStr)] out string ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Func<char[],string>;
@@ -1635,7 +1657,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_2945414D(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_29454152(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1644,10 +1666,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_2945414D.FnPtr)
+            else if (fn == D_29454152.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Func<char[],string>;
             else
-                return new D_2945414D(fn, ctx).Call;
+                return new D_29454152(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Func<char[],string> x)
@@ -1682,12 +1704,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_668509AD : Gluon.D_Base
+    public class D_668509AE : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, int a, int b, out IntPtr ___ret);
+
         private static HResult Fn(IntPtr __i_, int a, int b, out IntPtr ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as global::GluonTest.AddSomeShit;
@@ -1695,7 +1718,7 @@ namespace ABI.GluonTest
             try
             {
                 var ___ret_wrap = del(a, b);
-                ___ret = (___ret_wrap == null ? IntPtr.Zero : ___ret_wrap.NativePtr);
+                ___ret = (___ret_wrap == null ? IntPtr.Zero : ((global::GluonTest.ITestClass)___ret_wrap).IPtr);
                 return HResult.S_OK;
             }
 
@@ -1706,7 +1729,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_668509AD(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_668509AE(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1715,10 +1738,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_668509AD.FnPtr)
+            else if (fn == D_668509AE.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as global::GluonTest.AddSomeShit;
             else
-                return new D_668509AD(fn, ctx).Call;
+                return new D_668509AE(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(global::GluonTest.AddSomeShit x)
@@ -1753,12 +1776,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_827F05B2 : Gluon.D_Base
+    public class D_827F05B4 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, char arg1, int arg2, [MarshalAs(UnmanagedType.LPStr)] out string ___ret);
+
         private static HResult Fn(IntPtr __i_, char arg1, int arg2, [MarshalAs(UnmanagedType.LPStr)] out string ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Func<char,int,string>;
@@ -1776,7 +1800,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_827F05B2(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_827F05B4(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1785,10 +1809,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_827F05B2.FnPtr)
+            else if (fn == D_827F05B4.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Func<char,int,string>;
             else
-                return new D_827F05B2(fn, ctx).Call;
+                return new D_827F05B4(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Func<char,int,string> x)
@@ -1823,12 +1847,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_2945414E : Gluon.D_Base
+    public class D_29454153 : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string arg, out char ___ret);
+
         private static HResult Fn(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string arg, out char ___ret)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Func<string,char>;
@@ -1846,7 +1871,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_2945414E(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_29454153(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1855,10 +1880,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_2945414E.FnPtr)
+            else if (fn == D_29454153.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Func<string,char>;
             else
-                return new D_2945414E(fn, ctx).Call;
+                return new D_29454153(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Func<string,char> x)
@@ -1893,12 +1918,13 @@ namespace ABI.GluonTest
         }
     }
 
-    public class D_5D02415C : Gluon.D_Base
+    public class D_5D02415F : Gluon.D_Base
     {
         private NativeDel _abi;
         internal static readonly NativeDel FnDel = new NativeDel(Fn);
         public static readonly IntPtr FnPtr = Marshal.GetFunctionPointerForDelegate(FnDel);
         internal delegate HResult NativeDel(IntPtr __i_, int obj);
+
         private static HResult Fn(IntPtr __i_, int obj)
         {
             var del = ((GCHandle)Marshal.GetObjectForIUnknown(__i_)).Target as Action<int>;
@@ -1915,7 +1941,7 @@ namespace ABI.GluonTest
             }
         }
 
-        private D_5D02415C(IntPtr fn, IntPtr ctx) : base(ctx)
+        private D_5D02415F(IntPtr fn, IntPtr ctx) : base(ctx)
         {
             _abi = (NativeDel)Marshal.GetDelegateForFunctionPointer(fn, typeof(NativeDel));
         }
@@ -1924,10 +1950,10 @@ namespace ABI.GluonTest
         {
             if (fn == IntPtr.Zero)
                 return null;
-            else if (fn == D_5D02415C.FnPtr)
+            else if (fn == D_5D02415F.FnPtr)
                 return ((GCHandle)Marshal.GetObjectForIUnknown(ctx)).Target as Action<int>;
             else
-                return new D_5D02415C(fn, ctx).Call;
+                return new D_5D02415F(fn, ctx).Call;
         }
 
         public static DelegateBlob Unwrap(Action<int> x)
@@ -2026,7 +2052,40 @@ namespace ABI.GluonTest
             Marshal.FreeCoTaskMem(data);
         }
 
-        public static global::GluonTest.NamedDelegate[] FromABI_BD6C0A4D(IntPtr data, int count)
+        public static global::GluonTest.DummyClass[] FromABI_CAD799A2(IntPtr data, int count)
+        {
+            if(data == IntPtr.Zero) return null;
+            var sz = Marshal.SizeOf<IntPtr>();
+            var r = new global::GluonTest.DummyClass[count];
+            for(int i = 0;i < count;i++)
+            {
+                r[i] = GluonObject.Of<global::GluonTest.DummyClass>(Marshal.ReadIntPtr((IntPtr)((long)data + i * sz)));
+            }
+
+            Marshal.FreeCoTaskMem(data);
+            return r;
+        }
+
+        public static ArrayBlob ToABI_CAD799A2(global::GluonTest.DummyClass[] arr)
+        {
+            if(arr == null) return new ArrayBlob();
+            var sz = Marshal.SizeOf<IntPtr>();
+            var r = new ArrayBlob(Marshal.AllocCoTaskMem(sz * arr.Length), arr.Length);
+            for(int i = 0;i < arr.Length;i++)
+            {
+                var item = arr[i];
+                Marshal.WriteIntPtr((IntPtr)((long)r.Ptr + sz * i), item == null ? IntPtr.Zero : item.IPtr);
+            }
+
+            return r;
+        }
+
+        public static void FreeABI_CAD799A2(IntPtr data, int count)
+        {
+            Marshal.FreeCoTaskMem(data);
+        }
+
+        public static global::GluonTest.NamedDelegate[] FromABI_BD6C0A4E(IntPtr data, int count)
         {
             if(data == IntPtr.Zero) return null;
             var sz = Marshal.SizeOf<DelegateBlob>();
@@ -2034,33 +2093,33 @@ namespace ABI.GluonTest
             for(int i = 0;i < count;i++)
             {
                 var blob = Marshal.PtrToStructure<DelegateBlob>((IntPtr)((long)data + i * sz));
-                r[i] = D_BD6C0A4D.Wrap(blob.Fn, blob.Ctx);
+                r[i] = D_BD6C0A4E.Wrap(blob.Fn, blob.Ctx);
             }
 
             Marshal.FreeCoTaskMem(data);
             return r;
         }
 
-        public static ArrayBlob ToABI_BD6C0A4D(global::GluonTest.NamedDelegate[] arr)
+        public static ArrayBlob ToABI_BD6C0A4E(global::GluonTest.NamedDelegate[] arr)
         {
             if(arr == null) return new ArrayBlob();
             var sz = Marshal.SizeOf<DelegateBlob>();
             var r = new ArrayBlob(Marshal.AllocCoTaskMem(sz * arr.Length), arr.Length);
             for(int i = 0;i < arr.Length;i++)
             {
-                var blob = D_BD6C0A4D.Unwrap(arr[i]);
+                var blob = D_BD6C0A4E.Unwrap(arr[i]);
                 Marshal.StructureToPtr(blob, (IntPtr)((long)r.Ptr + sz * i), false);
             }
 
             return r;
         }
 
-        public static void FreeABI_BD6C0A4D(IntPtr data, int count)
+        public static void FreeABI_BD6C0A4E(IntPtr data, int count)
         {
             Marshal.FreeCoTaskMem(data);
         }
 
-        public static Func<int,int>[] FromABI_2945414C(IntPtr data, int count)
+        public static Func<int,int>[] FromABI_29454151(IntPtr data, int count)
         {
             if(data == IntPtr.Zero) return null;
             var sz = Marshal.SizeOf<DelegateBlob>();
@@ -2068,33 +2127,33 @@ namespace ABI.GluonTest
             for(int i = 0;i < count;i++)
             {
                 var blob = Marshal.PtrToStructure<DelegateBlob>((IntPtr)((long)data + i * sz));
-                r[i] = D_2945414C.Wrap(blob.Fn, blob.Ctx);
+                r[i] = D_29454151.Wrap(blob.Fn, blob.Ctx);
             }
 
             Marshal.FreeCoTaskMem(data);
             return r;
         }
 
-        public static ArrayBlob ToABI_2945414C(Func<int,int>[] arr)
+        public static ArrayBlob ToABI_29454151(Func<int,int>[] arr)
         {
             if(arr == null) return new ArrayBlob();
             var sz = Marshal.SizeOf<DelegateBlob>();
             var r = new ArrayBlob(Marshal.AllocCoTaskMem(sz * arr.Length), arr.Length);
             for(int i = 0;i < arr.Length;i++)
             {
-                var blob = D_2945414C.Unwrap(arr[i]);
+                var blob = D_29454151.Unwrap(arr[i]);
                 Marshal.StructureToPtr(blob, (IntPtr)((long)r.Ptr + sz * i), false);
             }
 
             return r;
         }
 
-        public static void FreeABI_2945414C(IntPtr data, int count)
+        public static void FreeABI_29454151(IntPtr data, int count)
         {
             Marshal.FreeCoTaskMem(data);
         }
 
-        public static Action<string>[] FromABI_5D02415A(IntPtr data, int count)
+        public static Action<string>[] FromABI_5D02415D(IntPtr data, int count)
         {
             if(data == IntPtr.Zero) return null;
             var sz = Marshal.SizeOf<DelegateBlob>();
@@ -2102,33 +2161,33 @@ namespace ABI.GluonTest
             for(int i = 0;i < count;i++)
             {
                 var blob = Marshal.PtrToStructure<DelegateBlob>((IntPtr)((long)data + i * sz));
-                r[i] = D_5D02415A.Wrap(blob.Fn, blob.Ctx);
+                r[i] = D_5D02415D.Wrap(blob.Fn, blob.Ctx);
             }
 
             Marshal.FreeCoTaskMem(data);
             return r;
         }
 
-        public static ArrayBlob ToABI_5D02415A(Action<string>[] arr)
+        public static ArrayBlob ToABI_5D02415D(Action<string>[] arr)
         {
             if(arr == null) return new ArrayBlob();
             var sz = Marshal.SizeOf<DelegateBlob>();
             var r = new ArrayBlob(Marshal.AllocCoTaskMem(sz * arr.Length), arr.Length);
             for(int i = 0;i < arr.Length;i++)
             {
-                var blob = D_5D02415A.Unwrap(arr[i]);
+                var blob = D_5D02415D.Unwrap(arr[i]);
                 Marshal.StructureToPtr(blob, (IntPtr)((long)r.Ptr + sz * i), false);
             }
 
             return r;
         }
 
-        public static void FreeABI_5D02415A(IntPtr data, int count)
+        public static void FreeABI_5D02415D(IntPtr data, int count)
         {
             Marshal.FreeCoTaskMem(data);
         }
 
-        public static Action<Func<int,int>>[] FromABI_5D02415B(IntPtr data, int count)
+        public static Action<Func<int,int>>[] FromABI_5D02415E(IntPtr data, int count)
         {
             if(data == IntPtr.Zero) return null;
             var sz = Marshal.SizeOf<DelegateBlob>();
@@ -2136,33 +2195,33 @@ namespace ABI.GluonTest
             for(int i = 0;i < count;i++)
             {
                 var blob = Marshal.PtrToStructure<DelegateBlob>((IntPtr)((long)data + i * sz));
-                r[i] = D_5D02415B.Wrap(blob.Fn, blob.Ctx);
+                r[i] = D_5D02415E.Wrap(blob.Fn, blob.Ctx);
             }
 
             Marshal.FreeCoTaskMem(data);
             return r;
         }
 
-        public static ArrayBlob ToABI_5D02415B(Action<Func<int,int>>[] arr)
+        public static ArrayBlob ToABI_5D02415E(Action<Func<int,int>>[] arr)
         {
             if(arr == null) return new ArrayBlob();
             var sz = Marshal.SizeOf<DelegateBlob>();
             var r = new ArrayBlob(Marshal.AllocCoTaskMem(sz * arr.Length), arr.Length);
             for(int i = 0;i < arr.Length;i++)
             {
-                var blob = D_5D02415B.Unwrap(arr[i]);
+                var blob = D_5D02415E.Unwrap(arr[i]);
                 Marshal.StructureToPtr(blob, (IntPtr)((long)r.Ptr + sz * i), false);
             }
 
             return r;
         }
 
-        public static void FreeABI_5D02415B(IntPtr data, int count)
+        public static void FreeABI_5D02415E(IntPtr data, int count)
         {
             Marshal.FreeCoTaskMem(data);
         }
 
-        public static Func<char[],string[]>[] FromABI_2945414B(IntPtr data, int count)
+        public static Func<char[],string[]>[] FromABI_29454150(IntPtr data, int count)
         {
             if(data == IntPtr.Zero) return null;
             var sz = Marshal.SizeOf<DelegateBlob>();
@@ -2170,33 +2229,33 @@ namespace ABI.GluonTest
             for(int i = 0;i < count;i++)
             {
                 var blob = Marshal.PtrToStructure<DelegateBlob>((IntPtr)((long)data + i * sz));
-                r[i] = D_2945414B.Wrap(blob.Fn, blob.Ctx);
+                r[i] = D_29454150.Wrap(blob.Fn, blob.Ctx);
             }
 
             Marshal.FreeCoTaskMem(data);
             return r;
         }
 
-        public static ArrayBlob ToABI_2945414B(Func<char[],string[]>[] arr)
+        public static ArrayBlob ToABI_29454150(Func<char[],string[]>[] arr)
         {
             if(arr == null) return new ArrayBlob();
             var sz = Marshal.SizeOf<DelegateBlob>();
             var r = new ArrayBlob(Marshal.AllocCoTaskMem(sz * arr.Length), arr.Length);
             for(int i = 0;i < arr.Length;i++)
             {
-                var blob = D_2945414B.Unwrap(arr[i]);
+                var blob = D_29454150.Unwrap(arr[i]);
                 Marshal.StructureToPtr(blob, (IntPtr)((long)r.Ptr + sz * i), false);
             }
 
             return r;
         }
 
-        public static void FreeABI_2945414B(IntPtr data, int count)
+        public static void FreeABI_29454150(IntPtr data, int count)
         {
             Marshal.FreeCoTaskMem(data);
         }
 
-        public static Func<char[],string>[] FromABI_2945414D(IntPtr data, int count)
+        public static Func<char[],string>[] FromABI_29454152(IntPtr data, int count)
         {
             if(data == IntPtr.Zero) return null;
             var sz = Marshal.SizeOf<DelegateBlob>();
@@ -2204,28 +2263,28 @@ namespace ABI.GluonTest
             for(int i = 0;i < count;i++)
             {
                 var blob = Marshal.PtrToStructure<DelegateBlob>((IntPtr)((long)data + i * sz));
-                r[i] = D_2945414D.Wrap(blob.Fn, blob.Ctx);
+                r[i] = D_29454152.Wrap(blob.Fn, blob.Ctx);
             }
 
             Marshal.FreeCoTaskMem(data);
             return r;
         }
 
-        public static ArrayBlob ToABI_2945414D(Func<char[],string>[] arr)
+        public static ArrayBlob ToABI_29454152(Func<char[],string>[] arr)
         {
             if(arr == null) return new ArrayBlob();
             var sz = Marshal.SizeOf<DelegateBlob>();
             var r = new ArrayBlob(Marshal.AllocCoTaskMem(sz * arr.Length), arr.Length);
             for(int i = 0;i < arr.Length;i++)
             {
-                var blob = D_2945414D.Unwrap(arr[i]);
+                var blob = D_29454152.Unwrap(arr[i]);
                 Marshal.StructureToPtr(blob, (IntPtr)((long)r.Ptr + sz * i), false);
             }
 
             return r;
         }
 
-        public static void FreeABI_2945414D(IntPtr data, int count)
+        public static void FreeABI_29454152(IntPtr data, int count)
         {
             Marshal.FreeCoTaskMem(data);
         }
@@ -2262,7 +2321,7 @@ namespace ABI.GluonTest
             Marshal.FreeCoTaskMem(data);
         }
 
-        public static Func<char,int,string>[] FromABI_827F05B2(IntPtr data, int count)
+        public static Func<char,int,string>[] FromABI_827F05B4(IntPtr data, int count)
         {
             if(data == IntPtr.Zero) return null;
             var sz = Marshal.SizeOf<DelegateBlob>();
@@ -2270,28 +2329,28 @@ namespace ABI.GluonTest
             for(int i = 0;i < count;i++)
             {
                 var blob = Marshal.PtrToStructure<DelegateBlob>((IntPtr)((long)data + i * sz));
-                r[i] = D_827F05B2.Wrap(blob.Fn, blob.Ctx);
+                r[i] = D_827F05B4.Wrap(blob.Fn, blob.Ctx);
             }
 
             Marshal.FreeCoTaskMem(data);
             return r;
         }
 
-        public static ArrayBlob ToABI_827F05B2(Func<char,int,string>[] arr)
+        public static ArrayBlob ToABI_827F05B4(Func<char,int,string>[] arr)
         {
             if(arr == null) return new ArrayBlob();
             var sz = Marshal.SizeOf<DelegateBlob>();
             var r = new ArrayBlob(Marshal.AllocCoTaskMem(sz * arr.Length), arr.Length);
             for(int i = 0;i < arr.Length;i++)
             {
-                var blob = D_827F05B2.Unwrap(arr[i]);
+                var blob = D_827F05B4.Unwrap(arr[i]);
                 Marshal.StructureToPtr(blob, (IntPtr)((long)r.Ptr + sz * i), false);
             }
 
             return r;
         }
 
-        public static void FreeABI_827F05B2(IntPtr data, int count)
+        public static void FreeABI_827F05B4(IntPtr data, int count)
         {
             Marshal.FreeCoTaskMem(data);
         }

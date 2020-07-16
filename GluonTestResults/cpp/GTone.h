@@ -33,14 +33,12 @@ namespace GluonTest
 
     private:
 #ifndef __INTELLISENSE__
-
         METHOD _GetFrequency(double* ___ret);
         METHOD _SetFrequency(double value);
         METHOD _GetWaveform(::ABI::GluonTest::Waveform** ___ret);
         METHOD _SetWaveform(::ABI::GluonTest::Waveform* value);
         METHOD _GetAmplitude(double* ___ret);
         METHOD _SetAmplitude(double value);
-
 #endif
     // clang-format on
     #pragma endregion

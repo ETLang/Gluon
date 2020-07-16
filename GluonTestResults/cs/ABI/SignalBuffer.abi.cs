@@ -17,19 +17,19 @@ namespace ABI.GluonTest
         public readonly VTUnknown Unknown;
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly CopyTo1_sig CopyTo1;
+        public readonly CopyTo_sig CopyTo;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int CopyTo1_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] arr, int arr_count, out int ___ret);
+        public delegate int CopyTo_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] double[] arr, int arr_count, out int ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly CopyTo2_sig CopyTo2;
+        public readonly CopyTo_1_sig CopyTo_1;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int CopyTo2_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] float[] arr, int arr_count, out int ___ret);
+        public delegate int CopyTo_1_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] float[] arr, int arr_count, out int ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly CopyTo3_sig CopyTo3;
+        public readonly CopyTo_2_sig CopyTo_2;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int CopyTo3_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] short[] arr, int arr_count, out int ___ret);
+        public delegate int CopyTo_2_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] short[] arr, int arr_count, out int ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public readonly GetChannelCount_sig GetChannelCount;

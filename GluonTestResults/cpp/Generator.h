@@ -27,7 +27,6 @@ namespace GluonTest {
 
         METHOD _GetChannelCount(int* ___ret);
         METHOD _GetSampleRate(int* ___ret);
-
 #endif
     // clang-format on
     #pragma endregion

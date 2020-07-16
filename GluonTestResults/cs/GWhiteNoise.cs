@@ -17,6 +17,7 @@ namespace GluonTest
     {
         static partial void StaticInit();
         partial void Init();
+        partial void PartialDispose(bool finalizing);
 
         static GWhiteNoise()
         {
@@ -26,13 +27,31 @@ namespace GluonTest
 
         public GWhiteNoise() : this(new AbiPtr(Make())) {  Init(); }  
 
+        protected override void OnDispose(bool finalizing)
+        {
+            PartialDispose(finalizing);
+
+            IPtr = IntPtr.Zero;
+            base.OnDispose(finalizing);
+        }
+
         #region Internal
+
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void Check()
+        {
+            if (IPtr == IntPtr.Zero)
+                throw new ObjectDisposedException(GetType().Name + " has been disposed");
+        }
 
         internal GWhiteNoise(AbiPtr i) : base(i)
         {
-            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out _i));
-            Marshal.Release(_i);
-            _vt = VTUnknown.GetVTable<ABI.GluonTest.GWhiteNoise>(_i);
+            IntPtr iptr;
+            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out iptr));
+            Marshal.Release(iptr);
+            IPtr = iptr;
+            _vt = VTUnknown.GetVTable<ABI.GluonTest.GWhiteNoise>(IPtr);
+
             Init();
         }
 
@@ -43,7 +62,7 @@ namespace GluonTest
             return instance_abi;
         }
 
-        IntPtr _i;
+        public new IntPtr IPtr { get; private set; } //IntPtr _i;
         ABI.GluonTest.GWhiteNoise _vt;
         static Guid _ID = new Guid("4f35eadf-d0ee-3cbb-e6c5-da0f1ae69811");
 

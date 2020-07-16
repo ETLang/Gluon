@@ -380,8 +380,6 @@ NamedDelegate ConversionUnitTest::NamedDelegates(const NamedDelegate& x, NamedDe
 
 Delegate<int(int)> ConversionUnitTest::GenericDelegates(const Delegate<void(string)>& x, Delegate<void(const Delegate<int(int)>&)>& outx, Delegate<string(Array<char>)>& refx)
 {
-    Not_Implemented_Warning
-
     throw NotImplementedException("ConversionUnitTest::GenericDelegates");
 }
 
@@ -438,8 +436,6 @@ Array<NamedDelegate> ConversionUnitTest::NamedDelegateArrays(Array<NamedDelegate
 
 Array<Delegate<int(int)>> ConversionUnitTest::GenericDelegateArrays(Array<Delegate<void(string)>> x, Array<Delegate<void(const Delegate<int(int)>&)>>& outx, Array<Delegate<string(Array<char>)>>& refx)
 {
-    Not_Implemented_Warning
-
     throw NotImplementedException("ConversionUnityTest::GenericDelegateArrays");
 }
 
@@ -503,7 +499,7 @@ StructMemberTest ConversionUnitTest::GetStructMembers() const
         BlittableStruct(5, 6, 7, 8),
         ComplexStruct("ComplexName", BlittableStruct(1, 2, 1, 2), nullptr, [](int a, int b) { return a * b - (a + b); }),
         dummy.Get(),
-        [](int a, int b) { return (a + b) * (a - b); },
+        [](string a, string b) { return (int)((a.length() + b.length()) * (a.length() - b.length())); },
         [](double x) { return 2 * x; });
 
     PrintSend("StructMembers", ret);

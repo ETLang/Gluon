@@ -10,7 +10,7 @@ using ABI.Gluon;
 
 namespace ABI.GluonTest
 {
-    internal static class Native
+    public static class Native
     {
         static Native()
         {
@@ -34,9 +34,9 @@ namespace ABI.GluonTest
         [DllImport(DllPath, EntryPoint = "$_GetGluonExceptionDetails")]
         private static extern int GetGluonExceptionDetails(out int outHR, out ExceptionType outType, out IntPtr outText);
 
-        public static void RegisterTypes() { }
+        internal static void RegisterTypes() { }
 
-        internal static void Throw(int hr)
+        public static void Throw(int hr)
         {
             if (hr == (int)HResult.S_OK) return;
 

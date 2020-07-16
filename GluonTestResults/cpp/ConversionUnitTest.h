@@ -165,7 +165,6 @@ namespace GluonTest {
         METHOD _SetGenericDelegateArraysCB(fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)> value, IObject* value_context);
         METHOD _GetStructMembers(::ABI::GluonTest::StructMemberTest* ___ret);
         METHOD _SetStructMembers(::ABI::GluonTest::StructMemberTest value);
-
 #endif
     // clang-format on
     #pragma endregion

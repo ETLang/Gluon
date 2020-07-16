@@ -5,5 +5,4 @@ using namespace GluonTest;
 
 SinusoidalWaveform::SinusoidalWaveform() : Base(DEFAULT_(Array<double>))
 {
-    Not_Implemented_Warning
 }

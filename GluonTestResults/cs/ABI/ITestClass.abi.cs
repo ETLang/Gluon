@@ -19,39 +19,39 @@ namespace ABI.GluonTest
         public readonly VTUnknown Unknown;
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Methody1_sig Methody1;
+        public readonly Methody_sig Methody;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Methody1_sig(IntPtr __i_);
+        public delegate int Methody_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly RetMethod2_sig RetMethod2;
+        public readonly RetMethod_sig RetMethod;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int RetMethod2_sig(IntPtr __i_, out int ___ret);
+        public delegate int RetMethod_sig(IntPtr __i_, out int ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly OutMethod3_sig OutMethod3;
+        public readonly OutMethod_sig OutMethod;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int OutMethod3_sig(IntPtr __i_, out int x);
+        public delegate int OutMethod_sig(IntPtr __i_, out int x);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly RefMethod4_sig RefMethod4;
+        public readonly RefMethod_sig RefMethod;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int RefMethod4_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] ref string thing);
+        public delegate int RefMethod_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] ref string thing);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Ref25_sig Ref25;
+        public readonly Ref2_sig Ref2;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Ref25_sig(IntPtr __i_, ref IntPtr thing);
+        public delegate int Ref2_sig(IntPtr __i_, ref IntPtr thing);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Ref36_sig Ref36;
+        public readonly Ref3_sig Ref3;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Ref36_sig(IntPtr __i_, TestStruct thing);
+        public delegate int Ref3_sig(IntPtr __i_, TestStruct thing);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ComplexMethod7_sig ComplexMethod7;
+        public readonly ComplexMethod_sig ComplexMethod;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ComplexMethod7_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] ref string a, IntPtr _dumb, IntPtr p, out IntPtr fart, out int fart_count, out IntPtr ___ret, out int ___ret_count);
+        public delegate int ComplexMethod_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] ref string a, IntPtr _dumb, IntPtr p, out IntPtr fart, out int fart_count, out IntPtr ___ret, out int ___ret_count);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public readonly GetAdder_sig GetAdder;

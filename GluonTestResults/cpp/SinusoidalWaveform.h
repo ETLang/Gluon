@@ -14,7 +14,6 @@ namespace GluonTest {
 
     private:
 #ifndef __INTELLISENSE__
-
 #endif
     // clang-format on
     #pragma endregion

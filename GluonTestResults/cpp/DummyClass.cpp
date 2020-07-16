@@ -6,7 +6,6 @@ using namespace GluonTest;
 
 DummyClass::DummyClass()
 {
-    Not_Implemented_Warning
 }
 
 string DummyClass::GetNugget() const

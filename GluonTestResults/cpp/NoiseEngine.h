@@ -59,7 +59,6 @@ namespace GluonTest {
         METHOD _SetDistribution(NoiseDistribution value);
         METHOD _GetIsFilterEnabled(bool* ___ret);
         METHOD _SetIsFilterEnabled(bool value);
-
 #endif
     // clang-format on
     #pragma endregion

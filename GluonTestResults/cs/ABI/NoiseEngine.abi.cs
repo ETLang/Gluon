@@ -17,19 +17,19 @@ namespace ABI.GluonTest
         public readonly VTUnknown Unknown;
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Play1_sig Play1;
+        public readonly Play_sig Play;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Play1_sig(IntPtr __i_);
+        public delegate int Play_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Pause2_sig Pause2;
+        public readonly Pause_sig Pause;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Pause2_sig(IntPtr __i_);
+        public delegate int Pause_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly GetPlot3_sig GetPlot3;
+        public readonly GetPlot_sig GetPlot;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int GetPlot3_sig(IntPtr __i_, double durationSeconds, global::GluonTest.PlotType type, out IntPtr ___ret);
+        public delegate int GetPlot_sig(IntPtr __i_, double durationSeconds, global::GluonTest.PlotType type, out IntPtr ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public readonly GetError_sig GetError;

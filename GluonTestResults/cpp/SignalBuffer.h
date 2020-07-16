@@ -26,12 +26,11 @@ namespace GluonTest {
     private:
 #ifndef __INTELLISENSE__
         METHOD _CopyTo(double* arr, int arr_count, int* ___ret);
-        METHOD _CopyTo(float* arr, int arr_count, int* ___ret);
-        METHOD _CopyTo(short* arr, int arr_count, int* ___ret);
+        METHOD _CopyTo_1(float* arr, int arr_count, int* ___ret);
+        METHOD _CopyTo_2(short* arr, int arr_count, int* ___ret);
 
         METHOD _GetChannelCount(int* ___ret);
         METHOD _GetSampleCount(int* ___ret);
-
 #endif
     // clang-format on
     #pragma endregion

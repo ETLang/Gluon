@@ -16,7 +16,6 @@ namespace GluonTest {
     private:
 #ifndef __INTELLISENSE__
         METHOD _Phase(double t, double* ___ret);
-
 #endif
     // clang-format on
     #pragma endregion

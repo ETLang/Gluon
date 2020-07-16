@@ -18,10 +18,8 @@ namespace GluonTest {
 
     private:
 #ifndef __INTELLISENSE__
-
         METHOD _GetNugget(char** ___ret);
         METHOD _SetNugget(char* value);
-
 #endif
     // clang-format on
     #pragma endregion

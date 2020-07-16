@@ -19,114 +19,114 @@ namespace ABI.GluonTest
         public readonly VTUnknown Unknown;
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Primitives1_sig Primitives1;
+        public readonly Primitives_sig Primitives;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Primitives1_sig(IntPtr __i_, [MarshalAs(UnmanagedType.I1)] bool inTest, out char outTest, ref int refTest, out double ___ret);
+        public delegate int Primitives_sig(IntPtr __i_, [MarshalAs(UnmanagedType.I1)] bool inTest, out char outTest, ref int refTest, out double ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Strings2_sig Strings2;
+        public readonly Strings_sig Strings;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Strings2_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string inTest, [MarshalAs(UnmanagedType.LPStr)] out string outTest, [MarshalAs(UnmanagedType.LPStr)] ref string refTest, [MarshalAs(UnmanagedType.LPStr)] out string ___ret);
+        public delegate int Strings_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPStr)] string inTest, [MarshalAs(UnmanagedType.LPStr)] out string outTest, [MarshalAs(UnmanagedType.LPStr)] ref string refTest, [MarshalAs(UnmanagedType.LPStr)] out string ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly SimpleStructs3_sig SimpleStructs3;
+        public readonly SimpleStructs_sig SimpleStructs;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int SimpleStructs3_sig(IntPtr __i_, global::GluonTest.BlittableStruct inTest, out global::GluonTest.BlittableStruct outTest, ref global::GluonTest.BlittableStruct refTest, out global::GluonTest.BlittableStruct ___ret);
+        public delegate int SimpleStructs_sig(IntPtr __i_, global::GluonTest.BlittableStruct inTest, out global::GluonTest.BlittableStruct outTest, ref global::GluonTest.BlittableStruct refTest, out global::GluonTest.BlittableStruct ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ComplexStructs4_sig ComplexStructs4;
+        public readonly ComplexStructs_sig ComplexStructs;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ComplexStructs4_sig(IntPtr __i_, ComplexStruct inTest, out ComplexStruct outTest, ref ComplexStruct refTest, out ComplexStruct ___ret);
+        public delegate int ComplexStructs_sig(IntPtr __i_, ComplexStruct inTest, out ComplexStruct outTest, ref ComplexStruct refTest, out ComplexStruct ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly Objects5_sig Objects5;
+        public readonly Objects_sig Objects;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int Objects5_sig(IntPtr __i_, IntPtr inTest, out IntPtr outTest, ref IntPtr refTest, out IntPtr ___ret);
+        public delegate int Objects_sig(IntPtr __i_, IntPtr inTest, out IntPtr outTest, ref IntPtr refTest, out IntPtr ___ret);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly NamedDelegates6_sig NamedDelegates6;
+        public readonly NamedDelegates_sig NamedDelegates;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int NamedDelegates6_sig(IntPtr __i_, IntPtr inTest, IntPtr inTest_context, out IntPtr outTest, out IntPtr outTest_context, ref IntPtr refTest, ref IntPtr refTest_context, out IntPtr ___ret, out IntPtr ___ret_context);
+        public delegate int NamedDelegates_sig(IntPtr __i_, IntPtr inTest, IntPtr inTest_context, out IntPtr outTest, out IntPtr outTest_context, ref IntPtr refTest, ref IntPtr refTest_context, out IntPtr ___ret, out IntPtr ___ret_context);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly GenericDelegates7_sig GenericDelegates7;
+        public readonly GenericDelegates_sig GenericDelegates;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int GenericDelegates7_sig(IntPtr __i_, IntPtr inTest, IntPtr inTest_context, out IntPtr outTest, out IntPtr outTest_context, ref IntPtr refTest, ref IntPtr refTest_context, out IntPtr ___ret, out IntPtr ___ret_context);
+        public delegate int GenericDelegates_sig(IntPtr __i_, IntPtr inTest, IntPtr inTest_context, out IntPtr outTest, out IntPtr outTest_context, ref IntPtr refTest, ref IntPtr refTest_context, out IntPtr ___ret, out IntPtr ___ret_context);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly PrimitiveArrays8_sig PrimitiveArrays8;
+        public readonly PrimitiveArrays_sig PrimitiveArrays;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int PrimitiveArrays8_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] bool[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+        public delegate int PrimitiveArrays_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.I1, SizeParamIndex = 2)] bool[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly StringArrays9_sig StringArrays9;
+        public readonly StringArrays_sig StringArrays;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int StringArrays9_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 2)] string[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+        public delegate int StringArrays_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, ArraySubType = UnmanagedType.LPStr, SizeParamIndex = 2)] string[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly SimpleStructArrays10_sig SimpleStructArrays10;
+        public readonly SimpleStructArrays_sig SimpleStructArrays;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int SimpleStructArrays10_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] global::GluonTest.BlittableStruct[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+        public delegate int SimpleStructArrays_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] global::GluonTest.BlittableStruct[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ComplexStructArrays11_sig ComplexStructArrays11;
+        public readonly ComplexStructArrays_sig ComplexStructArrays;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ComplexStructArrays11_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ComplexStruct[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+        public delegate int ComplexStructArrays_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] ComplexStruct[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ObjectArrays12_sig ObjectArrays12;
+        public readonly ObjectArrays_sig ObjectArrays;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ObjectArrays12_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+        public delegate int ObjectArrays_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] IntPtr[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly NamedDelegateArrays13_sig NamedDelegateArrays13;
+        public readonly NamedDelegateArrays_sig NamedDelegateArrays;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int NamedDelegateArrays13_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DelegateBlob[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+        public delegate int NamedDelegateArrays_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DelegateBlob[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly GenericDelegateArrays14_sig GenericDelegateArrays14;
+        public readonly GenericDelegateArrays_sig GenericDelegateArrays;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int GenericDelegateArrays14_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DelegateBlob[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
+        public delegate int GenericDelegateArrays_sig(IntPtr __i_, [MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 2)] DelegateBlob[] inTest, int inTest_count, out IntPtr outTest, out int outTest_count, ref IntPtr refTest, ref int refTest_count, out IntPtr ___ret, out int ___ret_count);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ExCheckNullReference15_sig ExCheckNullReference15;
+        public readonly ExCheckNullReference_sig ExCheckNullReference;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ExCheckNullReference15_sig(IntPtr __i_);
+        public delegate int ExCheckNullReference_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ExCheckArgumentNull16_sig ExCheckArgumentNull16;
+        public readonly ExCheckArgumentNull_sig ExCheckArgumentNull;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ExCheckArgumentNull16_sig(IntPtr __i_);
+        public delegate int ExCheckArgumentNull_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ExCheckArgument17_sig ExCheckArgument17;
+        public readonly ExCheckArgument_sig ExCheckArgument;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ExCheckArgument17_sig(IntPtr __i_);
+        public delegate int ExCheckArgument_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ExCheckInvalidOperation18_sig ExCheckInvalidOperation18;
+        public readonly ExCheckInvalidOperation_sig ExCheckInvalidOperation;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ExCheckInvalidOperation18_sig(IntPtr __i_);
+        public delegate int ExCheckInvalidOperation_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ExCheckAccessDenied19_sig ExCheckAccessDenied19;
+        public readonly ExCheckAccessDenied_sig ExCheckAccessDenied;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ExCheckAccessDenied19_sig(IntPtr __i_);
+        public delegate int ExCheckAccessDenied_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ExCheckGeneric20_sig ExCheckGeneric20;
+        public readonly ExCheckGeneric_sig ExCheckGeneric;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ExCheckGeneric20_sig(IntPtr __i_);
+        public delegate int ExCheckGeneric_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ExCheckGenericStd21_sig ExCheckGenericStd21;
+        public readonly ExCheckGenericStd_sig ExCheckGenericStd;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ExCheckGenericStd21_sig(IntPtr __i_);
+        public delegate int ExCheckGenericStd_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
-        public readonly ExCheckNotImplemented22_sig ExCheckNotImplemented22;
+        public readonly ExCheckNotImplemented_sig ExCheckNotImplemented;
         [UnmanagedFunctionPointer(CallingConvention.StdCall)]
-        public delegate int ExCheckNotImplemented22_sig(IntPtr __i_);
+        public delegate int ExCheckNotImplemented_sig(IntPtr __i_);
 
         [MarshalAs(UnmanagedType.FunctionPtr)]
         public readonly GetPrimitivesCB_sig GetPrimitivesCB;

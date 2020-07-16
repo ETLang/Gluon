@@ -53,20 +53,20 @@ extern "C" __declspec(dllexport) HRESULT __stdcall $_GetGluonExceptionDetails(HR
 */
 void GluonTest_Initialize()
 {
-    ABI::GluonTest::Create_GluonTest_DummyClass_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_ConversionUnitTest_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_ITestClass_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_SignalBuffer_1(Def<int>(), Def<int>(), Def<int>(), nullptr);
-    ABI::GluonTest::Create_GluonTest_SignalBuffer_2(Def<int>(), nullptr);
-    ABI::GluonTest::Create_GluonTest_Waveform_1(Def<double*>(), Def<int>(), nullptr);
-    ABI::GluonTest::Create_GluonTest_SinusoidalWaveform_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_SquareWaveform_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_TriangleWaveform_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_SawtoothRightWaveform_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_SawtoothLeftWaveform_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_GTone_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_GWhiteNoise_1(nullptr);
-    ABI::GluonTest::Create_GluonTest_NoiseEngine_1(nullptr);
+    Create_GluonTest_DummyClass_1(nullptr);
+    Create_GluonTest_ConversionUnitTest_1(nullptr);
+    Create_GluonTest_ITestClass_1(nullptr);
+    Create_GluonTest_SignalBuffer_1(Def<int>(), Def<int>(), Def<int>(), nullptr);
+    Create_GluonTest_SignalBuffer_2(Def<int>(), nullptr);
+    Create_GluonTest_Waveform_1(Def<double*>(), Def<int>(), nullptr);
+    Create_GluonTest_SinusoidalWaveform_1(nullptr);
+    Create_GluonTest_SquareWaveform_1(nullptr);
+    Create_GluonTest_TriangleWaveform_1(nullptr);
+    Create_GluonTest_SawtoothRightWaveform_1(nullptr);
+    Create_GluonTest_SawtoothLeftWaveform_1(nullptr);
+    Create_GluonTest_GTone_1(nullptr);
+    Create_GluonTest_GWhiteNoise_1(nullptr);
+    Create_GluonTest_NoiseEngine_1(nullptr);
 }
 
 namespace GluonInternal
@@ -142,1287 +142,1317 @@ namespace GluonInternal
             ABIUtil<string>::ToABI(x.e),
             f_.begin(), (int)f_.size());
     }
+}
 
-    HRESULT __stdcall ABI_Wrapper_1(IObject* __i_, int arg1, int arg2, int* ___ret)
+#include "Public/GluonTest.public.abi.h"
+using namespace GluonTest::Details;
+using namespace GluonInternal;
+
+template<typename Wrapper, typename Signature>
+std::unordered_map<ABI::DelegateKeyContainer<Signature>, CS::weak_ptr<Wrapper>> ABI::DelegateWrapperBase<Wrapper, Signature>::_ActiveDelegates;
+
+template<typename Wrapper, typename Signature>
+CriticalSection ABI::DelegateWrapperBase<Wrapper, Signature>::_CSec;
+
+HRESULT DW_827F05B1::AbiFunc(IObject* __i_, int arg1, int arg2, int* ___ret)
+{
+    auto ___del = runtime_cast<DW_827F05B1>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ___del->Func(
+            arg1,
+            arg2);
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<int(int, int)> ABIUtil<Delegate<int(int, int)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_827F05B1::AbiFunc)
     {
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<int(int, int)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ___del->Get()(
-                arg1,
-                arg2);
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
+        auto wrapper = runtime_cast<DW_827F05B1>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
     }
 
-    template<>
-    Delegate<int(int, int)> ABIUtil<Delegate<int(int, int)>>::FromABI(void* fn, IObject* ctx)
+    return [fn = (fn_ptr<HRESULT(IObject*,int,int,int*)>)fptr, cp = com_ptr<IObject>(ctx)](int arg1, int arg2)
+        -> int {
+        int ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            arg1,
+            arg2,
+            ABICallbackRef<int>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<Delegate<int(int, int)>> ABIUtil<Delegate<int(int, int)>>::ToABI(const Delegate<int(int, int)>& x)
+{
+    ABIOf<Delegate<int(int, int)>> x_abi;
+    x_abi.Fn = &DW_827F05B1::AbiFunc;
+    x_abi.Ctx = DW_827F05B1::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_BD6C0A4D::AbiFunc(IObject* __i_, char* a, char* b, int* ___ret)
+{
+    auto ___del = runtime_cast<DW_BD6C0A4D>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ___del->Func(
+            ABIUtil<string>::FromABI(a),
+            ABIUtil<string>::FromABI(b));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::NamedDelegate ABIUtil<GluonTest::NamedDelegate>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_BD6C0A4D::AbiFunc)
     {
-        if(fn == (void*)&ABI_Wrapper_1)
+        auto wrapper = runtime_cast<DW_BD6C0A4D>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,char*,char*,int*)>)fptr, cp = com_ptr<IObject>(ctx)](string a, string b)
+        -> int {
+        int ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            ABIUtil<string>::ToABI(a),
+            ABIUtil<string>::ToABI(b),
+            ABICallbackRef<int>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<GluonTest::NamedDelegate> ABIUtil<GluonTest::NamedDelegate>::ToABI(const GluonTest::NamedDelegate& x)
+{
+    ABIOf<GluonTest::NamedDelegate> x_abi;
+    x_abi.Fn = &DW_BD6C0A4D::AbiFunc;
+    x_abi.Ctx = DW_BD6C0A4D::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_67C6D6DF::AbiFunc(IObject* __i_, bool inTest, char* outTest, int* refTest, double* ___ret)
+{
+    auto ___del = runtime_cast<DW_67C6D6DF>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ___del->Func(
+            inTest,
+            ABIUtil<char>::Ref(outTest),
+            ABIUtil<int>::Ref(refTest));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::PrimitivesCB ABIUtil<GluonTest::PrimitivesCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_67C6D6DF::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_67C6D6DF>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,bool,char*,int*,double*)>)fptr, cp = com_ptr<IObject>(ctx)](bool inTest, char& outTest, int& refTest)
+        -> double {
+        double ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            inTest,
+            ABICallbackRef<char>(outTest),
+            ABICallbackRef<int>(refTest),
+            ABICallbackRef<double>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<GluonTest::PrimitivesCB> ABIUtil<GluonTest::PrimitivesCB>::ToABI(const GluonTest::PrimitivesCB& x)
+{
+    ABIOf<GluonTest::PrimitivesCB> x_abi;
+    x_abi.Fn = &DW_67C6D6DF::AbiFunc;
+    x_abi.Ctx = DW_67C6D6DF::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_7A2B6D2B::AbiFunc(IObject* __i_, char* inTest, char** outTest, char** refTest, char** ___ret)
+{
+    auto ___del = runtime_cast<DW_7A2B6D2B>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ABIUtil<string>::ToABI(___del->Func(
+            ABIUtil<string>::FromABI(inTest),
+            ABIUtil<string>::Ref(outTest),
+            ABIUtil<string>::Ref(refTest)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::StringsCB ABIUtil<GluonTest::StringsCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_7A2B6D2B::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_7A2B6D2B>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,char*,char**,char**,char**)>)fptr, cp = com_ptr<IObject>(ctx)](string inTest, string& outTest, string& refTest)
+        -> string {
+        string ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            ABIUtil<string>::ToABI(inTest),
+            ABICallbackRef<string>(outTest),
+            ABICallbackRef<string>(refTest),
+            ABICallbackRef<string>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<GluonTest::StringsCB> ABIUtil<GluonTest::StringsCB>::ToABI(const GluonTest::StringsCB& x)
+{
+    ABIOf<GluonTest::StringsCB> x_abi;
+    x_abi.Fn = &DW_7A2B6D2B::AbiFunc;
+    x_abi.Ctx = DW_7A2B6D2B::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_DF8B3B28::AbiFunc(IObject* __i_, ::ABI::GluonTest::BlittableStruct inTest, ::ABI::GluonTest::BlittableStruct* outTest, ::ABI::GluonTest::BlittableStruct* refTest, ::ABI::GluonTest::BlittableStruct* ___ret)
+{
+    auto ___del = runtime_cast<DW_DF8B3B28>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ___del->Func(
+            inTest,
+            ABIUtil<GluonTest::BlittableStruct>::Ref(outTest),
+            ABIUtil<GluonTest::BlittableStruct>::Ref(refTest));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::SimpleStructsCB ABIUtil<GluonTest::SimpleStructsCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_DF8B3B28::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_DF8B3B28>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*)>)fptr, cp = com_ptr<IObject>(ctx)](const GluonTest::BlittableStruct& inTest, GluonTest::BlittableStruct& outTest, GluonTest::BlittableStruct& refTest)
+        -> GluonTest::BlittableStruct {
+        GluonTest::BlittableStruct ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            inTest,
+            ABICallbackRef<GluonTest::BlittableStruct>(outTest),
+            ABICallbackRef<GluonTest::BlittableStruct>(refTest),
+            ABICallbackRef<GluonTest::BlittableStruct>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<GluonTest::SimpleStructsCB> ABIUtil<GluonTest::SimpleStructsCB>::ToABI(const GluonTest::SimpleStructsCB& x)
+{
+    ABIOf<GluonTest::SimpleStructsCB> x_abi;
+    x_abi.Fn = &DW_DF8B3B28::AbiFunc;
+    x_abi.Ctx = DW_DF8B3B28::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_625CB5E::AbiFunc(IObject* __i_, ::ABI::GluonTest::ComplexStruct inTest, ::ABI::GluonTest::ComplexStruct* outTest, ::ABI::GluonTest::ComplexStruct* refTest, ::ABI::GluonTest::ComplexStruct* ___ret)
+{
+    auto ___del = runtime_cast<DW_625CB5E>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ABIUtil<GluonTest::ComplexStruct>::ToABI(___del->Func(
+            ABIUtil<GluonTest::ComplexStruct>::FromABI(inTest),
+            ABIUtil<GluonTest::ComplexStruct>::Ref(outTest),
+            ABIUtil<GluonTest::ComplexStruct>::Ref(refTest)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::ComplexStructsCB ABIUtil<GluonTest::ComplexStructsCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_625CB5E::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_625CB5E>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*)>)fptr, cp = com_ptr<IObject>(ctx)](const GluonTest::ComplexStruct& inTest, GluonTest::ComplexStruct& outTest, GluonTest::ComplexStruct& refTest)
+        -> GluonTest::ComplexStruct {
+        GluonTest::ComplexStruct ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            ABIUtil<GluonTest::ComplexStruct>::ToABI(inTest),
+            ABICallbackRef<GluonTest::ComplexStruct>(outTest),
+            ABICallbackRef<GluonTest::ComplexStruct>(refTest),
+            ABICallbackRef<GluonTest::ComplexStruct>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<GluonTest::ComplexStructsCB> ABIUtil<GluonTest::ComplexStructsCB>::ToABI(const GluonTest::ComplexStructsCB& x)
+{
+    ABIOf<GluonTest::ComplexStructsCB> x_abi;
+    x_abi.Fn = &DW_625CB5E::AbiFunc;
+    x_abi.Ctx = DW_625CB5E::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_87064FFA::AbiFunc(IObject* __i_, ::ABI::GluonTest::DummyClass* inTest, ::ABI::GluonTest::DummyClass** outTest, ::ABI::GluonTest::DummyClass** refTest, ::ABI::GluonTest::DummyClass** ___ret)
+{
+    auto ___del = runtime_cast<DW_87064FFA>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ABIUtil<GluonTest::DummyClass>::ToABI(___del->Func(
+            ABIUtil<GluonTest::DummyClass>::FromABI(inTest),
+            ABIUtil<GluonTest::DummyClass>::Ref(outTest),
+            ABIUtil<GluonTest::DummyClass>::Ref(refTest)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::ObjectsCB ABIUtil<GluonTest::ObjectsCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_87064FFA::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_87064FFA>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass*,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**)>)fptr, cp = com_ptr<IObject>(ctx)](GluonTest::DummyClass* inTest, com_ptr<GluonTest::DummyClass>& outTest, com_ptr<GluonTest::DummyClass>& refTest)
+        -> com_ptr<GluonTest::DummyClass> {
+        com_ptr<GluonTest::DummyClass> ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            ABIUtil<GluonTest::DummyClass>::ToABI(inTest),
+            ABICallbackRef<GluonTest::DummyClass>(outTest),
+            ABICallbackRef<GluonTest::DummyClass>(refTest),
+            ABICallbackRef<GluonTest::DummyClass>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<GluonTest::ObjectsCB> ABIUtil<GluonTest::ObjectsCB>::ToABI(const GluonTest::ObjectsCB& x)
+{
+    ABIOf<GluonTest::ObjectsCB> x_abi;
+    x_abi.Fn = &DW_87064FFA::AbiFunc;
+    x_abi.Ctx = DW_87064FFA::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_7451AE96::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,char*,char*,int*)> inTest, IObject* inTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* outTest, IObject** outTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* refTest, IObject** refTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* ___ret, IObject** ___ret_context)
+{
+    auto ___del = runtime_cast<DW_7451AE96>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!outTest_context) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!refTest_context) return E_POINTER;
+    if(!___ret) return E_POINTER;
+    if(!___ret_context) return E_POINTER;
+
+    try {
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,char*,char*,int*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::NamedDelegate>::ToABI(___del->Func(
+            ABIUtil<GluonTest::NamedDelegate>::FromABI((void**)inTest, inTest_context),
+            ABIUtil<GluonTest::NamedDelegate>::Ref((void**)outTest, outTest_context),
+            ABIUtil<GluonTest::NamedDelegate>::Ref((void**)refTest, refTest_context)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::NamedDelegatesCB ABIUtil<GluonTest::NamedDelegatesCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_7451AE96::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_7451AE96>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>,IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**)>)fptr, cp = com_ptr<IObject>(ctx)](const GluonTest::NamedDelegate& inTest, GluonTest::NamedDelegate& outTest, GluonTest::NamedDelegate& refTest)
+        -> GluonTest::NamedDelegate {
+        auto inTest_abi = ABIUtil<GluonTest::NamedDelegate>::ToABI(inTest);
+        ABICallbackRef<GluonTest::NamedDelegate> outTest_abi(outTest);
+        ABICallbackRef<GluonTest::NamedDelegate> refTest_abi(refTest);
+        GluonTest::NamedDelegate ___ret;
         {
-            auto d = runtime_cast<DelegateContext<int(int, int)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,int,int,int*)>)fn;
-        return [=](int arg1, int arg2) -> int 
-        {
-            int ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                arg1,
-                arg2,
-                ABICallbackRef<int>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<Delegate<int(int, int)>> ABIUtil<Delegate<int(int, int)>>::ToABI(const Delegate<int(int, int)>& x)
-    {
-        ABIOf<Delegate<int(int, int)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_1;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<int(int, int)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_2(IObject* __i_, char* a, char* b, int* ___ret)
-    {
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<int(string, string)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ___del->Get()(
-                ABIUtil<string>::FromABI(a),
-                ABIUtil<string>::FromABI(b));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<int(string, string)> ABIUtil<Delegate<int(string, string)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_2)
-        {
-            auto d = runtime_cast<DelegateContext<int(string, string)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,char*,char*,int*)>)fn;
-        return [=](string a, string b) -> int 
-        {
-            int ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                ABIUtil<string>::ToABI(a),
-                ABIUtil<string>::ToABI(b),
-                ABICallbackRef<int>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::NamedDelegate> ABIUtil<GluonTest::NamedDelegate>::ToABI(const GluonTest::NamedDelegate& x)
-    {
-        ABIOf<Delegate<int(string, string)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_2;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<int(string, string)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_3(IObject* __i_, bool inTest, char* outTest, int* refTest, double* ___ret)
-    {
-        if(!outTest) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<double(bool, char&, int&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ___del->Get()(
-                inTest,
-                ABIUtil<char>::Ref(outTest),
-                ABIUtil<int>::Ref(refTest));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<double(bool, char&, int&)> ABIUtil<Delegate<double(bool, char&, int&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_3)
-        {
-            auto d = runtime_cast<DelegateContext<double(bool, char&, int&)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,bool,char*,int*,double*)>)fn;
-        return [=](bool inTest, char& outTest, int& refTest) -> double 
-        {
-            double ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                inTest,
-                ABICallbackRef<char>(outTest),
-                ABICallbackRef<int>(refTest),
-                ABICallbackRef<double>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::PrimitivesCB> ABIUtil<GluonTest::PrimitivesCB>::ToABI(const GluonTest::PrimitivesCB& x)
-    {
-        ABIOf<Delegate<double(bool, char&, int&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_3;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<double(bool, char&, int&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_4(IObject* __i_, char* inTest, char** outTest, char** refTest, char** ___ret)
-    {
-        if(!outTest) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<string(string, string&, string&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ABIUtil<string>::ToABI(___del->Get()(
-                ABIUtil<string>::FromABI(inTest),
-                ABIUtil<string>::Ref(outTest),
-                ABIUtil<string>::Ref(refTest)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<string(string, string&, string&)> ABIUtil<Delegate<string(string, string&, string&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_4)
-        {
-            auto d = runtime_cast<DelegateContext<string(string, string&, string&)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,char*,char**,char**,char**)>)fn;
-        return [=](string inTest, string& outTest, string& refTest) -> string 
-        {
-            string ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                ABIUtil<string>::ToABI(inTest),
-                ABICallbackRef<string>(outTest),
-                ABICallbackRef<string>(refTest),
-                ABICallbackRef<string>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::StringsCB> ABIUtil<GluonTest::StringsCB>::ToABI(const GluonTest::StringsCB& x)
-    {
-        ABIOf<Delegate<string(string, string&, string&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_4;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<string(string, string&, string&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_5(IObject* __i_, ::ABI::GluonTest::BlittableStruct inTest, ::ABI::GluonTest::BlittableStruct* outTest, ::ABI::GluonTest::BlittableStruct* refTest, ::ABI::GluonTest::BlittableStruct* ___ret)
-    {
-        if(!outTest) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<GluonTest::BlittableStruct(const GluonTest::BlittableStruct&, GluonTest::BlittableStruct&, GluonTest::BlittableStruct&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ___del->Get()(
-                inTest,
-                ABIUtil<GluonTest::BlittableStruct>::Ref(outTest),
-                ABIUtil<GluonTest::BlittableStruct>::Ref(refTest));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<GluonTest::BlittableStruct(const GluonTest::BlittableStruct&, GluonTest::BlittableStruct&, GluonTest::BlittableStruct&)> ABIUtil<Delegate<GluonTest::BlittableStruct(const GluonTest::BlittableStruct&, GluonTest::BlittableStruct&, GluonTest::BlittableStruct&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_5)
-        {
-            auto d = runtime_cast<DelegateContext<GluonTest::BlittableStruct(const GluonTest::BlittableStruct&, GluonTest::BlittableStruct&, GluonTest::BlittableStruct&)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*)>)fn;
-        return [=](const GluonTest::BlittableStruct& inTest, GluonTest::BlittableStruct& outTest, GluonTest::BlittableStruct& refTest) -> GluonTest::BlittableStruct 
-        {
-            GluonTest::BlittableStruct ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                inTest,
-                ABICallbackRef<GluonTest::BlittableStruct>(outTest),
-                ABICallbackRef<GluonTest::BlittableStruct>(refTest),
-                ABICallbackRef<GluonTest::BlittableStruct>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::SimpleStructsCB> ABIUtil<GluonTest::SimpleStructsCB>::ToABI(const GluonTest::SimpleStructsCB& x)
-    {
-        ABIOf<Delegate<GluonTest::BlittableStruct(const GluonTest::BlittableStruct&, GluonTest::BlittableStruct&, GluonTest::BlittableStruct&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_5;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<GluonTest::BlittableStruct(const GluonTest::BlittableStruct&, GluonTest::BlittableStruct&, GluonTest::BlittableStruct&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_6(IObject* __i_, ::ABI::GluonTest::ComplexStruct inTest, ::ABI::GluonTest::ComplexStruct* outTest, ::ABI::GluonTest::ComplexStruct* refTest, ::ABI::GluonTest::ComplexStruct* ___ret)
-    {
-        if(!outTest) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<GluonTest::ComplexStruct(const GluonTest::ComplexStruct&, GluonTest::ComplexStruct&, GluonTest::ComplexStruct&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ABIUtil<GluonTest::ComplexStruct>::ToABI(___del->Get()(
-                ABIUtil<GluonTest::ComplexStruct>::FromABI(inTest),
-                ABIUtil<GluonTest::ComplexStruct>::Ref(outTest),
-                ABIUtil<GluonTest::ComplexStruct>::Ref(refTest)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<GluonTest::ComplexStruct(const GluonTest::ComplexStruct&, GluonTest::ComplexStruct&, GluonTest::ComplexStruct&)> ABIUtil<Delegate<GluonTest::ComplexStruct(const GluonTest::ComplexStruct&, GluonTest::ComplexStruct&, GluonTest::ComplexStruct&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_6)
-        {
-            auto d = runtime_cast<DelegateContext<GluonTest::ComplexStruct(const GluonTest::ComplexStruct&, GluonTest::ComplexStruct&, GluonTest::ComplexStruct&)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*)>)fn;
-        return [=](const GluonTest::ComplexStruct& inTest, GluonTest::ComplexStruct& outTest, GluonTest::ComplexStruct& refTest) -> GluonTest::ComplexStruct 
-        {
-            GluonTest::ComplexStruct ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                ABIUtil<GluonTest::ComplexStruct>::ToABI(inTest),
-                ABICallbackRef<GluonTest::ComplexStruct>(outTest),
-                ABICallbackRef<GluonTest::ComplexStruct>(refTest),
-                ABICallbackRef<GluonTest::ComplexStruct>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::ComplexStructsCB> ABIUtil<GluonTest::ComplexStructsCB>::ToABI(const GluonTest::ComplexStructsCB& x)
-    {
-        ABIOf<Delegate<GluonTest::ComplexStruct(const GluonTest::ComplexStruct&, GluonTest::ComplexStruct&, GluonTest::ComplexStruct&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_6;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<GluonTest::ComplexStruct(const GluonTest::ComplexStruct&, GluonTest::ComplexStruct&, GluonTest::ComplexStruct&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_7(IObject* __i_, ::ABI::GluonTest::DummyClass* inTest, ::ABI::GluonTest::DummyClass** outTest, ::ABI::GluonTest::DummyClass** refTest, ::ABI::GluonTest::DummyClass** ___ret)
-    {
-        if(!outTest) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<com_ptr<GluonTest::DummyClass>(GluonTest::DummyClass*, com_ptr<GluonTest::DummyClass>&, com_ptr<GluonTest::DummyClass>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ABIUtil<GluonTest::DummyClass>::ToABI(___del->Get()(
-                ABIUtil<GluonTest::DummyClass>::FromABI(inTest),
-                ABIUtil<GluonTest::DummyClass>::Ref(outTest),
-                ABIUtil<GluonTest::DummyClass>::Ref(refTest)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<com_ptr<GluonTest::DummyClass>(GluonTest::DummyClass*, com_ptr<GluonTest::DummyClass>&, com_ptr<GluonTest::DummyClass>&)> ABIUtil<Delegate<com_ptr<GluonTest::DummyClass>(GluonTest::DummyClass*, com_ptr<GluonTest::DummyClass>&, com_ptr<GluonTest::DummyClass>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_7)
-        {
-            auto d = runtime_cast<DelegateContext<com_ptr<GluonTest::DummyClass>(GluonTest::DummyClass*, com_ptr<GluonTest::DummyClass>&, com_ptr<GluonTest::DummyClass>&)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass*,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**)>)fn;
-        return [=](GluonTest::DummyClass* inTest, com_ptr<GluonTest::DummyClass>& outTest, com_ptr<GluonTest::DummyClass>& refTest) -> com_ptr<GluonTest::DummyClass> 
-        {
-            com_ptr<GluonTest::DummyClass> ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                ABIUtil<GluonTest::DummyClass>::ToABI(inTest),
-                ABICallbackRef<GluonTest::DummyClass>(outTest),
-                ABICallbackRef<GluonTest::DummyClass>(refTest),
-                ABICallbackRef<GluonTest::DummyClass>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::ObjectsCB> ABIUtil<GluonTest::ObjectsCB>::ToABI(const GluonTest::ObjectsCB& x)
-    {
-        ABIOf<Delegate<com_ptr<GluonTest::DummyClass>(GluonTest::DummyClass*, com_ptr<GluonTest::DummyClass>&, com_ptr<GluonTest::DummyClass>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_7;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<com_ptr<GluonTest::DummyClass>(GluonTest::DummyClass*, com_ptr<GluonTest::DummyClass>&, com_ptr<GluonTest::DummyClass>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_8(IObject* __i_, fn_ptr<HRESULT(IObject*,char*,char*,int*)> inTest, IObject* inTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* outTest, IObject** outTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* refTest, IObject** refTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* ___ret, IObject** ___ret_context)
-    {
-        if(!outTest) return E_POINTER;
-        if(!outTest_context) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!refTest_context) return E_POINTER;
-        if(!___ret) return E_POINTER;
-        if(!___ret_context) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<GluonTest::NamedDelegate(const GluonTest::NamedDelegate&, GluonTest::NamedDelegate&, GluonTest::NamedDelegate&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::DelegateRef<fn_ptr<HRESULT(IObject*,char*,char*,int*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::NamedDelegate>::ToABI(___del->Get()(
-                ABIUtil<GluonTest::NamedDelegate>::FromABI((void**)inTest, inTest_context),
-                ABIUtil<GluonTest::NamedDelegate>::Ref((void**)outTest, outTest_context),
-                ABIUtil<GluonTest::NamedDelegate>::Ref((void**)refTest, refTest_context)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<GluonTest::NamedDelegate(const GluonTest::NamedDelegate&, GluonTest::NamedDelegate&, GluonTest::NamedDelegate&)> ABIUtil<Delegate<GluonTest::NamedDelegate(const GluonTest::NamedDelegate&, GluonTest::NamedDelegate&, GluonTest::NamedDelegate&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_8)
-        {
-            auto d = runtime_cast<DelegateContext<GluonTest::NamedDelegate(const GluonTest::NamedDelegate&, GluonTest::NamedDelegate&, GluonTest::NamedDelegate&)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>,IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**)>)fn;
-        return [=](const GluonTest::NamedDelegate& inTest, GluonTest::NamedDelegate& outTest, GluonTest::NamedDelegate& refTest) -> GluonTest::NamedDelegate 
-        {
-            GluonTest::NamedDelegate ___ret;
             ABICallbackRef<GluonTest::NamedDelegate> ___ret_abi(___ret);
-            auto inTest_abi = ABIUtil<GluonTest::NamedDelegate>::ToABI(inTest);
-            ABICallbackRef<GluonTest::NamedDelegate> outTest_abi(outTest);
-            ABICallbackRef<GluonTest::NamedDelegate> refTest_abi(refTest);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 (fn_ptr<HRESULT(IObject*,char*,char*,int*)>)inTest_abi.Fn, inTest_abi.Ctx,
                 (fn_ptr<HRESULT(IObject*,char*,char*,int*)>*)&outTest_abi.Fn, &outTest_abi.Ctx,
                 (fn_ptr<HRESULT(IObject*,char*,char*,int*)>*)&refTest_abi.Fn, &refTest_abi.Ctx,
                 (fn_ptr<HRESULT(IObject*,char*,char*,int*)>*)&___ret_abi.Fn, &___ret_abi.Ctx));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::NamedDelegatesCB> ABIUtil<GluonTest::NamedDelegatesCB>::ToABI(const GluonTest::NamedDelegatesCB& x)
-    {
-        ABIOf<Delegate<GluonTest::NamedDelegate(const GluonTest::NamedDelegate&, GluonTest::NamedDelegate&, GluonTest::NamedDelegate&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_8;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<GluonTest::NamedDelegate(const GluonTest::NamedDelegate&, GluonTest::NamedDelegate&, GluonTest::NamedDelegate&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_9(IObject* __i_, fn_ptr<HRESULT(IObject*,char*)> inTest, IObject* inTest_context, fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>* outTest, IObject** outTest_context, fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>* refTest, IObject** refTest_context, fn_ptr<HRESULT(IObject*,int,int*)>* ___ret, IObject** ___ret_context)
-    {
-        if(!outTest) return E_POINTER;
-        if(!outTest_context) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!refTest_context) return E_POINTER;
-        if(!___ret) return E_POINTER;
-        if(!___ret_context) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<Delegate<int(int)>(const Delegate<void(string)>&, Delegate<void(const Delegate<int(int)>&)>&, Delegate<Array<string>(Array<char>)>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::DelegateRef<fn_ptr<HRESULT(IObject*,int,int*)>>(___ret, ___ret_context) = ABIUtil<Delegate<int(int)>>::ToABI(___del->Get()(
-                ABIUtil<Delegate<void(string)>>::FromABI((void**)inTest, inTest_context),
-                ABIUtil<Delegate<void(const Delegate<int(int)>&)>>::Ref((void**)outTest, outTest_context),
-                ABIUtil<Delegate<Array<string>(Array<char>)>>::Ref((void**)refTest, refTest_context)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<Delegate<int(int)>(const Delegate<void(string)>&, Delegate<void(const Delegate<int(int)>&)>&, Delegate<Array<string>(Array<char>)>&)> ABIUtil<Delegate<Delegate<int(int)>(const Delegate<void(string)>&, Delegate<void(const Delegate<int(int)>&)>&, Delegate<Array<string>(Array<char>)>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_9)
-        {
-            auto d = runtime_cast<DelegateContext<Delegate<int(int)>(const Delegate<void(string)>&, Delegate<void(const Delegate<int(int)>&)>&, Delegate<Array<string>(Array<char>)>&)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*)>,IObject*,fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,int,int*)>*,IObject**)>)fn;
-        return [=](const Delegate<void(string)>& inTest, Delegate<void(const Delegate<int(int)>&)>& outTest, Delegate<Array<string>(Array<char>)>& refTest) -> Delegate<int(int)> 
+template<>
+ABIOf<GluonTest::NamedDelegatesCB> ABIUtil<GluonTest::NamedDelegatesCB>::ToABI(const GluonTest::NamedDelegatesCB& x)
+{
+    ABIOf<GluonTest::NamedDelegatesCB> x_abi;
+    x_abi.Fn = &DW_7451AE96::AbiFunc;
+    x_abi.Ctx = DW_7451AE96::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_61217487::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,char*)> inTest, IObject* inTest_context, fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>* outTest, IObject** outTest_context, fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>* refTest, IObject** refTest_context, fn_ptr<HRESULT(IObject*,int,int*)>* ___ret, IObject** ___ret_context)
+{
+    auto ___del = runtime_cast<DW_61217487>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!outTest_context) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!refTest_context) return E_POINTER;
+    if(!___ret) return E_POINTER;
+    if(!___ret_context) return E_POINTER;
+
+    try {
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,int,int*)>>(___ret, ___ret_context) = ABIUtil<Delegate<int(int)>>::ToABI(___del->Func(
+            ABIUtil<Delegate<void(string)>>::FromABI((void**)inTest, inTest_context),
+            ABIUtil<Delegate<void(const Delegate<int(int)>&)>>::Ref((void**)outTest, outTest_context),
+            ABIUtil<Delegate<Array<string>(Array<char>)>>::Ref((void**)refTest, refTest_context)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::GenericDelegatesCB ABIUtil<GluonTest::GenericDelegatesCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_61217487::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_61217487>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*)>,IObject*,fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,int,int*)>*,IObject**)>)fptr, cp = com_ptr<IObject>(ctx)](const Delegate<void(string)>& inTest, Delegate<void(const Delegate<int(int)>&)>& outTest, Delegate<Array<string>(Array<char>)>& refTest)
+        -> Delegate<int(int)> {
+        auto inTest_abi = ABIUtil<Delegate<void(string)>>::ToABI(inTest);
+        ABICallbackRef<Delegate<void(const Delegate<int(int)>&)>> outTest_abi(outTest);
+        ABICallbackRef<Delegate<Array<string>(Array<char>)>> refTest_abi(refTest);
+        Delegate<int(int)> ___ret;
         {
-            Delegate<int(int)> ___ret;
             ABICallbackRef<Delegate<int(int)>> ___ret_abi(___ret);
-            auto inTest_abi = ABIUtil<Delegate<void(string)>>::ToABI(inTest);
-            ABICallbackRef<Delegate<void(const Delegate<int(int)>&)>> outTest_abi(outTest);
-            ABICallbackRef<Delegate<Array<string>(Array<char>)>> refTest_abi(refTest);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 (fn_ptr<HRESULT(IObject*,char*)>)inTest_abi.Fn, inTest_abi.Ctx,
                 (fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>*)&outTest_abi.Fn, &outTest_abi.Ctx,
                 (fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>*)&refTest_abi.Fn, &refTest_abi.Ctx,
                 (fn_ptr<HRESULT(IObject*,int,int*)>*)&___ret_abi.Fn, &___ret_abi.Ctx));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::GenericDelegatesCB> ABIUtil<GluonTest::GenericDelegatesCB>::ToABI(const GluonTest::GenericDelegatesCB& x)
-    {
-        ABIOf<Delegate<Delegate<int(int)>(const Delegate<void(string)>&, Delegate<void(const Delegate<int(int)>&)>&, Delegate<Array<string>(Array<char>)>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_9;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<Delegate<int(int)>(const Delegate<void(string)>&, Delegate<void(const Delegate<int(int)>&)>&, Delegate<Array<string>(Array<char>)>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_10(IObject* __i_, int arg, int* ___ret)
-    {
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<int(int)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ___del->Get()(arg);
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<int(int)> ABIUtil<Delegate<int(int)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_10)
-        {
-            auto d = runtime_cast<DelegateContext<int(int)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,int,int*)>)fn;
-        return [=](int arg) -> int 
+template<>
+ABIOf<GluonTest::GenericDelegatesCB> ABIUtil<GluonTest::GenericDelegatesCB>::ToABI(const GluonTest::GenericDelegatesCB& x)
+{
+    ABIOf<GluonTest::GenericDelegatesCB> x_abi;
+    x_abi.Fn = &DW_61217487::AbiFunc;
+    x_abi.Ctx = DW_61217487::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_2945414A::AbiFunc(IObject* __i_, int arg, int* ___ret)
+{
+    auto ___del = runtime_cast<DW_2945414A>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ___del->Func(arg);
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<int(int)> ABIUtil<Delegate<int(int)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_2945414A::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_2945414A>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,int,int*)>)fptr, cp = com_ptr<IObject>(ctx)](int arg)
+        -> int {
+        int ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            arg,
+            ABICallbackRef<int>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<Delegate<int(int)>> ABIUtil<Delegate<int(int)>>::ToABI(const Delegate<int(int)>& x)
+{
+    ABIOf<Delegate<int(int)>> x_abi;
+    x_abi.Fn = &DW_2945414A::AbiFunc;
+    x_abi.Ctx = DW_2945414A::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_5D02415A::AbiFunc(IObject* __i_, char* obj)
+{
+    auto ___del = runtime_cast<DW_5D02415A>(__i_);
+    if (!___del) return E_FAIL;
+
+    try {
+        ___del->Func(ABIUtil<string>::FromABI(obj));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<void(string)> ABIUtil<Delegate<void(string)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_5D02415A::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_5D02415A>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,char*)>)fptr, cp = com_ptr<IObject>(ctx)](string obj)
+    {
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            ABIUtil<string>::ToABI(obj)));
+    };
+}
+
+template<>
+ABIOf<Delegate<void(string)>> ABIUtil<Delegate<void(string)>>::ToABI(const Delegate<void(string)>& x)
+{
+    ABIOf<Delegate<void(string)>> x_abi;
+    x_abi.Fn = &DW_5D02415A::AbiFunc;
+    x_abi.Ctx = DW_5D02415A::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_5D02415B::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,int,int*)> obj, IObject* obj_context)
+{
+    auto ___del = runtime_cast<DW_5D02415B>(__i_);
+    if (!___del) return E_FAIL;
+
+    try {
+        ___del->Func(ABIUtil<Delegate<int(int)>>::FromABI((void**)obj, obj_context));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<void(const Delegate<int(int)>&)> ABIUtil<Delegate<void(const Delegate<int(int)>&)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_5D02415B::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_5D02415B>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>)fptr, cp = com_ptr<IObject>(ctx)](const Delegate<int(int)>& obj)
+    {
+        auto obj_abi = ABIUtil<Delegate<int(int)>>::ToABI(obj);
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            (fn_ptr<HRESULT(IObject*,int,int*)>)obj_abi.Fn, obj_abi.Ctx));
+    };
+}
+
+template<>
+ABIOf<Delegate<void(const Delegate<int(int)>&)>> ABIUtil<Delegate<void(const Delegate<int(int)>&)>>::ToABI(const Delegate<void(const Delegate<int(int)>&)>& x)
+{
+    ABIOf<Delegate<void(const Delegate<int(int)>&)>> x_abi;
+    x_abi.Fn = &DW_5D02415B::AbiFunc;
+    x_abi.Ctx = DW_5D02415B::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_2945414B::AbiFunc(IObject* __i_, char* arg, int arg_count, char*** ___ret, int* ___ret_count)
+{
+    auto ___del = runtime_cast<DW_2945414B>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!___ret) return E_POINTER;
+    if(!___ret_count) return E_POINTER;
+
+    try {
+        ABI::ArrayRef<char*>(___ret, ___ret_count) = ABIUtil<Array<string>>::ToABI(___del->Func(ABIUtil<Array<char>>::FromABI(arg, arg_count)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<Array<string>(Array<char>)> ABIUtil<Delegate<Array<string>(Array<char>)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_2945414B::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_2945414B>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>)fptr, cp = com_ptr<IObject>(ctx)](Array<char> arg)
+        -> Array<string> {
+        auto arg_abi = ABIUtil<Array<char>>::ToABI(arg);
+        Array<string> ___ret;
         {
-            int ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                arg,
-                ABICallbackRef<int>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<Delegate<int(int)>> ABIUtil<Delegate<int(int)>>::ToABI(const Delegate<int(int)>& x)
-    {
-        ABIOf<Delegate<int(int)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_10;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<int(int)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_11(IObject* __i_, char* obj)
-    {
-        auto ___del = runtime_cast<DelegateContext<void(string)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ___del->Get()(ABIUtil<string>::FromABI(obj));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<void(string)> ABIUtil<Delegate<void(string)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_11)
-        {
-            auto d = runtime_cast<DelegateContext<void(string)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,char*)>)fn;
-        return [=](string obj) 
-        {
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                ABIUtil<string>::ToABI(obj)));
-        };
-    }
-
-    template<>
-    ABIOf<Delegate<void(string)>> ABIUtil<Delegate<void(string)>>::ToABI(const Delegate<void(string)>& x)
-    {
-        ABIOf<Delegate<void(string)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_11;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<void(string)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_12(IObject* __i_, fn_ptr<HRESULT(IObject*,int,int*)> obj, IObject* obj_context)
-    {
-        auto ___del = runtime_cast<DelegateContext<void(const Delegate<int(int)>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ___del->Get()(ABIUtil<Delegate<int(int)>>::FromABI((void**)obj, obj_context));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<void(const Delegate<int(int)>&)> ABIUtil<Delegate<void(const Delegate<int(int)>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_12)
-        {
-            auto d = runtime_cast<DelegateContext<void(const Delegate<int(int)>&)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>)fn;
-        return [=](const Delegate<int(int)>& obj) 
-        {
-            auto obj_abi = ABIUtil<Delegate<int(int)>>::ToABI(obj);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                (fn_ptr<HRESULT(IObject*,int,int*)>)obj_abi.Fn, obj_abi.Ctx));
-        };
-    }
-
-    template<>
-    ABIOf<Delegate<void(const Delegate<int(int)>&)>> ABIUtil<Delegate<void(const Delegate<int(int)>&)>>::ToABI(const Delegate<void(const Delegate<int(int)>&)>& x)
-    {
-        ABIOf<Delegate<void(const Delegate<int(int)>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_12;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<void(const Delegate<int(int)>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_13(IObject* __i_, char* arg, int arg_count, char*** ___ret, int* ___ret_count)
-    {
-        if(!___ret) return E_POINTER;
-        if(!___ret_count) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<Array<string>(Array<char>)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::ArrayRef<char*>(___ret, ___ret_count) = ABIUtil<Array<string>>::ToABI(___del->Get()(ABIUtil<Array<char>>::FromABI(arg, arg_count)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<Array<string>(Array<char>)> ABIUtil<Delegate<Array<string>(Array<char>)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_13)
-        {
-            auto d = runtime_cast<DelegateContext<Array<string>(Array<char>)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>)fn;
-        return [=](Array<char> arg) -> Array<string> 
-        {
-            Array<string> ___ret;
             ABICallbackRef<Array<string>> ___ret_abi(___ret);
-            auto arg_abi = ABIUtil<Array<char>>::ToABI(arg);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 arg_abi.begin(), arg_abi.size(),
                 &___ret_abi.Data, &___ret_abi.Count));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<Delegate<Array<string>(Array<char>)>> ABIUtil<Delegate<Array<string>(Array<char>)>>::ToABI(const Delegate<Array<string>(Array<char>)>& x)
-    {
-        ABIOf<Delegate<Array<string>(Array<char>)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_13;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<Array<string>(Array<char>)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_14(IObject* __i_, bool* inTest, int inTest_count, char** outTest, int* outTest_count, int** refTest, int* refTest_count, double** ___ret, int* ___ret_count)
-    {
-        if(!outTest) return E_POINTER;
-        if(!outTest_count) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!refTest_count) return E_POINTER;
-        if(!___ret) return E_POINTER;
-        if(!___ret_count) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<Array<double>(Array<bool>, Array<char>&, Array<int>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::ArrayRef<double>(___ret, ___ret_count) = ABIUtil<Array<double>>::ToABI(___del->Get()(
-                ABIUtil<Array<bool>>::FromABI(inTest, inTest_count),
-                ABIUtil<Array<char>>::Ref(outTest, outTest_count),
-                ABIUtil<Array<int>>::Ref(refTest, refTest_count)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<Array<double>(Array<bool>, Array<char>&, Array<int>&)> ABIUtil<Delegate<Array<double>(Array<bool>, Array<char>&, Array<int>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_14)
-        {
-            auto d = runtime_cast<DelegateContext<Array<double>(Array<bool>, Array<char>&, Array<int>&)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,bool*,int,char**,int*,int**,int*,double**,int*)>)fn;
-        return [=](Array<bool> inTest, Array<char>& outTest, Array<int>& refTest) -> Array<double> 
+template<>
+ABIOf<Delegate<Array<string>(Array<char>)>> ABIUtil<Delegate<Array<string>(Array<char>)>>::ToABI(const Delegate<Array<string>(Array<char>)>& x)
+{
+    ABIOf<Delegate<Array<string>(Array<char>)>> x_abi;
+    x_abi.Fn = &DW_2945414B::AbiFunc;
+    x_abi.Ctx = DW_2945414B::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_2C74C8B4::AbiFunc(IObject* __i_, bool* inTest, int inTest_count, char** outTest, int* outTest_count, int** refTest, int* refTest_count, double** ___ret, int* ___ret_count)
+{
+    auto ___del = runtime_cast<DW_2C74C8B4>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!outTest_count) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!refTest_count) return E_POINTER;
+    if(!___ret) return E_POINTER;
+    if(!___ret_count) return E_POINTER;
+
+    try {
+        ABI::ArrayRef<double>(___ret, ___ret_count) = ABIUtil<Array<double>>::ToABI(___del->Func(
+            ABIUtil<Array<bool>>::FromABI(inTest, inTest_count),
+            ABIUtil<Array<char>>::Ref(outTest, outTest_count),
+            ABIUtil<Array<int>>::Ref(refTest, refTest_count)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::PrimitiveArraysCB ABIUtil<GluonTest::PrimitiveArraysCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_2C74C8B4::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_2C74C8B4>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,bool*,int,char**,int*,int**,int*,double**,int*)>)fptr, cp = com_ptr<IObject>(ctx)](Array<bool> inTest, Array<char>& outTest, Array<int>& refTest)
+        -> Array<double> {
+        auto inTest_abi = ABIUtil<Array<bool>>::ToABI(inTest);
+        ABICallbackRef<Array<char>> outTest_abi(outTest);
+        ABICallbackRef<Array<int>> refTest_abi(refTest);
+        Array<double> ___ret;
         {
-            Array<double> ___ret;
             ABICallbackRef<Array<double>> ___ret_abi(___ret);
-            auto inTest_abi = ABIUtil<Array<bool>>::ToABI(inTest);
-            ABICallbackRef<Array<char>> outTest_abi(outTest);
-            ABICallbackRef<Array<int>> refTest_abi(refTest);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 inTest_abi.begin(), inTest_abi.size(),
                 &outTest_abi.Data, &outTest_abi.Count,
                 &refTest_abi.Data, &refTest_abi.Count,
                 &___ret_abi.Data, &___ret_abi.Count));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::PrimitiveArraysCB> ABIUtil<GluonTest::PrimitiveArraysCB>::ToABI(const GluonTest::PrimitiveArraysCB& x)
-    {
-        ABIOf<Delegate<Array<double>(Array<bool>, Array<char>&, Array<int>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_14;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<Array<double>(Array<bool>, Array<char>&, Array<int>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_15(IObject* __i_, char** inTest, int inTest_count, char*** outTest, int* outTest_count, char*** refTest, int* refTest_count, char*** ___ret, int* ___ret_count)
-    {
-        if(!outTest) return E_POINTER;
-        if(!outTest_count) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!refTest_count) return E_POINTER;
-        if(!___ret) return E_POINTER;
-        if(!___ret_count) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<Array<string>(Array<string>, Array<string>&, Array<string>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::ArrayRef<char*>(___ret, ___ret_count) = ABIUtil<Array<string>>::ToABI(___del->Get()(
-                ABIUtil<Array<string>>::FromABI(inTest, inTest_count),
-                ABIUtil<Array<string>>::Ref(outTest, outTest_count),
-                ABIUtil<Array<string>>::Ref(refTest, refTest_count)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<Array<string>(Array<string>, Array<string>&, Array<string>&)> ABIUtil<Delegate<Array<string>(Array<string>, Array<string>&, Array<string>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_15)
-        {
-            auto d = runtime_cast<DelegateContext<Array<string>(Array<string>, Array<string>&, Array<string>&)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,char**,int,char***,int*,char***,int*,char***,int*)>)fn;
-        return [=](Array<string> inTest, Array<string>& outTest, Array<string>& refTest) -> Array<string> 
+template<>
+ABIOf<GluonTest::PrimitiveArraysCB> ABIUtil<GluonTest::PrimitiveArraysCB>::ToABI(const GluonTest::PrimitiveArraysCB& x)
+{
+    ABIOf<GluonTest::PrimitiveArraysCB> x_abi;
+    x_abi.Fn = &DW_2C74C8B4::AbiFunc;
+    x_abi.Ctx = DW_2C74C8B4::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_1061E859::AbiFunc(IObject* __i_, char** inTest, int inTest_count, char*** outTest, int* outTest_count, char*** refTest, int* refTest_count, char*** ___ret, int* ___ret_count)
+{
+    auto ___del = runtime_cast<DW_1061E859>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!outTest_count) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!refTest_count) return E_POINTER;
+    if(!___ret) return E_POINTER;
+    if(!___ret_count) return E_POINTER;
+
+    try {
+        ABI::ArrayRef<char*>(___ret, ___ret_count) = ABIUtil<Array<string>>::ToABI(___del->Func(
+            ABIUtil<Array<string>>::FromABI(inTest, inTest_count),
+            ABIUtil<Array<string>>::Ref(outTest, outTest_count),
+            ABIUtil<Array<string>>::Ref(refTest, refTest_count)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::StringArraysCB ABIUtil<GluonTest::StringArraysCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_1061E859::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_1061E859>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,char**,int,char***,int*,char***,int*,char***,int*)>)fptr, cp = com_ptr<IObject>(ctx)](Array<string> inTest, Array<string>& outTest, Array<string>& refTest)
+        -> Array<string> {
+        auto inTest_abi = ABIUtil<Array<string>>::ToABI(inTest);
+        ABICallbackRef<Array<string>> outTest_abi(outTest);
+        ABICallbackRef<Array<string>> refTest_abi(refTest);
+        Array<string> ___ret;
         {
-            Array<string> ___ret;
             ABICallbackRef<Array<string>> ___ret_abi(___ret);
-            auto inTest_abi = ABIUtil<Array<string>>::ToABI(inTest);
-            ABICallbackRef<Array<string>> outTest_abi(outTest);
-            ABICallbackRef<Array<string>> refTest_abi(refTest);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 inTest_abi.begin(), inTest_abi.size(),
                 &outTest_abi.Data, &outTest_abi.Count,
                 &refTest_abi.Data, &refTest_abi.Count,
                 &___ret_abi.Data, &___ret_abi.Count));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::StringArraysCB> ABIUtil<GluonTest::StringArraysCB>::ToABI(const GluonTest::StringArraysCB& x)
-    {
-        ABIOf<Delegate<Array<string>(Array<string>, Array<string>&, Array<string>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_15;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<Array<string>(Array<string>, Array<string>&, Array<string>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_16(IObject* __i_, ::ABI::GluonTest::BlittableStruct* inTest, int inTest_count, ::ABI::GluonTest::BlittableStruct** outTest, int* outTest_count, ::ABI::GluonTest::BlittableStruct** refTest, int* refTest_count, ::ABI::GluonTest::BlittableStruct** ___ret, int* ___ret_count)
-    {
-        if(!outTest) return E_POINTER;
-        if(!outTest_count) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!refTest_count) return E_POINTER;
-        if(!___ret) return E_POINTER;
-        if(!___ret_count) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<Array<GluonTest::BlittableStruct>(Array<GluonTest::BlittableStruct>, Array<GluonTest::BlittableStruct>&, Array<GluonTest::BlittableStruct>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::ArrayRef<::ABI::GluonTest::BlittableStruct>(___ret, ___ret_count) = ABIUtil<Array<GluonTest::BlittableStruct>>::ToABI(___del->Get()(
-                ABIUtil<Array<GluonTest::BlittableStruct>>::FromABI(inTest, inTest_count),
-                ABIUtil<Array<GluonTest::BlittableStruct>>::Ref(outTest, outTest_count),
-                ABIUtil<Array<GluonTest::BlittableStruct>>::Ref(refTest, refTest_count)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<Array<GluonTest::BlittableStruct>(Array<GluonTest::BlittableStruct>, Array<GluonTest::BlittableStruct>&, Array<GluonTest::BlittableStruct>&)> ABIUtil<Delegate<Array<GluonTest::BlittableStruct>(Array<GluonTest::BlittableStruct>, Array<GluonTest::BlittableStruct>&, Array<GluonTest::BlittableStruct>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_16)
-        {
-            auto d = runtime_cast<DelegateContext<Array<GluonTest::BlittableStruct>(Array<GluonTest::BlittableStruct>, Array<GluonTest::BlittableStruct>&, Array<GluonTest::BlittableStruct>&)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct*,int,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*)>)fn;
-        return [=](Array<GluonTest::BlittableStruct> inTest, Array<GluonTest::BlittableStruct>& outTest, Array<GluonTest::BlittableStruct>& refTest) -> Array<GluonTest::BlittableStruct> 
+template<>
+ABIOf<GluonTest::StringArraysCB> ABIUtil<GluonTest::StringArraysCB>::ToABI(const GluonTest::StringArraysCB& x)
+{
+    ABIOf<GluonTest::StringArraysCB> x_abi;
+    x_abi.Fn = &DW_1061E859::AbiFunc;
+    x_abi.Ctx = DW_1061E859::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_1C12DC57::AbiFunc(IObject* __i_, ::ABI::GluonTest::BlittableStruct* inTest, int inTest_count, ::ABI::GluonTest::BlittableStruct** outTest, int* outTest_count, ::ABI::GluonTest::BlittableStruct** refTest, int* refTest_count, ::ABI::GluonTest::BlittableStruct** ___ret, int* ___ret_count)
+{
+    auto ___del = runtime_cast<DW_1C12DC57>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!outTest_count) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!refTest_count) return E_POINTER;
+    if(!___ret) return E_POINTER;
+    if(!___ret_count) return E_POINTER;
+
+    try {
+        ABI::ArrayRef<::ABI::GluonTest::BlittableStruct>(___ret, ___ret_count) = ABIUtil<Array<GluonTest::BlittableStruct>>::ToABI(___del->Func(
+            ABIUtil<Array<GluonTest::BlittableStruct>>::FromABI(inTest, inTest_count),
+            ABIUtil<Array<GluonTest::BlittableStruct>>::Ref(outTest, outTest_count),
+            ABIUtil<Array<GluonTest::BlittableStruct>>::Ref(refTest, refTest_count)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::SimpleStructArraysCB ABIUtil<GluonTest::SimpleStructArraysCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_1C12DC57::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_1C12DC57>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct*,int,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*)>)fptr, cp = com_ptr<IObject>(ctx)](Array<GluonTest::BlittableStruct> inTest, Array<GluonTest::BlittableStruct>& outTest, Array<GluonTest::BlittableStruct>& refTest)
+        -> Array<GluonTest::BlittableStruct> {
+        auto inTest_abi = ABIUtil<Array<GluonTest::BlittableStruct>>::ToABI(inTest);
+        ABICallbackRef<Array<GluonTest::BlittableStruct>> outTest_abi(outTest);
+        ABICallbackRef<Array<GluonTest::BlittableStruct>> refTest_abi(refTest);
+        Array<GluonTest::BlittableStruct> ___ret;
         {
-            Array<GluonTest::BlittableStruct> ___ret;
             ABICallbackRef<Array<GluonTest::BlittableStruct>> ___ret_abi(___ret);
-            auto inTest_abi = ABIUtil<Array<GluonTest::BlittableStruct>>::ToABI(inTest);
-            ABICallbackRef<Array<GluonTest::BlittableStruct>> outTest_abi(outTest);
-            ABICallbackRef<Array<GluonTest::BlittableStruct>> refTest_abi(refTest);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 inTest_abi.begin(), inTest_abi.size(),
                 &outTest_abi.Data, &outTest_abi.Count,
                 &refTest_abi.Data, &refTest_abi.Count,
                 &___ret_abi.Data, &___ret_abi.Count));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::SimpleStructArraysCB> ABIUtil<GluonTest::SimpleStructArraysCB>::ToABI(const GluonTest::SimpleStructArraysCB& x)
-    {
-        ABIOf<Delegate<Array<GluonTest::BlittableStruct>(Array<GluonTest::BlittableStruct>, Array<GluonTest::BlittableStruct>&, Array<GluonTest::BlittableStruct>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_16;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<Array<GluonTest::BlittableStruct>(Array<GluonTest::BlittableStruct>, Array<GluonTest::BlittableStruct>&, Array<GluonTest::BlittableStruct>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_17(IObject* __i_, ::ABI::GluonTest::ComplexStruct* inTest, int inTest_count, ::ABI::GluonTest::ComplexStruct** outTest, int* outTest_count, ::ABI::GluonTest::ComplexStruct** refTest, int* refTest_count, ::ABI::GluonTest::ComplexStruct** ___ret, int* ___ret_count)
-    {
-        if(!outTest) return E_POINTER;
-        if(!outTest_count) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!refTest_count) return E_POINTER;
-        if(!___ret) return E_POINTER;
-        if(!___ret_count) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<Array<GluonTest::ComplexStruct>(Array<GluonTest::ComplexStruct>, Array<GluonTest::ComplexStruct>&, Array<GluonTest::ComplexStruct>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::ArrayRef<::ABI::GluonTest::ComplexStruct>(___ret, ___ret_count) = ABIUtil<Array<GluonTest::ComplexStruct>>::ToABI(___del->Get()(
-                ABIUtil<Array<GluonTest::ComplexStruct>>::FromABI(inTest, inTest_count),
-                ABIUtil<Array<GluonTest::ComplexStruct>>::Ref(outTest, outTest_count),
-                ABIUtil<Array<GluonTest::ComplexStruct>>::Ref(refTest, refTest_count)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<Array<GluonTest::ComplexStruct>(Array<GluonTest::ComplexStruct>, Array<GluonTest::ComplexStruct>&, Array<GluonTest::ComplexStruct>&)> ABIUtil<Delegate<Array<GluonTest::ComplexStruct>(Array<GluonTest::ComplexStruct>, Array<GluonTest::ComplexStruct>&, Array<GluonTest::ComplexStruct>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_17)
-        {
-            auto d = runtime_cast<DelegateContext<Array<GluonTest::ComplexStruct>(Array<GluonTest::ComplexStruct>, Array<GluonTest::ComplexStruct>&, Array<GluonTest::ComplexStruct>&)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct*,int,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*)>)fn;
-        return [=](Array<GluonTest::ComplexStruct> inTest, Array<GluonTest::ComplexStruct>& outTest, Array<GluonTest::ComplexStruct>& refTest) -> Array<GluonTest::ComplexStruct> 
+template<>
+ABIOf<GluonTest::SimpleStructArraysCB> ABIUtil<GluonTest::SimpleStructArraysCB>::ToABI(const GluonTest::SimpleStructArraysCB& x)
+{
+    ABIOf<GluonTest::SimpleStructArraysCB> x_abi;
+    x_abi.Fn = &DW_1C12DC57::AbiFunc;
+    x_abi.Ctx = DW_1C12DC57::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_14F875F7::AbiFunc(IObject* __i_, ::ABI::GluonTest::ComplexStruct* inTest, int inTest_count, ::ABI::GluonTest::ComplexStruct** outTest, int* outTest_count, ::ABI::GluonTest::ComplexStruct** refTest, int* refTest_count, ::ABI::GluonTest::ComplexStruct** ___ret, int* ___ret_count)
+{
+    auto ___del = runtime_cast<DW_14F875F7>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!outTest_count) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!refTest_count) return E_POINTER;
+    if(!___ret) return E_POINTER;
+    if(!___ret_count) return E_POINTER;
+
+    try {
+        ABI::ArrayRef<::ABI::GluonTest::ComplexStruct>(___ret, ___ret_count) = ABIUtil<Array<GluonTest::ComplexStruct>>::ToABI(___del->Func(
+            ABIUtil<Array<GluonTest::ComplexStruct>>::FromABI(inTest, inTest_count),
+            ABIUtil<Array<GluonTest::ComplexStruct>>::Ref(outTest, outTest_count),
+            ABIUtil<Array<GluonTest::ComplexStruct>>::Ref(refTest, refTest_count)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::ComplexStructArraysCB ABIUtil<GluonTest::ComplexStructArraysCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_14F875F7::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_14F875F7>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct*,int,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*)>)fptr, cp = com_ptr<IObject>(ctx)](Array<GluonTest::ComplexStruct> inTest, Array<GluonTest::ComplexStruct>& outTest, Array<GluonTest::ComplexStruct>& refTest)
+        -> Array<GluonTest::ComplexStruct> {
+        auto inTest_abi = ABIUtil<Array<GluonTest::ComplexStruct>>::ToABI(inTest);
+        ABICallbackRef<Array<GluonTest::ComplexStruct>> outTest_abi(outTest);
+        ABICallbackRef<Array<GluonTest::ComplexStruct>> refTest_abi(refTest);
+        Array<GluonTest::ComplexStruct> ___ret;
         {
-            Array<GluonTest::ComplexStruct> ___ret;
             ABICallbackRef<Array<GluonTest::ComplexStruct>> ___ret_abi(___ret);
-            auto inTest_abi = ABIUtil<Array<GluonTest::ComplexStruct>>::ToABI(inTest);
-            ABICallbackRef<Array<GluonTest::ComplexStruct>> outTest_abi(outTest);
-            ABICallbackRef<Array<GluonTest::ComplexStruct>> refTest_abi(refTest);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 inTest_abi.begin(), inTest_abi.size(),
                 &outTest_abi.Data, &outTest_abi.Count,
                 &refTest_abi.Data, &refTest_abi.Count,
                 &___ret_abi.Data, &___ret_abi.Count));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::ComplexStructArraysCB> ABIUtil<GluonTest::ComplexStructArraysCB>::ToABI(const GluonTest::ComplexStructArraysCB& x)
-    {
-        ABIOf<Delegate<Array<GluonTest::ComplexStruct>(Array<GluonTest::ComplexStruct>, Array<GluonTest::ComplexStruct>&, Array<GluonTest::ComplexStruct>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_17;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<Array<GluonTest::ComplexStruct>(Array<GluonTest::ComplexStruct>, Array<GluonTest::ComplexStruct>&, Array<GluonTest::ComplexStruct>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_18(IObject* __i_, ::ABI::GluonTest::DummyClass** inTest, int inTest_count, ::ABI::GluonTest::DummyClass*** outTest, int* outTest_count, ::ABI::GluonTest::DummyClass*** refTest, int* refTest_count, ::ABI::GluonTest::DummyClass*** ___ret, int* ___ret_count)
-    {
-        if(!outTest) return E_POINTER;
-        if(!outTest_count) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!refTest_count) return E_POINTER;
-        if(!___ret) return E_POINTER;
-        if(!___ret_count) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<Array<com_ptr<GluonTest::DummyClass>>(Array<com_ptr<GluonTest::DummyClass>>, Array<com_ptr<GluonTest::DummyClass>>&, Array<com_ptr<GluonTest::DummyClass>>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::ArrayRef<::ABI::GluonTest::DummyClass*>(___ret, ___ret_count) = ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::ToABI(___del->Get()(
-                ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::FromABI(inTest, inTest_count),
-                ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::Ref(outTest, outTest_count),
-                ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::Ref(refTest, refTest_count)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<Array<com_ptr<GluonTest::DummyClass>>(Array<com_ptr<GluonTest::DummyClass>>, Array<com_ptr<GluonTest::DummyClass>>&, Array<com_ptr<GluonTest::DummyClass>>&)> ABIUtil<Delegate<Array<com_ptr<GluonTest::DummyClass>>(Array<com_ptr<GluonTest::DummyClass>>, Array<com_ptr<GluonTest::DummyClass>>&, Array<com_ptr<GluonTest::DummyClass>>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_18)
-        {
-            auto d = runtime_cast<DelegateContext<Array<com_ptr<GluonTest::DummyClass>>(Array<com_ptr<GluonTest::DummyClass>>, Array<com_ptr<GluonTest::DummyClass>>&, Array<com_ptr<GluonTest::DummyClass>>&)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass**,int,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*)>)fn;
-        return [=](Array<com_ptr<GluonTest::DummyClass>> inTest, Array<com_ptr<GluonTest::DummyClass>>& outTest, Array<com_ptr<GluonTest::DummyClass>>& refTest) -> Array<com_ptr<GluonTest::DummyClass>> 
+template<>
+ABIOf<GluonTest::ComplexStructArraysCB> ABIUtil<GluonTest::ComplexStructArraysCB>::ToABI(const GluonTest::ComplexStructArraysCB& x)
+{
+    ABIOf<GluonTest::ComplexStructArraysCB> x_abi;
+    x_abi.Fn = &DW_14F875F7::AbiFunc;
+    x_abi.Ctx = DW_14F875F7::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_A1A08E73::AbiFunc(IObject* __i_, ::ABI::GluonTest::DummyClass** inTest, int inTest_count, ::ABI::GluonTest::DummyClass*** outTest, int* outTest_count, ::ABI::GluonTest::DummyClass*** refTest, int* refTest_count, ::ABI::GluonTest::DummyClass*** ___ret, int* ___ret_count)
+{
+    auto ___del = runtime_cast<DW_A1A08E73>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!outTest_count) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!refTest_count) return E_POINTER;
+    if(!___ret) return E_POINTER;
+    if(!___ret_count) return E_POINTER;
+
+    try {
+        ABI::ArrayRef<::ABI::GluonTest::DummyClass*>(___ret, ___ret_count) = ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::ToABI(___del->Func(
+            ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::FromABI(inTest, inTest_count),
+            ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::Ref(outTest, outTest_count),
+            ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::Ref(refTest, refTest_count)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::ObjectArraysCB ABIUtil<GluonTest::ObjectArraysCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_A1A08E73::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_A1A08E73>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass**,int,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*)>)fptr, cp = com_ptr<IObject>(ctx)](Array<com_ptr<GluonTest::DummyClass>> inTest, Array<com_ptr<GluonTest::DummyClass>>& outTest, Array<com_ptr<GluonTest::DummyClass>>& refTest)
+        -> Array<com_ptr<GluonTest::DummyClass>> {
+        auto inTest_abi = ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::ToABI(inTest);
+        ABICallbackRef<Array<com_ptr<GluonTest::DummyClass>>> outTest_abi(outTest);
+        ABICallbackRef<Array<com_ptr<GluonTest::DummyClass>>> refTest_abi(refTest);
+        Array<com_ptr<GluonTest::DummyClass>> ___ret;
         {
-            Array<com_ptr<GluonTest::DummyClass>> ___ret;
             ABICallbackRef<Array<com_ptr<GluonTest::DummyClass>>> ___ret_abi(___ret);
-            auto inTest_abi = ABIUtil<Array<com_ptr<GluonTest::DummyClass>>>::ToABI(inTest);
-            ABICallbackRef<Array<com_ptr<GluonTest::DummyClass>>> outTest_abi(outTest);
-            ABICallbackRef<Array<com_ptr<GluonTest::DummyClass>>> refTest_abi(refTest);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 inTest_abi.begin(), inTest_abi.size(),
                 &outTest_abi.Data, &outTest_abi.Count,
                 &refTest_abi.Data, &refTest_abi.Count,
                 &___ret_abi.Data, &___ret_abi.Count));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::ObjectArraysCB> ABIUtil<GluonTest::ObjectArraysCB>::ToABI(const GluonTest::ObjectArraysCB& x)
-    {
-        ABIOf<Delegate<Array<com_ptr<GluonTest::DummyClass>>(Array<com_ptr<GluonTest::DummyClass>>, Array<com_ptr<GluonTest::DummyClass>>&, Array<com_ptr<GluonTest::DummyClass>>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_18;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<Array<com_ptr<GluonTest::DummyClass>>(Array<com_ptr<GluonTest::DummyClass>>, Array<com_ptr<GluonTest::DummyClass>>&, Array<com_ptr<GluonTest::DummyClass>>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_19(IObject* __i_, ABI::DelegateBlob* inTest, int inTest_count, ABI::DelegateBlob** outTest, int* outTest_count, ABI::DelegateBlob** refTest, int* refTest_count, ABI::DelegateBlob** ___ret, int* ___ret_count)
-    {
-        if(!outTest) return E_POINTER;
-        if(!outTest_count) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!refTest_count) return E_POINTER;
-        if(!___ret) return E_POINTER;
-        if(!___ret_count) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<Array<GluonTest::NamedDelegate>(Array<GluonTest::NamedDelegate>, Array<GluonTest::NamedDelegate>&, Array<GluonTest::NamedDelegate>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::ArrayRef<ABI::DelegateBlob>(___ret, ___ret_count) = ABIUtil<Array<GluonTest::NamedDelegate>>::ToABI(___del->Get()(
-                ABIUtil<Array<GluonTest::NamedDelegate>>::FromABI(inTest, inTest_count),
-                ABIUtil<Array<GluonTest::NamedDelegate>>::Ref(outTest, outTest_count),
-                ABIUtil<Array<GluonTest::NamedDelegate>>::Ref(refTest, refTest_count)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<Array<GluonTest::NamedDelegate>(Array<GluonTest::NamedDelegate>, Array<GluonTest::NamedDelegate>&, Array<GluonTest::NamedDelegate>&)> ABIUtil<Delegate<Array<GluonTest::NamedDelegate>(Array<GluonTest::NamedDelegate>, Array<GluonTest::NamedDelegate>&, Array<GluonTest::NamedDelegate>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_19)
-        {
-            auto d = runtime_cast<DelegateContext<Array<GluonTest::NamedDelegate>(Array<GluonTest::NamedDelegate>, Array<GluonTest::NamedDelegate>&, Array<GluonTest::NamedDelegate>&)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)>)fn;
-        return [=](Array<GluonTest::NamedDelegate> inTest, Array<GluonTest::NamedDelegate>& outTest, Array<GluonTest::NamedDelegate>& refTest) -> Array<GluonTest::NamedDelegate> 
+template<>
+ABIOf<GluonTest::ObjectArraysCB> ABIUtil<GluonTest::ObjectArraysCB>::ToABI(const GluonTest::ObjectArraysCB& x)
+{
+    ABIOf<GluonTest::ObjectArraysCB> x_abi;
+    x_abi.Fn = &DW_A1A08E73::AbiFunc;
+    x_abi.Ctx = DW_A1A08E73::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_B2A7C511::AbiFunc(IObject* __i_, ABI::DelegateBlob* inTest, int inTest_count, ABI::DelegateBlob** outTest, int* outTest_count, ABI::DelegateBlob** refTest, int* refTest_count, ABI::DelegateBlob** ___ret, int* ___ret_count)
+{
+    auto ___del = runtime_cast<DW_B2A7C511>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!outTest_count) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!refTest_count) return E_POINTER;
+    if(!___ret) return E_POINTER;
+    if(!___ret_count) return E_POINTER;
+
+    try {
+        ABI::ArrayRef<ABI::DelegateBlob>(___ret, ___ret_count) = ABIUtil<Array<GluonTest::NamedDelegate>>::ToABI(___del->Func(
+            ABIUtil<Array<GluonTest::NamedDelegate>>::FromABI(inTest, inTest_count),
+            ABIUtil<Array<GluonTest::NamedDelegate>>::Ref(outTest, outTest_count),
+            ABIUtil<Array<GluonTest::NamedDelegate>>::Ref(refTest, refTest_count)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::NamedDelegateArraysCB ABIUtil<GluonTest::NamedDelegateArraysCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_B2A7C511::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_B2A7C511>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)>)fptr, cp = com_ptr<IObject>(ctx)](Array<GluonTest::NamedDelegate> inTest, Array<GluonTest::NamedDelegate>& outTest, Array<GluonTest::NamedDelegate>& refTest)
+        -> Array<GluonTest::NamedDelegate> {
+        auto inTest_abi = ABIUtil<Array<GluonTest::NamedDelegate>>::ToABI(inTest);
+        ABICallbackRef<Array<GluonTest::NamedDelegate>> outTest_abi(outTest);
+        ABICallbackRef<Array<GluonTest::NamedDelegate>> refTest_abi(refTest);
+        Array<GluonTest::NamedDelegate> ___ret;
         {
-            Array<GluonTest::NamedDelegate> ___ret;
             ABICallbackRef<Array<GluonTest::NamedDelegate>> ___ret_abi(___ret);
-            auto inTest_abi = ABIUtil<Array<GluonTest::NamedDelegate>>::ToABI(inTest);
-            ABICallbackRef<Array<GluonTest::NamedDelegate>> outTest_abi(outTest);
-            ABICallbackRef<Array<GluonTest::NamedDelegate>> refTest_abi(refTest);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 inTest_abi.begin(), inTest_abi.size(),
                 &outTest_abi.Data, &outTest_abi.Count,
                 &refTest_abi.Data, &refTest_abi.Count,
                 &___ret_abi.Data, &___ret_abi.Count));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::NamedDelegateArraysCB> ABIUtil<GluonTest::NamedDelegateArraysCB>::ToABI(const GluonTest::NamedDelegateArraysCB& x)
-    {
-        ABIOf<Delegate<Array<GluonTest::NamedDelegate>(Array<GluonTest::NamedDelegate>, Array<GluonTest::NamedDelegate>&, Array<GluonTest::NamedDelegate>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_19;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<Array<GluonTest::NamedDelegate>(Array<GluonTest::NamedDelegate>, Array<GluonTest::NamedDelegate>&, Array<GluonTest::NamedDelegate>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_20(IObject* __i_, ABI::DelegateBlob* inTest, int inTest_count, ABI::DelegateBlob** outTest, int* outTest_count, ABI::DelegateBlob** refTest, int* refTest_count, ABI::DelegateBlob** ___ret, int* ___ret_count)
-    {
-        if(!outTest) return E_POINTER;
-        if(!outTest_count) return E_POINTER;
-        if(!refTest) return E_POINTER;
-        if(!refTest_count) return E_POINTER;
-        if(!___ret) return E_POINTER;
-        if(!___ret_count) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<Array<Delegate<int(int)>>(Array<Delegate<void(string)>>, Array<Delegate<void(const Delegate<int(int)>&)>>&, Array<Delegate<Array<string>(Array<char>)>>&)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ABI::ArrayRef<ABI::DelegateBlob>(___ret, ___ret_count) = ABIUtil<Array<Delegate<int(int)>>>::ToABI(___del->Get()(
-                ABIUtil<Array<Delegate<void(string)>>>::FromABI(inTest, inTest_count),
-                ABIUtil<Array<Delegate<void(const Delegate<int(int)>&)>>>::Ref(outTest, outTest_count),
-                ABIUtil<Array<Delegate<Array<string>(Array<char>)>>>::Ref(refTest, refTest_count)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<Array<Delegate<int(int)>>(Array<Delegate<void(string)>>, Array<Delegate<void(const Delegate<int(int)>&)>>&, Array<Delegate<Array<string>(Array<char>)>>&)> ABIUtil<Delegate<Array<Delegate<int(int)>>(Array<Delegate<void(string)>>, Array<Delegate<void(const Delegate<int(int)>&)>>&, Array<Delegate<Array<string>(Array<char>)>>&)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_20)
-        {
-            auto d = runtime_cast<DelegateContext<Array<Delegate<int(int)>>(Array<Delegate<void(string)>>, Array<Delegate<void(const Delegate<int(int)>&)>>&, Array<Delegate<Array<string>(Array<char>)>>&)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)>)fn;
-        return [=](Array<Delegate<void(string)>> inTest, Array<Delegate<void(const Delegate<int(int)>&)>>& outTest, Array<Delegate<Array<string>(Array<char>)>>& refTest) -> Array<Delegate<int(int)>> 
+template<>
+ABIOf<GluonTest::NamedDelegateArraysCB> ABIUtil<GluonTest::NamedDelegateArraysCB>::ToABI(const GluonTest::NamedDelegateArraysCB& x)
+{
+    ABIOf<GluonTest::NamedDelegateArraysCB> x_abi;
+    x_abi.Fn = &DW_B2A7C511::AbiFunc;
+    x_abi.Ctx = DW_B2A7C511::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_DC21B22B::AbiFunc(IObject* __i_, ABI::DelegateBlob* inTest, int inTest_count, ABI::DelegateBlob** outTest, int* outTest_count, ABI::DelegateBlob** refTest, int* refTest_count, ABI::DelegateBlob** ___ret, int* ___ret_count)
+{
+    auto ___del = runtime_cast<DW_DC21B22B>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!outTest) return E_POINTER;
+    if(!outTest_count) return E_POINTER;
+    if(!refTest) return E_POINTER;
+    if(!refTest_count) return E_POINTER;
+    if(!___ret) return E_POINTER;
+    if(!___ret_count) return E_POINTER;
+
+    try {
+        ABI::ArrayRef<ABI::DelegateBlob>(___ret, ___ret_count) = ABIUtil<Array<Delegate<int(int)>>>::ToABI(___del->Func(
+            ABIUtil<Array<Delegate<void(string)>>>::FromABI(inTest, inTest_count),
+            ABIUtil<Array<Delegate<void(const Delegate<int(int)>&)>>>::Ref(outTest, outTest_count),
+            ABIUtil<Array<Delegate<Array<string>(Array<char>)>>>::Ref(refTest, refTest_count)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::GenericDelegateArraysCB ABIUtil<GluonTest::GenericDelegateArraysCB>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_DC21B22B::AbiFunc)
+    {
+        auto wrapper = runtime_cast<DW_DC21B22B>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
+    }
+
+    return [fn = (fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)>)fptr, cp = com_ptr<IObject>(ctx)](Array<Delegate<void(string)>> inTest, Array<Delegate<void(const Delegate<int(int)>&)>>& outTest, Array<Delegate<Array<string>(Array<char>)>>& refTest)
+        -> Array<Delegate<int(int)>> {
+        auto inTest_abi = ABIUtil<Array<Delegate<void(string)>>>::ToABI(inTest);
+        ABICallbackRef<Array<Delegate<void(const Delegate<int(int)>&)>>> outTest_abi(outTest);
+        ABICallbackRef<Array<Delegate<Array<string>(Array<char>)>>> refTest_abi(refTest);
+        Array<Delegate<int(int)>> ___ret;
         {
-            Array<Delegate<int(int)>> ___ret;
             ABICallbackRef<Array<Delegate<int(int)>>> ___ret_abi(___ret);
-            auto inTest_abi = ABIUtil<Array<Delegate<void(string)>>>::ToABI(inTest);
-            ABICallbackRef<Array<Delegate<void(const Delegate<int(int)>&)>>> outTest_abi(outTest);
-            ABICallbackRef<Array<Delegate<Array<string>(Array<char>)>>> refTest_abi(refTest);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
+            TRANSLATE_TO_EXCEPTIONS(fn(
+                cp.Get(),
                 inTest_abi.begin(), inTest_abi.size(),
                 &outTest_abi.Data, &outTest_abi.Count,
                 &refTest_abi.Data, &refTest_abi.Count,
                 &___ret_abi.Data, &___ret_abi.Count));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<GluonTest::GenericDelegateArraysCB> ABIUtil<GluonTest::GenericDelegateArraysCB>::ToABI(const GluonTest::GenericDelegateArraysCB& x)
-    {
-        ABIOf<Delegate<Array<Delegate<int(int)>>(Array<Delegate<void(string)>>, Array<Delegate<void(const Delegate<int(int)>&)>>&, Array<Delegate<Array<string>(Array<char>)>>&)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_20;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<Array<Delegate<int(int)>>(Array<Delegate<void(string)>>, Array<Delegate<void(const Delegate<int(int)>&)>>&, Array<Delegate<Array<string>(Array<char>)>>&)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_21(IObject* __i_, double arg, double* ___ret)
-    {
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<double(double)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ___del->Get()(arg);
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<double(double)> ABIUtil<Delegate<double(double)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_21)
-        {
-            auto d = runtime_cast<DelegateContext<double(double)>>(ctx);
-            if(d) return d->Get();
         }
+        return ___ret;
+    };
+}
 
-        auto fptr = (fn_ptr<HRESULT(IObject*,double,double*)>)fn;
-        return [=](double arg) -> double 
-        {
-            double ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                arg,
-                ABICallbackRef<double>(___ret)));
-            return ___ret;
-        };
-    }
+template<>
+ABIOf<GluonTest::GenericDelegateArraysCB> ABIUtil<GluonTest::GenericDelegateArraysCB>::ToABI(const GluonTest::GenericDelegateArraysCB& x)
+{
+    ABIOf<GluonTest::GenericDelegateArraysCB> x_abi;
+    x_abi.Fn = &DW_DC21B22B::AbiFunc;
+    x_abi.Ctx = DW_DC21B22B::GetWrapper(x);
+    return x_abi;
+}
 
-    template<>
-    ABIOf<Delegate<double(double)>> ABIUtil<Delegate<double(double)>>::ToABI(const Delegate<double(double)>& x)
+HRESULT DW_2945414C::AbiFunc(IObject* __i_, double arg, double* ___ret)
+{
+    auto ___del = runtime_cast<DW_2945414C>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ___del->Func(arg);
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<double(double)> ABIUtil<Delegate<double(double)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_2945414C::AbiFunc)
     {
-        ABIOf<Delegate<double(double)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_21;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<double(double)>(x));
-        return x_abi;
+        auto wrapper = runtime_cast<DW_2945414C>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
     }
 
-    HRESULT __stdcall ABI_Wrapper_22(IObject* __i_, char* arg, int arg_count, char** ___ret)
+    return [fn = (fn_ptr<HRESULT(IObject*,double,double*)>)fptr, cp = com_ptr<IObject>(ctx)](double arg)
+        -> double {
+        double ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            arg,
+            ABICallbackRef<double>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<Delegate<double(double)>> ABIUtil<Delegate<double(double)>>::ToABI(const Delegate<double(double)>& x)
+{
+    ABIOf<Delegate<double(double)>> x_abi;
+    x_abi.Fn = &DW_2945414C::AbiFunc;
+    x_abi.Ctx = DW_2945414C::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_2945414D::AbiFunc(IObject* __i_, char* arg, int arg_count, char** ___ret)
+{
+    auto ___del = runtime_cast<DW_2945414D>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ABIUtil<string>::ToABI(___del->Func(ABIUtil<Array<char>>::FromABI(arg, arg_count)));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<string(Array<char>)> ABIUtil<Delegate<string(Array<char>)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_2945414D::AbiFunc)
     {
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<string(Array<char>)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ABIUtil<string>::ToABI(___del->Get()(ABIUtil<Array<char>>::FromABI(arg, arg_count)));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
+        auto wrapper = runtime_cast<DW_2945414D>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
     }
 
-    template<>
-    Delegate<string(Array<char>)> ABIUtil<Delegate<string(Array<char>)>>::FromABI(void* fn, IObject* ctx)
+    return [fn = (fn_ptr<HRESULT(IObject*,char*,int,char**)>)fptr, cp = com_ptr<IObject>(ctx)](Array<char> arg)
+        -> string {
+        auto arg_abi = ABIUtil<Array<char>>::ToABI(arg);
+        string ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            arg_abi.begin(), arg_abi.size(),
+            ABICallbackRef<string>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<Delegate<string(Array<char>)>> ABIUtil<Delegate<string(Array<char>)>>::ToABI(const Delegate<string(Array<char>)>& x)
+{
+    ABIOf<Delegate<string(Array<char>)>> x_abi;
+    x_abi.Fn = &DW_2945414D::AbiFunc;
+    x_abi.Ctx = DW_2945414D::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_668509AD::AbiFunc(IObject* __i_, int a, int b, ::ABI::GluonTest::ITestClass** ___ret)
+{
+    auto ___del = runtime_cast<DW_668509AD>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ABIUtil<GluonTest::ITestClass>::ToABI(___del->Func(
+            a,
+            b));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+GluonTest::AddSomeShit ABIUtil<GluonTest::AddSomeShit>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_668509AD::AbiFunc)
     {
-        if(fn == (void*)&ABI_Wrapper_22)
-        {
-            auto d = runtime_cast<DelegateContext<string(Array<char>)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,char*,int,char**)>)fn;
-        return [=](Array<char> arg) -> string 
-        {
-            string ___ret;
-            auto arg_abi = ABIUtil<Array<char>>::ToABI(arg);
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                arg_abi.begin(), arg_abi.size(),
-                ABICallbackRef<string>(___ret)));
-            return ___ret;
-        };
+        auto wrapper = runtime_cast<DW_668509AD>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
     }
 
-    template<>
-    ABIOf<Delegate<string(Array<char>)>> ABIUtil<Delegate<string(Array<char>)>>::ToABI(const Delegate<string(Array<char>)>& x)
+    return [fn = (fn_ptr<HRESULT(IObject*,int,int,::ABI::GluonTest::ITestClass**)>)fptr, cp = com_ptr<IObject>(ctx)](int a, int b)
+        -> com_ptr<GluonTest::ITestClass> {
+        com_ptr<GluonTest::ITestClass> ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            a,
+            b,
+            ABICallbackRef<GluonTest::ITestClass>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<GluonTest::AddSomeShit> ABIUtil<GluonTest::AddSomeShit>::ToABI(const GluonTest::AddSomeShit& x)
+{
+    ABIOf<GluonTest::AddSomeShit> x_abi;
+    x_abi.Fn = &DW_668509AD::AbiFunc;
+    x_abi.Ctx = DW_668509AD::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_827F05B2::AbiFunc(IObject* __i_, char arg1, int arg2, char** ___ret)
+{
+    auto ___del = runtime_cast<DW_827F05B2>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ABIUtil<string>::ToABI(___del->Func(
+            arg1,
+            arg2));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<string(char, int)> ABIUtil<Delegate<string(char, int)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_827F05B2::AbiFunc)
     {
-        ABIOf<Delegate<string(Array<char>)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_22;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<string(Array<char>)>(x));
-        return x_abi;
+        auto wrapper = runtime_cast<DW_827F05B2>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
     }
 
-    HRESULT __stdcall ABI_Wrapper_23(IObject* __i_, int a, int b, ::ABI::GluonTest::ITestClass** ___ret)
+    return [fn = (fn_ptr<HRESULT(IObject*,char,int,char**)>)fptr, cp = com_ptr<IObject>(ctx)](char arg1, int arg2)
+        -> string {
+        string ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            arg1,
+            arg2,
+            ABICallbackRef<string>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<Delegate<string(char, int)>> ABIUtil<Delegate<string(char, int)>>::ToABI(const Delegate<string(char, int)>& x)
+{
+    ABIOf<Delegate<string(char, int)>> x_abi;
+    x_abi.Fn = &DW_827F05B2::AbiFunc;
+    x_abi.Ctx = DW_827F05B2::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_2945414E::AbiFunc(IObject* __i_, char* arg, char* ___ret)
+{
+    auto ___del = runtime_cast<DW_2945414E>(__i_);
+    if (!___del) return E_FAIL;
+
+    if(!___ret) return E_POINTER;
+
+    try {
+        *___ret = ___del->Func(ABIUtil<string>::FromABI(arg));
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<char(string)> ABIUtil<Delegate<char(string)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_2945414E::AbiFunc)
     {
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<com_ptr<GluonTest::ITestClass>(int, int)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ABIUtil<GluonTest::ITestClass>::ToABI(___del->Get()(
-                a,
-                b));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
+        auto wrapper = runtime_cast<DW_2945414E>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
     }
 
-    template<>
-    Delegate<com_ptr<GluonTest::ITestClass>(int, int)> ABIUtil<Delegate<com_ptr<GluonTest::ITestClass>(int, int)>>::FromABI(void* fn, IObject* ctx)
+    return [fn = (fn_ptr<HRESULT(IObject*,char*,char*)>)fptr, cp = com_ptr<IObject>(ctx)](string arg)
+        -> char {
+        char ___ret;
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            ABIUtil<string>::ToABI(arg),
+            ABICallbackRef<char>(___ret)));
+        return ___ret;
+    };
+}
+
+template<>
+ABIOf<Delegate<char(string)>> ABIUtil<Delegate<char(string)>>::ToABI(const Delegate<char(string)>& x)
+{
+    ABIOf<Delegate<char(string)>> x_abi;
+    x_abi.Fn = &DW_2945414E::AbiFunc;
+    x_abi.Ctx = DW_2945414E::GetWrapper(x);
+    return x_abi;
+}
+
+HRESULT DW_5D02415C::AbiFunc(IObject* __i_, int obj)
+{
+    auto ___del = runtime_cast<DW_5D02415C>(__i_);
+    if (!___del) return E_FAIL;
+
+    try {
+        ___del->Func(obj);
+        return S_OK;
+    } TRANSLATE_EXCEPTIONS
+}
+
+template<>
+Delegate<void(int)> ABIUtil<Delegate<void(int)>>::FromABI(void* fptr, IObject* ctx)
+{
+    if (fptr == &DW_5D02415C::AbiFunc)
     {
-        if(fn == (void*)&ABI_Wrapper_23)
-        {
-            auto d = runtime_cast<DelegateContext<com_ptr<GluonTest::ITestClass>(int, int)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,int,int,::ABI::GluonTest::ITestClass**)>)fn;
-        return [=](int a, int b) -> com_ptr<GluonTest::ITestClass> 
-        {
-            com_ptr<GluonTest::ITestClass> ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                a,
-                b,
-                ABICallbackRef<GluonTest::ITestClass>(___ret)));
-            return ___ret;
-        };
+        auto wrapper = runtime_cast<DW_5D02415C>(ctx);
+        if (!wrapper) throw Exception("Unexpected context type for delegate translation");
+        return wrapper->Func;
     }
 
-    template<>
-    ABIOf<GluonTest::AddSomeShit> ABIUtil<GluonTest::AddSomeShit>::ToABI(const GluonTest::AddSomeShit& x)
+    return [fn = (fn_ptr<HRESULT(IObject*,int)>)fptr, cp = com_ptr<IObject>(ctx)](int obj)
     {
-        ABIOf<Delegate<com_ptr<GluonTest::ITestClass>(int, int)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_23;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<com_ptr<GluonTest::ITestClass>(int, int)>(x));
-        return x_abi;
-    }
+        TRANSLATE_TO_EXCEPTIONS(fn(
+            cp.Get(),
+            obj));
+    };
+}
 
-    HRESULT __stdcall ABI_Wrapper_24(IObject* __i_, char arg1, int arg2, char** ___ret)
-    {
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<string(char, int)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ABIUtil<string>::ToABI(___del->Get()(
-                arg1,
-                arg2));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<string(char, int)> ABIUtil<Delegate<string(char, int)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_24)
-        {
-            auto d = runtime_cast<DelegateContext<string(char, int)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,char,int,char**)>)fn;
-        return [=](char arg1, int arg2) -> string 
-        {
-            string ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                arg1,
-                arg2,
-                ABICallbackRef<string>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<Delegate<string(char, int)>> ABIUtil<Delegate<string(char, int)>>::ToABI(const Delegate<string(char, int)>& x)
-    {
-        ABIOf<Delegate<string(char, int)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_24;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<string(char, int)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_25(IObject* __i_, char* arg, char* ___ret)
-    {
-        if(!___ret) return E_POINTER;
-
-        auto ___del = runtime_cast<DelegateContext<char(string)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            *___ret = ___del->Get()(ABIUtil<string>::FromABI(arg));
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<char(string)> ABIUtil<Delegate<char(string)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_25)
-        {
-            auto d = runtime_cast<DelegateContext<char(string)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,char*,char*)>)fn;
-        return [=](string arg) -> char 
-        {
-            char ___ret;
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                ABIUtil<string>::ToABI(arg),
-                ABICallbackRef<char>(___ret)));
-            return ___ret;
-        };
-    }
-
-    template<>
-    ABIOf<Delegate<char(string)>> ABIUtil<Delegate<char(string)>>::ToABI(const Delegate<char(string)>& x)
-    {
-        ABIOf<Delegate<char(string)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_25;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<char(string)>(x));
-        return x_abi;
-    }
-
-    HRESULT __stdcall ABI_Wrapper_26(IObject* __i_, int obj)
-    {
-        auto ___del = runtime_cast<DelegateContext<void(int)>>(__i_);
-        if(!___del) return E_FAIL;
-
-        try {
-            ___del->Get()(obj);
-            return S_OK;
-        } TRANSLATE_EXCEPTIONS
-    }
-
-    template<>
-    Delegate<void(int)> ABIUtil<Delegate<void(int)>>::FromABI(void* fn, IObject* ctx)
-    {
-        if(fn == (void*)&ABI_Wrapper_26)
-        {
-            auto d = runtime_cast<DelegateContext<void(int)>>(ctx);
-            if(d) return d->Get();
-        }
-
-        auto fptr = (fn_ptr<HRESULT(IObject*,int)>)fn;
-        return [=](int obj) 
-        {
-            TRANSLATE_TO_EXCEPTIONS(fptr(
-                ctx,
-                obj));
-        };
-    }
-
-    template<>
-    ABIOf<Delegate<void(int)>> ABIUtil<Delegate<void(int)>>::ToABI(const Delegate<void(int)>& x)
-    {
-        ABIOf<Delegate<void(int)>> x_abi;
-        x_abi.Fn = &ABI_Wrapper_26;
-        x_abi.Ctx = reinterpret_cast<IObject*>(new DelegateContext<void(int)>(x));
-        return x_abi;
-    }
+template<>
+ABIOf<Delegate<void(int)>> ABIUtil<Delegate<void(int)>>::ToABI(const Delegate<void(int)>& x)
+{
+    ABIOf<Delegate<void(int)>> x_abi;
+    x_abi.Fn = &DW_5D02415C::AbiFunc;
+    x_abi.Ctx = DW_5D02415C::GetWrapper(x);
+    return x_abi;
 }
 
 #ifndef __INTELLISENSE__
@@ -1775,7 +1805,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetPrimitivesCB(fn_ptr<HRESULT(IObject*,
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,bool,char*,int*,double*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::PrimitivesCB>::ToABI(GetPrimitivesCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,bool,char*,int*,double*)>>(___ret, ___ret_context) = ABIUtil<PrimitivesCB_t>::ToABI(GetPrimitivesCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1783,7 +1813,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetPrimitivesCB(fn_ptr<HRESULT(IObject*,
 HRESULT GluonTest::ConversionUnitTest::_SetPrimitivesCB(fn_ptr<HRESULT(IObject*,bool,char*,int*,double*)> value, IObject* value_context)
 {
     try {
-        SetPrimitivesCB(ABIUtil<GluonTest::PrimitivesCB>::FromABI((void**)value, value_context));
+        SetPrimitivesCB(ABIUtil<PrimitivesCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1794,7 +1824,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetStringsCB(fn_ptr<HRESULT(IObject*,cha
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,char*,char**,char**,char**)>>(___ret, ___ret_context) = ABIUtil<GluonTest::StringsCB>::ToABI(GetStringsCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,char*,char**,char**,char**)>>(___ret, ___ret_context) = ABIUtil<StringsCB_t>::ToABI(GetStringsCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1802,7 +1832,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetStringsCB(fn_ptr<HRESULT(IObject*,cha
 HRESULT GluonTest::ConversionUnitTest::_SetStringsCB(fn_ptr<HRESULT(IObject*,char*,char**,char**,char**)> value, IObject* value_context)
 {
     try {
-        SetStringsCB(ABIUtil<GluonTest::StringsCB>::FromABI((void**)value, value_context));
+        SetStringsCB(ABIUtil<StringsCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1813,7 +1843,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetSimpleStructsCB(fn_ptr<HRESULT(IObjec
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::SimpleStructsCB>::ToABI(GetSimpleStructsCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*)>>(___ret, ___ret_context) = ABIUtil<SimpleStructsCB_t>::ToABI(GetSimpleStructsCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1821,7 +1851,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetSimpleStructsCB(fn_ptr<HRESULT(IObjec
 HRESULT GluonTest::ConversionUnitTest::_SetSimpleStructsCB(fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*,::ABI::GluonTest::BlittableStruct*)> value, IObject* value_context)
 {
     try {
-        SetSimpleStructsCB(ABIUtil<GluonTest::SimpleStructsCB>::FromABI((void**)value, value_context));
+        SetSimpleStructsCB(ABIUtil<SimpleStructsCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1832,7 +1862,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetComplexStructsCB(fn_ptr<HRESULT(IObje
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::ComplexStructsCB>::ToABI(GetComplexStructsCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*)>>(___ret, ___ret_context) = ABIUtil<ComplexStructsCB_t>::ToABI(GetComplexStructsCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1840,7 +1870,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetComplexStructsCB(fn_ptr<HRESULT(IObje
 HRESULT GluonTest::ConversionUnitTest::_SetComplexStructsCB(fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*,::ABI::GluonTest::ComplexStruct*)> value, IObject* value_context)
 {
     try {
-        SetComplexStructsCB(ABIUtil<GluonTest::ComplexStructsCB>::FromABI((void**)value, value_context));
+        SetComplexStructsCB(ABIUtil<ComplexStructsCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1851,7 +1881,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetObjectsCB(fn_ptr<HRESULT(IObject*,::A
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass*,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**)>>(___ret, ___ret_context) = ABIUtil<GluonTest::ObjectsCB>::ToABI(GetObjectsCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass*,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**)>>(___ret, ___ret_context) = ABIUtil<ObjectsCB_t>::ToABI(GetObjectsCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1859,7 +1889,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetObjectsCB(fn_ptr<HRESULT(IObject*,::A
 HRESULT GluonTest::ConversionUnitTest::_SetObjectsCB(fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass*,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**,::ABI::GluonTest::DummyClass**)> value, IObject* value_context)
 {
     try {
-        SetObjectsCB(ABIUtil<GluonTest::ObjectsCB>::FromABI((void**)value, value_context));
+        SetObjectsCB(ABIUtil<ObjectsCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1870,7 +1900,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetNamedDelegatesCB(fn_ptr<HRESULT(IObje
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>,IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**)>>(___ret, ___ret_context) = ABIUtil<GluonTest::NamedDelegatesCB>::ToABI(GetNamedDelegatesCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>,IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**)>>(___ret, ___ret_context) = ABIUtil<NamedDelegatesCB_t>::ToABI(GetNamedDelegatesCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1878,7 +1908,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetNamedDelegatesCB(fn_ptr<HRESULT(IObje
 HRESULT GluonTest::ConversionUnitTest::_SetNamedDelegatesCB(fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>,IObject*,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,char*,int*)>*,IObject**)> value, IObject* value_context)
 {
     try {
-        SetNamedDelegatesCB(ABIUtil<GluonTest::NamedDelegatesCB>::FromABI((void**)value, value_context));
+        SetNamedDelegatesCB(ABIUtil<NamedDelegatesCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1889,7 +1919,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetGenericDelegatesCB(fn_ptr<HRESULT(IOb
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*)>,IObject*,fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,int,int*)>*,IObject**)>>(___ret, ___ret_context) = ABIUtil<GluonTest::GenericDelegatesCB>::ToABI(GetGenericDelegatesCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*)>,IObject*,fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,int,int*)>*,IObject**)>>(___ret, ___ret_context) = ABIUtil<GenericDelegatesCB_t>::ToABI(GetGenericDelegatesCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1897,7 +1927,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetGenericDelegatesCB(fn_ptr<HRESULT(IOb
 HRESULT GluonTest::ConversionUnitTest::_SetGenericDelegatesCB(fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,char*)>,IObject*,fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>*,IObject**,fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>*,IObject**,fn_ptr<HRESULT(IObject*,int,int*)>*,IObject**)> value, IObject* value_context)
 {
     try {
-        SetGenericDelegatesCB(ABIUtil<GluonTest::GenericDelegatesCB>::FromABI((void**)value, value_context));
+        SetGenericDelegatesCB(ABIUtil<GenericDelegatesCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1908,7 +1938,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetPrimitiveArraysCB(fn_ptr<HRESULT(IObj
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,bool*,int,char**,int*,int**,int*,double**,int*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::PrimitiveArraysCB>::ToABI(GetPrimitiveArraysCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,bool*,int,char**,int*,int**,int*,double**,int*)>>(___ret, ___ret_context) = ABIUtil<PrimitiveArraysCB_t>::ToABI(GetPrimitiveArraysCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1916,7 +1946,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetPrimitiveArraysCB(fn_ptr<HRESULT(IObj
 HRESULT GluonTest::ConversionUnitTest::_SetPrimitiveArraysCB(fn_ptr<HRESULT(IObject*,bool*,int,char**,int*,int**,int*,double**,int*)> value, IObject* value_context)
 {
     try {
-        SetPrimitiveArraysCB(ABIUtil<GluonTest::PrimitiveArraysCB>::FromABI((void**)value, value_context));
+        SetPrimitiveArraysCB(ABIUtil<PrimitiveArraysCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1927,7 +1957,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetStringArraysCB(fn_ptr<HRESULT(IObject
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,char**,int,char***,int*,char***,int*,char***,int*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::StringArraysCB>::ToABI(GetStringArraysCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,char**,int,char***,int*,char***,int*,char***,int*)>>(___ret, ___ret_context) = ABIUtil<StringArraysCB_t>::ToABI(GetStringArraysCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1935,7 +1965,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetStringArraysCB(fn_ptr<HRESULT(IObject
 HRESULT GluonTest::ConversionUnitTest::_SetStringArraysCB(fn_ptr<HRESULT(IObject*,char**,int,char***,int*,char***,int*,char***,int*)> value, IObject* value_context)
 {
     try {
-        SetStringArraysCB(ABIUtil<GluonTest::StringArraysCB>::FromABI((void**)value, value_context));
+        SetStringArraysCB(ABIUtil<StringArraysCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1946,7 +1976,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetSimpleStructArraysCB(fn_ptr<HRESULT(I
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct*,int,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::SimpleStructArraysCB>::ToABI(GetSimpleStructArraysCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct*,int,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*)>>(___ret, ___ret_context) = ABIUtil<SimpleStructArraysCB_t>::ToABI(GetSimpleStructArraysCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1954,7 +1984,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetSimpleStructArraysCB(fn_ptr<HRESULT(I
 HRESULT GluonTest::ConversionUnitTest::_SetSimpleStructArraysCB(fn_ptr<HRESULT(IObject*,::ABI::GluonTest::BlittableStruct*,int,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*,::ABI::GluonTest::BlittableStruct**,int*)> value, IObject* value_context)
 {
     try {
-        SetSimpleStructArraysCB(ABIUtil<GluonTest::SimpleStructArraysCB>::FromABI((void**)value, value_context));
+        SetSimpleStructArraysCB(ABIUtil<SimpleStructArraysCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1965,7 +1995,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetComplexStructArraysCB(fn_ptr<HRESULT(
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct*,int,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::ComplexStructArraysCB>::ToABI(GetComplexStructArraysCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct*,int,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*)>>(___ret, ___ret_context) = ABIUtil<ComplexStructArraysCB_t>::ToABI(GetComplexStructArraysCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1973,7 +2003,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetComplexStructArraysCB(fn_ptr<HRESULT(
 HRESULT GluonTest::ConversionUnitTest::_SetComplexStructArraysCB(fn_ptr<HRESULT(IObject*,::ABI::GluonTest::ComplexStruct*,int,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*,::ABI::GluonTest::ComplexStruct**,int*)> value, IObject* value_context)
 {
     try {
-        SetComplexStructArraysCB(ABIUtil<GluonTest::ComplexStructArraysCB>::FromABI((void**)value, value_context));
+        SetComplexStructArraysCB(ABIUtil<ComplexStructArraysCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1984,7 +2014,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetObjectArraysCB(fn_ptr<HRESULT(IObject
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass**,int,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::ObjectArraysCB>::ToABI(GetObjectArraysCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass**,int,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*)>>(___ret, ___ret_context) = ABIUtil<ObjectArraysCB_t>::ToABI(GetObjectArraysCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -1992,7 +2022,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetObjectArraysCB(fn_ptr<HRESULT(IObject
 HRESULT GluonTest::ConversionUnitTest::_SetObjectArraysCB(fn_ptr<HRESULT(IObject*,::ABI::GluonTest::DummyClass**,int,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*,::ABI::GluonTest::DummyClass***,int*)> value, IObject* value_context)
 {
     try {
-        SetObjectArraysCB(ABIUtil<GluonTest::ObjectArraysCB>::FromABI((void**)value, value_context));
+        SetObjectArraysCB(ABIUtil<ObjectArraysCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -2003,7 +2033,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetNamedDelegateArraysCB(fn_ptr<HRESULT(
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::NamedDelegateArraysCB>::ToABI(GetNamedDelegateArraysCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)>>(___ret, ___ret_context) = ABIUtil<NamedDelegateArraysCB_t>::ToABI(GetNamedDelegateArraysCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -2011,7 +2041,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetNamedDelegateArraysCB(fn_ptr<HRESULT(
 HRESULT GluonTest::ConversionUnitTest::_SetNamedDelegateArraysCB(fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)> value, IObject* value_context)
 {
     try {
-        SetNamedDelegateArraysCB(ABIUtil<GluonTest::NamedDelegateArraysCB>::FromABI((void**)value, value_context));
+        SetNamedDelegateArraysCB(ABIUtil<NamedDelegateArraysCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -2022,7 +2052,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetGenericDelegateArraysCB(fn_ptr<HRESUL
     if(!___ret_context) return E_POINTER;
 
     try {
-        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)>>(___ret, ___ret_context) = ABIUtil<GluonTest::GenericDelegateArraysCB>::ToABI(GetGenericDelegateArraysCB());
+        ABI::DelegateRef<fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)>>(___ret, ___ret_context) = ABIUtil<GenericDelegateArraysCB_t>::ToABI(GetGenericDelegateArraysCB());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -2030,7 +2060,7 @@ HRESULT GluonTest::ConversionUnitTest::_GetGenericDelegateArraysCB(fn_ptr<HRESUL
 HRESULT GluonTest::ConversionUnitTest::_SetGenericDelegateArraysCB(fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)> value, IObject* value_context)
 {
     try {
-        SetGenericDelegateArraysCB(ABIUtil<GluonTest::GenericDelegateArraysCB>::FromABI((void**)value, value_context));
+        SetGenericDelegateArraysCB(ABIUtil<GenericDelegateArraysCB_t>::FromABI((void**)value, value_context));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -2133,7 +2163,7 @@ HRESULT GluonTest::ITestClass::_ComplexMethod(char** inoutA, IUnknown* _dumb, vo
     try {
         ABI::ArrayRef<int>(___ret, ___ret_count) = ABIUtil<Array<int>>::ToABI(ComplexMethod(
             ABIUtil<string>::Ref(inoutA),
-            ABIUtil<IUnknown>::FromABI(_dumb),
+            _dumb,
             p,
             ABIUtil<Array<char>>::Ref(outFart, outFart_count)));
         return S_OK;
@@ -2350,7 +2380,7 @@ HRESULT GluonTest::SignalBuffer::_CopyTo(double* arr, int arr_count, int* ___ret
     } TRANSLATE_EXCEPTIONS
 }
 
-HRESULT GluonTest::SignalBuffer::_CopyTo(float* arr, int arr_count, int* ___ret)
+HRESULT GluonTest::SignalBuffer::_CopyTo_1(float* arr, int arr_count, int* ___ret)
 {
     if(!___ret) return E_POINTER;
 
@@ -2360,7 +2390,7 @@ HRESULT GluonTest::SignalBuffer::_CopyTo(float* arr, int arr_count, int* ___ret)
     } TRANSLATE_EXCEPTIONS
 }
 
-HRESULT GluonTest::SignalBuffer::_CopyTo(short* arr, int arr_count, int* ___ret)
+HRESULT GluonTest::SignalBuffer::_CopyTo_2(short* arr, int arr_count, int* ___ret)
 {
     if(!___ret) return E_POINTER;
 
@@ -2514,7 +2544,7 @@ HRESULT GluonTest::GTone::_GetWaveform(::ABI::GluonTest::Waveform** ___ret)
     if(!___ret) return E_POINTER;
 
     try {
-        *___ret = ABIUtil<GluonTest::Waveform>::ToABI(GetWaveform());
+        *___ret = ABIUtil<Waveform_t>::ToABI(GetWaveform());
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }
@@ -2522,7 +2552,7 @@ HRESULT GluonTest::GTone::_GetWaveform(::ABI::GluonTest::Waveform** ___ret)
 HRESULT GluonTest::GTone::_SetWaveform(::ABI::GluonTest::Waveform* value)
 {
     try {
-        SetWaveform(ABIUtil<GluonTest::Waveform>::FromABI(value));
+        SetWaveform(ABIUtil<Waveform_t>::FromABI(value));
         return S_OK;
     } TRANSLATE_EXCEPTIONS
 }

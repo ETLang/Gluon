@@ -16,6 +16,7 @@ namespace GluonTest
     {
         static partial void StaticInit();
         partial void Init();
+        partial void PartialDispose(bool finalizing);
 
         static Waveform()
         {
@@ -26,23 +27,43 @@ namespace GluonTest
         public Waveform(double[] samples)
             : this(new AbiPtr(Make(samples)))
         {
+
             Init();
+        }
+
+        protected override void OnDispose(bool finalizing)
+        {
+            PartialDispose(finalizing);
+
+            IPtr = IntPtr.Zero;
+            base.OnDispose(finalizing);
         }
 
         public double Phase(double t)
         {
+            Check();
             double ___ret;
-            Native.Throw(_vt.Phase1(_i, t, out ___ret));
+            Native.Throw(_vt.Phase(IPtr, t, out ___ret));
             return ___ret;
         }
 
         #region Internal
 
+        [System.Diagnostics.Conditional("DEBUG")]
+        private void Check()
+        {
+            if (IPtr == IntPtr.Zero)
+                throw new ObjectDisposedException(GetType().Name + " has been disposed");
+        }
+
         internal Waveform(AbiPtr i) : base(i)
         {
-            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out _i));
-            Marshal.Release(_i);
-            _vt = VTUnknown.GetVTable<ABI.GluonTest.Waveform>(_i);
+            IntPtr iptr;
+            Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out iptr));
+            Marshal.Release(iptr);
+            IPtr = iptr;
+            _vt = VTUnknown.GetVTable<ABI.GluonTest.Waveform>(IPtr);
+
             Init();
         }
 
@@ -53,7 +74,7 @@ namespace GluonTest
             return instance_abi;
         }
 
-        IntPtr _i;
+        public IntPtr IPtr { get; private set; } //IntPtr _i;
         ABI.GluonTest.Waveform _vt;
         static Guid _ID = new Guid("3c5ce8e3-d08b-3cbb-e6c5-ca3904ea8a1b");
 
