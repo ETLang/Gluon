@@ -497,13 +497,33 @@ namespace ABI.Gluon
             Marshal.FreeCoTaskMem(data);
         }
 
-#endregion
+        #endregion
 
-#endregion
+        #endregion
 
-#region String
+        #region String
 
-        public static string[] FromABI_string(IntPtr data, int count)
+        private static IntPtr NativeUtf8FromString(string managedString)
+        {
+            int len = Encoding.UTF8.GetByteCount(managedString);
+            byte[] buffer = new byte[len + 1];
+            Encoding.UTF8.GetBytes(managedString, 0, managedString.Length, buffer, 0);
+            IntPtr nativeUtf8 = Marshal.AllocHGlobal(buffer.Length);
+            Marshal.Copy(buffer, 0, nativeUtf8, buffer.Length);
+            return nativeUtf8;
+        }
+
+        private static string StringFromNativeUtf8(IntPtr nativeUtf8)
+        {
+            int len = 0;
+            while (Marshal.ReadByte(nativeUtf8, len) != 0) ++len;
+            byte[] buffer = new byte[len];
+            Marshal.Copy(nativeUtf8, buffer, 0, buffer.Length);
+            return Encoding.UTF8.GetString(buffer);
+        }
+
+
+        public static unsafe string[] FromABI_string(IntPtr data, int count)
         {
             if (data == IntPtr.Zero) return null;
 
@@ -513,7 +533,7 @@ namespace ABI.Gluon
             for (int i = 0; i < count; i++)
             {
                 var ptr = Marshal.ReadIntPtr((IntPtr)((long)data + sz * i));
-                r[i] = Marshal.PtrToStringUni(ptr);
+                r[i] = StringFromNativeUtf8(ptr);
                 Marshal.FreeCoTaskMem(ptr);
             }
 
@@ -521,7 +541,7 @@ namespace ABI.Gluon
             return r;
         }
 
-        public static ArrayBlob ToABI_string(string[] arr)
+        public static unsafe ArrayBlob ToABI_string(string[] arr)
         {
             var r = new ArrayBlob();
             var sz = IntPtr.Size;
@@ -531,8 +551,19 @@ namespace ABI.Gluon
             r.Count = arr.Length;
             r.Ptr = Marshal.AllocCoTaskMem(arr.Length * sz);
 
-            for(int i = 0;i < arr.Length;i++)
-                Marshal.WriteIntPtr((IntPtr)((long)r.Ptr + sz * i), Marshal.StringToCoTaskMemUni(arr[i]));
+            for (int i = 0; i < arr.Length; i++)
+            {
+                var count = Encoding.UTF8.GetByteCount(arr[i]);
+                var bytes = Marshal.AllocCoTaskMem(count + 1);
+                fixed (char* c = arr[i])
+                {
+                    Encoding.UTF8.GetBytes(c, arr[i].Length, (byte*)bytes, count);
+                }
+                ((byte*)bytes)[count] = 0;
+
+
+                Marshal.WriteIntPtr((IntPtr)((long)r.Ptr + sz * i), bytes);
+            }
 
             return r;
         }
@@ -586,47 +617,6 @@ namespace ABI.Gluon
 
 #region Object
 
-        public static T[] FromABI_Object<T>(IntPtr data, int count) where T : GluonObject
-        {
-            if (data == IntPtr.Zero)
-                return null;
-
-            var r = new T[count];
-            var sz = IntPtr.Size;
-
-            for (int i = 0; i < count; i++)
-            {
-                var unk = Marshal.ReadIntPtr((IntPtr)((long)data + sz * i));
-                //var unk = Marshal.ReadIntPtr(ptr);
-                r[i] = GluonObject.Of<T>(unk);
-            }
-
-            Marshal.FreeCoTaskMem(data);
-            return r;
-        }
-        
-        public static ArrayBlob ToABI_Object(GluonObject[] arr)
-        {
-            var r = new ArrayBlob();
-            var sz = IntPtr.Size;
-
-            if (arr == null) return r;
-
-            r.Count = arr.Length;
-            r.Ptr = Marshal.AllocCoTaskMem(arr.Length * sz);
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                var unk = (arr[i] == null) ? IntPtr.Zero : arr[i].NativePtr;
-                Marshal.WriteIntPtr((IntPtr)((long)r.Ptr + sz * i), unk);
-
-                if(unk != IntPtr.Zero)
-                    Marshal.AddRef(unk);
-            }
-
-            return r;
-        }
-
         public static void FreeABI_Object(IntPtr data, int count)
         {
             if (data == IntPtr.Zero) return;
@@ -650,13 +640,12 @@ namespace ABI.Gluon
 
             return r;
         }
-        
-        public static IntPtr ToABI_Object(GluonObject x)
-        {
-            if (x == null) return IntPtr.Zero;
 
-            Marshal.AddRef(x.NativePtr);
-            return x.NativePtr;
+        public static IntPtr ToABI_Object(IntPtr x)
+        {
+            if (x != IntPtr.Zero)
+                Marshal.AddRef(x);
+            return x;
         }
 
         public static void FreeABI_Object(IntPtr ptr)
