@@ -28,7 +28,7 @@ namespace Gluon.AST
         public bool IsObject { get { return ConstructType == Construct.Object; } }
         public bool IsDelegate { get { return ConstructType == Construct.Delegate; } }
         public bool IsTask { get { return ConstructType == Construct.Task; } }
-        public bool IsBool { get { return Namespace.IsGlobal && Name == "bool"; } }
+        public bool IsBool { get { return Namespace == BasicTypes.SystemNamespace && Name == "bool"; } }
 
 
         #region Namespace
