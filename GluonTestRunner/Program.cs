@@ -110,9 +110,9 @@ namespace GluonTestRunner
                 var refx = new DummyClass() { Nugget = "DummyC#Ref" };
                 PrintSend(title, x, refx);
                 var ret = unitTest.Objects(x, out DummyClass outx, ref refx);
+                PrintRecv(title, outx, refx, ret);
                 refx.Dispose();
                 x.Dispose();
-                PrintRecv(title, outx, refx, ret);
             }
 
             {
