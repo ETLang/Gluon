@@ -83,7 +83,7 @@ namespace Gluon
             if (useabi)
                 Code("HRESULT");
             else
-                Code(VariableType(d.Return, AST.VariableContext.Return));
+                Code(VariableType(d.Return, AST.VariableContext.Return, useabi));
 
             Code("(");
             List(useabi ? CodeListStyle.Compact : CodeListStyle.SingleLine, () =>
