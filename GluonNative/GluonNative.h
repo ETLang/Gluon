@@ -65,7 +65,7 @@ namespace CS
     class VirtualEvent
     {
     public:
-        typedef void (C::*ModifierFnPtr)(const Delegate<Signature>&) const;
+        typedef void (C::* ModifierFnPtr)(const Delegate<Signature>&) const;
 
         VirtualEvent(C* pThis, ModifierFnPtr adder, ModifierFnPtr remover)
             : _this(pThis), _adder(adder), _remover(remover) { }
@@ -103,7 +103,7 @@ namespace CS
         }
 
     private:
-        C * _this;
+        C* _this;
         ModifierFnPtr _adder;
         ModifierFnPtr _remover;
     };
@@ -112,7 +112,7 @@ namespace CS
     class VirtualEvent <Delegate<Signature>, C> : public VirtualEvent<Signature, C>
     {
     public:
-        VirtualEvent(C* pThis, void (C::*adder)(const Delegate<Signature>&), void (C::*remover)(const Delegate<Signature>&))
+        VirtualEvent(C* pThis, void (C::* adder)(const Delegate<Signature>&), void (C::* remover)(const Delegate<Signature>&))
             : VirtualEvent<Signature>(pThis, adder, remover) { }
     };
 }
@@ -468,7 +468,7 @@ namespace GluonInternal
         operator T&() { return *_ref; }
 
     private:
-        T * & _ref;
+        T*& _ref;
     };
 
     template<typename T>
@@ -479,7 +479,7 @@ namespace GluonInternal
         operator T*() { return &_ref; }
 
     private:
-        T & _ref;
+        T& _ref;
     };
 
     struct StringRefConverter
@@ -691,7 +691,7 @@ namespace GluonInternal
         operator T&() { return _conv; }
 
     private:
-        ABI * _ref;
+        ABI* _ref;
         T _conv;
     };
 
@@ -710,7 +710,7 @@ namespace GluonInternal
         operator ABI*() { return &_conv; }
 
     private:
-        T * _ref;
+        T* _ref;
         ABI _conv;
     };
 
@@ -724,7 +724,7 @@ namespace GluonInternal
         operator T&() { return *_ref; }
 
     private:
-        T * _ref;
+        T* _ref;
     };
 
     template<typename T>
@@ -737,7 +737,7 @@ namespace GluonInternal
         operator T*() { return _ref; }
 
     private:
-        T * _ref;
+        T* _ref;
     };
 
     template<typename T>
@@ -925,7 +925,7 @@ namespace GluonInternal
         typedef PimplWrapperRefCallbackConverter<T, ABIType> CBRef;
         // TODO reference conversion??
 
-        static T FromABI(ABIType *x)
+        static T FromABI(ABIType* x)
         {
             return T();
             //return ABI::Wrap<T>(x);
@@ -950,7 +950,7 @@ namespace GluonInternal
         typedef PimplWrapperRefCallbackConverter<T, ABIType> CBRef;
         // TODO reference conversion??
 
-        static T FromABI(ABIType *x)
+        static T FromABI(ABIType* x)
         {
             auto ret = ABI::Wrap<T>(x);
 
@@ -1151,12 +1151,12 @@ namespace GluonInternal
 
         static CS::Array<T> FromABI(typename ABIUtil<T>::ABIElementType* ptr, int count)
         {
-            return CS::Array<T>(ptr, count);
+            return CS::Array<T>(ptr, (size_t)count);
         }
 
         static CS::Array<T> FromABI(const ABIType& x)
         {
-            return CS::Array<T>(x.begin(), x.size());
+            return CS::Array<T>(const_cast<typename ABIUtil<T>::ABIElementType*>(x.begin()), (size_t)x.size());
         }
 
         static ABIType ToABI(const CS::Array<T>& x)
