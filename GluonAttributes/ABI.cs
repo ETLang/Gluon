@@ -290,22 +290,30 @@ namespace ABI.Gluon
 
 #region char
 
-        public static char[] FromABI_char(IntPtr data, int count)
+        public static unsafe char[] FromABI_char(IntPtr data, int count)
         {
             if (data == IntPtr.Zero) return null;
             var r = new char[count];
-            Marshal.Copy(data, r, 0, count);
+            fixed (char* rb = &r[0])
+            {
+                Encoding.ASCII.GetChars((byte*)data, count, rb, count);
+            }
+            //Marshal.Copy(data, r, 0, count);
             Marshal.FreeCoTaskMem(data);
             return r;
         }
 
-        public static ArrayBlob ToABI_char(char[] arr)
+        public static unsafe ArrayBlob ToABI_char(char[] arr)
         {
             var r = new ArrayBlob();
             if (arr == null) return r;
             r.Count = arr.Length;
             r.Ptr = Marshal.AllocCoTaskMem(arr.Length * sizeof(char));
-            Marshal.Copy(arr, 0, r.Ptr, arr.Length);
+            fixed (char* arrb = &arr[0])
+            {
+                Encoding.ASCII.GetBytes(arrb, arr.Length, (byte*)r.Ptr, arr.Length);
+            }
+            //Marshal.Copy(arr, 0, r.Ptr, arr.Length);
             return r;
         }
 
