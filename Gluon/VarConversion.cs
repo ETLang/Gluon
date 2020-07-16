@@ -62,7 +62,7 @@ namespace Gluon
         public static Dictionary<Construct, string> ToABI = new Dictionary<Construct, string>
         {
             { Construct.Struct, "{2}.ToABI({0})" },
-            { Construct.Object, "({0} == null ? IntPtr.Zero : {0}.NativePtr)" },
+            { Construct.Object, "({0} == null ? IntPtr.Zero : (({1}){0}).IPtr)" },
             { Construct.Delegate, "D{3}.Unwrap({0})" },
         };
 
@@ -77,7 +77,7 @@ namespace Gluon
         {
             { Construct.Primitive, "MConv_.ToABI_{1}({0})" },
             { Construct.Struct, "Gluon.MConv.ToABI{3}({0})" },
-            { Construct.Object, "MConv_.ToABI_Object({0})" },
+            { Construct.Object, "MConv_.ToABI_Object({0} == null ? IntPtr.Zero : (({1}){0}).IPtr)" },
             { Construct.Delegate, "MConv.ToABI{3}({0})" },
         };
 
@@ -190,9 +190,9 @@ namespace Gluon
 
         private static string[] ObjectConverters = new string[]
         {
-            /* In  */ "({2})({0} == null ? null : {0}.NativePtr)",      // TOABI(X)
+            /* In  */ "({2})({0} == null ? null : (({1}){0}).IPtr)",      // TOABI(X)
             /* Out */ "$ out {2} {0}_abi $ {0} = MConv_.FromABI_Object<{1}>({0}_abi);", // $ OUT T X_ABI $ X = FROMABI(X_ABI)
-            /* Ref */ "var {0}_abi = MConv_.ToABI_Object({0}); $ ref {0}_abi $ {0} = MConv_.FromABI_Object<{1}>({0}_abi);", // X_ABI = TOABI(X) $ REF X_ABI $ X = FROMABI(X_ABI)
+            /* Ref */ "var {0}_abi = MConv_.ToABI_Object({0} == null ? IntPtr.Zero : (({1}){0}).IPtr); $ ref {0}_abi $ {0} = MConv_.FromABI_Object<{1}>({0}_abi);", // X_ABI = TOABI(X) $ REF X_ABI $ X = FROMABI(X_ABI)
             /* Ret */ "$ out {2} {0}_abi $ return GluonObject.Of<{1}>({0}_abi);",   // OUT T X_ABI $ RET FROMABI(X_ABI)
             /* Mak */ "$ out {2} {0}_abi $ return {0}_abi;"     // $ OUT T X_ABI $ RET X_ABI
         };
@@ -200,9 +200,9 @@ namespace Gluon
         private static string[] ObjectCBConverters = new string[]
         {
             /* In  */ "GluonObject.Of<{1}>({0})",       // FROMABI(X)
-            /* Out */ "$ out {1} {0}_wrap $ {0} = MConv_.ToABI_Object<{2}>({0}_wrap);", // $ OUT T X_WRAP $ X = TOABI(X_WRAP)
-            /* Ref */ "var {0}_wrap = GluonObject.Of<{1}>({0}); $ ref {0}_wrap $ var {0}_old = {0}; {0} = MConv_.ToABI_Object({0}_wrap); if({0}_old != IntPtr.Zero) Marshal.Release({0}_old);", // X_WRAP = FROMABI(X) $ REF X_WRAP $ X = TOABI(X_WRAP)
-            /* Ret */ "$ var {0}_wrap = $ {0} = ({0}_wrap == null ? null : ({2}){0}_wrap.NativeObj);" // X_WRAP = $ X = TOABI(X_WRAP)
+            /* Out */ "$ out {1} {0}_wrap $ {0} = MConv_.ToABI_Object({0}_wrap == null ? IntPtr.Zero : (({1}){0}_wrap).IPtr);", // $ OUT T X_WRAP $ X = TOABI(X_WRAP)
+            /* Ref */ "var {0}_wrap = GluonObject.Of<{1}>({0}); $ ref {0}_wrap $ var {0}_old = {0}; {0} = MConv_.ToABI_Object({0}_wrap == null ? IntPtr.Zero : (({1}){0}_wrap).IPtr); if({0}_old != IntPtr.Zero) Marshal.Release({0}_old);", // X_WRAP = FROMABI(X) $ REF X_WRAP $ X = TOABI(X_WRAP)
+            /* Ret */ "$ var {0}_wrap = $ {0} = ({0}_wrap == null ? null : ({2})(({1}){0}_wrap).IPtr);" // X_WRAP = $ X = TOABI(X_WRAP)
         };
 
         private static string[] StringConverters = new string[]
@@ -288,17 +288,17 @@ namespace Gluon
         private static string[] ObjectArrayConverters = new string[]
         {
             /* In  */ "var {0}_abi = GluonObject.ArrayUnwrap({0}); $ {0}_abi, {0}_abi.Length",
-            /* Out */ "ArrayBlob {0}_abi; $ out {0}_abi.Ptr, out {0}_abi.Count $ {0} = MConv_.FromABI_Object<{1}>({0}_abi.Ptr, {0}_abi.Count);",
-            /* Ref */ "ArrayBlob {0}_abi = MConv_.ToABI_Object({0}); $ ref {0}_abi.Ptr, ref {0}_abi.Count $ {0} = MConv_.FromABI_Object<{1}>({0}_abi.Ptr, {0}_abi.Count);",
-            /* Ret */ "ArrayBlob {0}_abi; $ out {0}_abi.Ptr, out {0}_abi.Count $ return MConv_.FromABI_Object<{1}>({0}_abi.Ptr, {0}_abi.Count);"
+            /* Out */ "ArrayBlob {0}_abi; $ out {0}_abi.Ptr, out {0}_abi.Count $ {0} = MConv.FromABI{3}({0}_abi.Ptr, {0}_abi.Count);",
+            /* Ref */ "ArrayBlob {0}_abi = MConv.ToABI{3}({0}); $ ref {0}_abi.Ptr, ref {0}_abi.Count $ {0} = MConv.FromABI{3}({0}_abi.Ptr, {0}_abi.Count);",
+            /* Ret */ "ArrayBlob {0}_abi; $ out {0}_abi.Ptr, out {0}_abi.Count $ return MConv.FromABI{3}({0}_abi.Ptr, {0}_abi.Count);"
         };
         
         private static string[] ObjectArrayCBConverters = new string[]
         {
             /* In  */ "GluonObject.ArrayWrap<{1}>({0})",
-            /* Out */ "$ out {1}[] {0}_wrap $ var {0}_abi = MConv_.ToABI_Object({0}_wrap); {0} = {0}_abi.Ptr; {0}_count = {0}_abi.Count;",
-            /* Ref */ "var {0}_wrap = MConv_.FromABI_Object<{1}>({0}, {0}_count); $ ref {0}_wrap $ var {0}_abi = MConv_.ToABI_Object({0}_wrap); {0} = {0}_abi.Ptr; {0}_count = {0}_abi.Count;",
-            /* Ret */ "$ var {0}_wrap = $ var {0}_abi = MConv_.ToABI_Object({0}_wrap); {0} = {0}_abi.Ptr; {0}_count = {0}_abi.Count;"
+            /* Out */ "$ out {1}[] {0}_wrap $ var {0}_abi = MConv.ToABI{3}({0}_wrap); {0} = {0}_abi.Ptr; {0}_count = {0}_abi.Count;",
+            /* Ref */ "var {0}_wrap = MConv.FromABI{3}({0}, {0}_count); $ ref {0}_wrap $ var {0}_abi = MConv.ToABI{3}({0}_wrap); {0} = {0}_abi.Ptr; {0}_count = {0}_abi.Count;",
+            /* Ret */ "$ var {0}_wrap = $ var {0}_abi = MConv.ToABI{3}({0}_wrap); {0} = {0}_abi.Ptr; {0}_count = {0}_abi.Count;"
         };
 
         private static string[] DelegateArrayConverters = new string[]

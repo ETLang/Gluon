@@ -228,7 +228,7 @@ public static void Throw(int hr)
                 file.Line("internal static partial class MConv");
                 file.Block(() =>
                 {
-                    foreach (var t in Definition.SelectArrayedTypes().Where(t => t.IsStruct || t.IsDelegate))
+                    foreach (var t in Definition.SelectArrayedTypes().Where(t => t.IsStruct || t.IsDelegate || t.IsObject))
                         file.WriteArrayMemberConverter(t);
                 });
             });

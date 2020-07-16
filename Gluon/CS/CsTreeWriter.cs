@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
@@ -111,14 +112,14 @@ namespace Gluon
                                             if (field.Type.IsPrimitive || field.Type.IsString)
                                                 ListItem("{0} = MConv_.ToABI_{1}(x.{0})", field.Name, field.Type.Name);
                                             else if (field.Type.IsObject)
-                                                ListItem("{0} = MConv_.ToABI_Object<{1}>(x.{0})", field.Name, TypeRef(field, true));
+                                                ListItem("{0} = MConv_.ToABI_Object(x.{0} == null ? IntPtr.Zero : (({1})x.{0}).IPtr)", field.Name, TypeRef(field, false));
                                             else
                                                 ListItem("{0} = ABI.{1}.MConv.ToABI{2}(x.{0})", field.Name, type.Assembly.Name, field.Type.ShortId);
                                         }
                                         else if (field.Type.IsString)
                                             ListItem("{0} = MConv_.ToABI_string(x.{0})", field.Name);
                                         else if (field.Type.IsObject)
-                                            ListItem("{0} = MConv_.ToABI_Object(x.{0})", field.Name);
+                                            ListItem("{0} = MConv_.ToABI_Object(x.{0} == null ? IntPtr.Zero : (({1})x.{0}).IPtr)", field.Name, TypeRef(field, false));
                                         else if (field.Type.IsStruct && CsRender.RequiresABITranslation(field.Type.ToVariable()))
                                             ListItem("{0} = {1}.ToABI(x.{0})", field.Name, TypeRef(field, true));
                                         else if (field.Type.IsDelegate)
@@ -343,8 +344,12 @@ public static {0}[] FromABI_Array(DelegateBlob[] x)
                         Line("var blob = Marshal.PtrToStructure<{0}>((IntPtr)((long)data + i * sz));", tnabi);
                         Line("r[i] = D{0}.Wrap(blob.Fn, blob.Ctx);", type.ShortId);
                     }
+                    else if (type.IsObject)
+                    {
+                        Line("r[i] = GluonObject.Of<{0}>(Marshal.ReadIntPtr((IntPtr)((long)data + i * sz)));", tn);
+                    }
                     else
-                        throw new InvalidOperationException("This writer only designed to write for structs and delegates");
+                        throw new InvalidOperationException("This writer only designed to write for structs, delegates, and classes");
                 });
                 Line("Marshal.FreeCoTaskMem(data);");
                 Line("return r;");
@@ -370,6 +375,11 @@ public static {0}[] FromABI_Array(DelegateBlob[] x)
                     {
                         Line("var blob = D{0}.Unwrap(arr[i]);", type.ShortId);
                         Line("Marshal.StructureToPtr(blob, (IntPtr)((long)r.Ptr + sz * i), false);");
+                    }
+                    else if (type.IsObject)
+                    {
+                        Line("var item = arr[i];");
+                        Line("Marshal.WriteIntPtr((IntPtr)((long)r.Ptr + sz * i), item == null ? IntPtr.Zero : item.IPtr);");
                     }
                 });
                 Line("return r;");
@@ -451,7 +461,7 @@ public static {0}[] FromABI_Array(DelegateBlob[] x)
             AST.Parameter ctxarg = null;
 
             if (!isStatic)
-                ctxarg = new AST.Parameter() { Type = BasicTypes.IntPtr, Name = "_i", Context = AST.VariableContext.In };
+                ctxarg = new AST.Parameter() { Type = BasicTypes.IntPtr, Name = "IPtr", Context = AST.VariableContext.In };
 
             Line("Check();");
             WriteWrappedCall(false, MemberCallScope(isStatic) + callName, retType, ctxarg, args);
@@ -673,7 +683,8 @@ $@"protected override void OnDispose(bool finalizing)
 {{
     PartialDispose(finalizing);
     {ForEach(type.Events, e => Line(
-       $"if(_{e.Name} != null) _vt.Remove{e.Name}Handler(_i, _{e.Name}_abi.Fn, _{e.Name}_abi.Ctx);"))}
+       $"if(_{e.Name} != null) _vt.Remove{e.Name}Handler(IPtr, _{e.Name}_abi.Fn, _{e.Name}_abi.Ctx);"))}
+    IPtr = IntPtr.Zero;
     base.OnDispose(finalizing);
 }}");
                 Spacer();
@@ -691,7 +702,7 @@ $@"{e.Access.ToString().ToLower()} event {TypeRef(e.HandlerType)} {e.Name}
     {{
         Check();
         if(_{e.Name} == null)
-            _vt.Add{e.Name}Handler(_i, _{e.Name}_abi.Fn, _{e.Name}_abi.Ctx);
+            _vt.Add{e.Name}Handler(IPtr, _{e.Name}_abi.Fn, _{e.Name}_abi.Ctx);
 
         _{e.Name} += value;
     }}
@@ -700,7 +711,7 @@ $@"{e.Access.ToString().ToLower()} event {TypeRef(e.HandlerType)} {e.Name}
         Check();
         _{e.Name} -= value;
         if(_{e.Name} == null)
-            _vt.Remove{e.Name}Handler(_i, _{e.Name}_abi.Fn, _{e.Name}_abi.Ctx);
+            _vt.Remove{e.Name}Handler(IPtr, _{e.Name}_abi.Fn, _{e.Name}_abi.Ctx);
     }}
 }}
 
@@ -771,15 +782,17 @@ $@"#region Internal
 [System.Diagnostics.Conditional(""DEBUG"")]
 private void Check()
 {{
-    if (_i == IntPtr.Zero)
+    if (IPtr == IntPtr.Zero)
         throw new ObjectDisposedException(GetType().Name + "" has been disposed"");
 }}
 
 internal {type.Name}(AbiPtr i) : base(i)
 {{
-    Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out _i));
-    Marshal.Release(_i);
-    _vt = VTUnknown.GetVTable<ABI.{type.FullName(".")}>(_i);
+    IntPtr iptr;
+    Native.Throw(Marshal.QueryInterface(i.Value, ref _ID, out iptr));
+    Marshal.Release(iptr);
+    IPtr = iptr;
+    _vt = VTUnknown.GetVTable<ABI.{type.FullName(".")}>(IPtr);
     {ForEach(type.Events, e => Line($"_{e.Name}_abi = D{e.HandlerType.ShortId}.Unwrap(_Call_{e.Name});"))}
     Init();
 }}
@@ -806,7 +819,7 @@ internal {type.Name}(AbiPtr i) : base(i)
                 }
 
                 Line(
-$@"{abiName} _i;
+$@"public {(type.BaseType != null ? "new " : "")}{abiName} IPtr {{ get; private set; }} //{abiName} _i;
 ABI.{type.FullName(".")} _vt;
 static Guid _ID = new Guid(""{type.Id}"");
 
