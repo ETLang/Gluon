@@ -72,6 +72,9 @@
     <ClInclude Include="cpp\Public\GluonTest.h">
       <Filter>Public Headers</Filter>
     </ClInclude>
+    <ClInclude Include="cpp\Public\GluonTest.public.abi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\GWhiteNoise.cpp">
