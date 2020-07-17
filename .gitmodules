@@ -1,0 +1,3 @@
+[submodule "Submodules/Sharpish"]
+	path = Submodules/Sharpish
+	url = https://github.com/ETLang/Sharpish.git
