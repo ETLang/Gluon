@@ -14,7 +14,8 @@
 [assembly: GluonTargetCSharp("UWP", CSharpMode.Default,
     OutputFolder = @"..\..\..\GluonTestResults\cs",
     ProjectFile = @"..\..\..\GluonTestResultsCs\GluonTestResults.csproj",
-    ImportedDll = "GluonTestResultsCpp.dll")]
+    ImportedDll = "GluonTestResultsCpp.dll",
+    ConsolidateFiles = false)]
 
 // Generates wrapper classes for the Locator UWP DLL, which can be deployed to the HoloLens.
 [assembly: GluonTargetCSharp("UWPConsolidated", CSharpMode.Default,
