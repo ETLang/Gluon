@@ -18,6 +18,7 @@ namespace Gluon
         {
             TargetID = targetID;
             Mode = mode;
+            ConsolidateFiles = true;
         }
     }
 
