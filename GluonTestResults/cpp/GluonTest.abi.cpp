@@ -154,9 +154,9 @@ std::unordered_map<ABI::DelegateKeyContainer<Signature>, CS::weak_ptr<Wrapper>> 
 template<typename Wrapper, typename Signature>
 CriticalSection ABI::DelegateWrapperBase<Wrapper, Signature>::_CSec;
 
-HRESULT DW_827F05B1::AbiFunc(IObject* __i_, int arg1, int arg2, int* ___ret)
+HRESULT DW_6FD213D6::AbiFunc(IObject* __i_, int arg1, int arg2, int* ___ret)
 {
-    auto ___del = runtime_cast<DW_827F05B1>(__i_);
+    auto ___del = runtime_cast<DW_6FD213D6>(__i_);
     if (!___del) return E_FAIL;
 
     if(!___ret) return E_POINTER;
@@ -172,9 +172,9 @@ HRESULT DW_827F05B1::AbiFunc(IObject* __i_, int arg1, int arg2, int* ___ret)
 template<>
 Delegate<int(int, int)> ABIUtil<Delegate<int(int, int)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_827F05B1::AbiFunc)
+    if (fptr == &DW_6FD213D6::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_827F05B1>(ctx);
+        auto wrapper = runtime_cast<DW_6FD213D6>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -195,14 +195,14 @@ template<>
 ABIOf<Delegate<int(int, int)>> ABIUtil<Delegate<int(int, int)>>::ToABI(const Delegate<int(int, int)>& x)
 {
     ABIOf<Delegate<int(int, int)>> x_abi;
-    x_abi.Fn = &DW_827F05B1::AbiFunc;
-    x_abi.Ctx = DW_827F05B1::GetWrapper(x);
+    x_abi.Fn = &DW_6FD213D6::AbiFunc;
+    x_abi.Ctx = DW_6FD213D6::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_BD6C0A4D::AbiFunc(IObject* __i_, char* a, char* b, int* ___ret)
+HRESULT DW_F8ED26DB::AbiFunc(IObject* __i_, char* a, char* b, int* ___ret)
 {
-    auto ___del = runtime_cast<DW_BD6C0A4D>(__i_);
+    auto ___del = runtime_cast<DW_F8ED26DB>(__i_);
     if (!___del) return E_FAIL;
 
     if(!___ret) return E_POINTER;
@@ -218,9 +218,9 @@ HRESULT DW_BD6C0A4D::AbiFunc(IObject* __i_, char* a, char* b, int* ___ret)
 template<>
 GluonTest::NamedDelegate ABIUtil<GluonTest::NamedDelegate>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_BD6C0A4D::AbiFunc)
+    if (fptr == &DW_F8ED26DB::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_BD6C0A4D>(ctx);
+        auto wrapper = runtime_cast<DW_F8ED26DB>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -241,14 +241,14 @@ template<>
 ABIOf<GluonTest::NamedDelegate> ABIUtil<GluonTest::NamedDelegate>::ToABI(const GluonTest::NamedDelegate& x)
 {
     ABIOf<GluonTest::NamedDelegate> x_abi;
-    x_abi.Fn = &DW_BD6C0A4D::AbiFunc;
-    x_abi.Ctx = DW_BD6C0A4D::GetWrapper(x);
+    x_abi.Fn = &DW_F8ED26DB::AbiFunc;
+    x_abi.Ctx = DW_F8ED26DB::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_67C6D6DF::AbiFunc(IObject* __i_, bool inTest, char* outTest, int* refTest, double* ___ret)
+HRESULT DW_1B83CCC6::AbiFunc(IObject* __i_, bool inTest, char* outTest, int* refTest, double* ___ret)
 {
-    auto ___del = runtime_cast<DW_67C6D6DF>(__i_);
+    auto ___del = runtime_cast<DW_1B83CCC6>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -267,9 +267,9 @@ HRESULT DW_67C6D6DF::AbiFunc(IObject* __i_, bool inTest, char* outTest, int* ref
 template<>
 GluonTest::PrimitivesCB ABIUtil<GluonTest::PrimitivesCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_67C6D6DF::AbiFunc)
+    if (fptr == &DW_1B83CCC6::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_67C6D6DF>(ctx);
+        auto wrapper = runtime_cast<DW_1B83CCC6>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -291,14 +291,14 @@ template<>
 ABIOf<GluonTest::PrimitivesCB> ABIUtil<GluonTest::PrimitivesCB>::ToABI(const GluonTest::PrimitivesCB& x)
 {
     ABIOf<GluonTest::PrimitivesCB> x_abi;
-    x_abi.Fn = &DW_67C6D6DF::AbiFunc;
-    x_abi.Ctx = DW_67C6D6DF::GetWrapper(x);
+    x_abi.Fn = &DW_1B83CCC6::AbiFunc;
+    x_abi.Ctx = DW_1B83CCC6::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_7A2B6D2B::AbiFunc(IObject* __i_, char* inTest, char** outTest, char** refTest, char** ___ret)
+HRESULT DW_E24BCA44::AbiFunc(IObject* __i_, char* inTest, char** outTest, char** refTest, char** ___ret)
 {
-    auto ___del = runtime_cast<DW_7A2B6D2B>(__i_);
+    auto ___del = runtime_cast<DW_E24BCA44>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -317,9 +317,9 @@ HRESULT DW_7A2B6D2B::AbiFunc(IObject* __i_, char* inTest, char** outTest, char**
 template<>
 GluonTest::StringsCB ABIUtil<GluonTest::StringsCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_7A2B6D2B::AbiFunc)
+    if (fptr == &DW_E24BCA44::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_7A2B6D2B>(ctx);
+        auto wrapper = runtime_cast<DW_E24BCA44>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -341,14 +341,14 @@ template<>
 ABIOf<GluonTest::StringsCB> ABIUtil<GluonTest::StringsCB>::ToABI(const GluonTest::StringsCB& x)
 {
     ABIOf<GluonTest::StringsCB> x_abi;
-    x_abi.Fn = &DW_7A2B6D2B::AbiFunc;
-    x_abi.Ctx = DW_7A2B6D2B::GetWrapper(x);
+    x_abi.Fn = &DW_E24BCA44::AbiFunc;
+    x_abi.Ctx = DW_E24BCA44::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_DF8B3B28::AbiFunc(IObject* __i_, ::ABI::GluonTest::BlittableStruct inTest, ::ABI::GluonTest::BlittableStruct* outTest, ::ABI::GluonTest::BlittableStruct* refTest, ::ABI::GluonTest::BlittableStruct* ___ret)
+HRESULT DW_CA433402::AbiFunc(IObject* __i_, ::ABI::GluonTest::BlittableStruct inTest, ::ABI::GluonTest::BlittableStruct* outTest, ::ABI::GluonTest::BlittableStruct* refTest, ::ABI::GluonTest::BlittableStruct* ___ret)
 {
-    auto ___del = runtime_cast<DW_DF8B3B28>(__i_);
+    auto ___del = runtime_cast<DW_CA433402>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -367,9 +367,9 @@ HRESULT DW_DF8B3B28::AbiFunc(IObject* __i_, ::ABI::GluonTest::BlittableStruct in
 template<>
 GluonTest::SimpleStructsCB ABIUtil<GluonTest::SimpleStructsCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_DF8B3B28::AbiFunc)
+    if (fptr == &DW_CA433402::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_DF8B3B28>(ctx);
+        auto wrapper = runtime_cast<DW_CA433402>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -391,14 +391,14 @@ template<>
 ABIOf<GluonTest::SimpleStructsCB> ABIUtil<GluonTest::SimpleStructsCB>::ToABI(const GluonTest::SimpleStructsCB& x)
 {
     ABIOf<GluonTest::SimpleStructsCB> x_abi;
-    x_abi.Fn = &DW_DF8B3B28::AbiFunc;
-    x_abi.Ctx = DW_DF8B3B28::GetWrapper(x);
+    x_abi.Fn = &DW_CA433402::AbiFunc;
+    x_abi.Ctx = DW_CA433402::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_625CB5E::AbiFunc(IObject* __i_, ::ABI::GluonTest::ComplexStruct inTest, ::ABI::GluonTest::ComplexStruct* outTest, ::ABI::GluonTest::ComplexStruct* refTest, ::ABI::GluonTest::ComplexStruct* ___ret)
+HRESULT DW_10105E22::AbiFunc(IObject* __i_, ::ABI::GluonTest::ComplexStruct inTest, ::ABI::GluonTest::ComplexStruct* outTest, ::ABI::GluonTest::ComplexStruct* refTest, ::ABI::GluonTest::ComplexStruct* ___ret)
 {
-    auto ___del = runtime_cast<DW_625CB5E>(__i_);
+    auto ___del = runtime_cast<DW_10105E22>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -417,9 +417,9 @@ HRESULT DW_625CB5E::AbiFunc(IObject* __i_, ::ABI::GluonTest::ComplexStruct inTes
 template<>
 GluonTest::ComplexStructsCB ABIUtil<GluonTest::ComplexStructsCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_625CB5E::AbiFunc)
+    if (fptr == &DW_10105E22::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_625CB5E>(ctx);
+        auto wrapper = runtime_cast<DW_10105E22>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -441,14 +441,14 @@ template<>
 ABIOf<GluonTest::ComplexStructsCB> ABIUtil<GluonTest::ComplexStructsCB>::ToABI(const GluonTest::ComplexStructsCB& x)
 {
     ABIOf<GluonTest::ComplexStructsCB> x_abi;
-    x_abi.Fn = &DW_625CB5E::AbiFunc;
-    x_abi.Ctx = DW_625CB5E::GetWrapper(x);
+    x_abi.Fn = &DW_10105E22::AbiFunc;
+    x_abi.Ctx = DW_10105E22::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_87064FFA::AbiFunc(IObject* __i_, ::ABI::GluonTest::DummyClass* inTest, ::ABI::GluonTest::DummyClass** outTest, ::ABI::GluonTest::DummyClass** refTest, ::ABI::GluonTest::DummyClass** ___ret)
+HRESULT DW_95E0837A::AbiFunc(IObject* __i_, ::ABI::GluonTest::DummyClass* inTest, ::ABI::GluonTest::DummyClass** outTest, ::ABI::GluonTest::DummyClass** refTest, ::ABI::GluonTest::DummyClass** ___ret)
 {
-    auto ___del = runtime_cast<DW_87064FFA>(__i_);
+    auto ___del = runtime_cast<DW_95E0837A>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -467,9 +467,9 @@ HRESULT DW_87064FFA::AbiFunc(IObject* __i_, ::ABI::GluonTest::DummyClass* inTest
 template<>
 GluonTest::ObjectsCB ABIUtil<GluonTest::ObjectsCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_87064FFA::AbiFunc)
+    if (fptr == &DW_95E0837A::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_87064FFA>(ctx);
+        auto wrapper = runtime_cast<DW_95E0837A>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -491,14 +491,14 @@ template<>
 ABIOf<GluonTest::ObjectsCB> ABIUtil<GluonTest::ObjectsCB>::ToABI(const GluonTest::ObjectsCB& x)
 {
     ABIOf<GluonTest::ObjectsCB> x_abi;
-    x_abi.Fn = &DW_87064FFA::AbiFunc;
-    x_abi.Ctx = DW_87064FFA::GetWrapper(x);
+    x_abi.Fn = &DW_95E0837A::AbiFunc;
+    x_abi.Ctx = DW_95E0837A::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_7451AE96::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,char*,char*,int*)> inTest, IObject* inTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* outTest, IObject** outTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* refTest, IObject** refTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* ___ret, IObject** ___ret_context)
+HRESULT DW_F2E7AE0D::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,char*,char*,int*)> inTest, IObject* inTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* outTest, IObject** outTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* refTest, IObject** refTest_context, fn_ptr<HRESULT(IObject*,char*,char*,int*)>* ___ret, IObject** ___ret_context)
 {
-    auto ___del = runtime_cast<DW_7451AE96>(__i_);
+    auto ___del = runtime_cast<DW_F2E7AE0D>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -520,9 +520,9 @@ HRESULT DW_7451AE96::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,char*,char*,
 template<>
 GluonTest::NamedDelegatesCB ABIUtil<GluonTest::NamedDelegatesCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_7451AE96::AbiFunc)
+    if (fptr == &DW_F2E7AE0D::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_7451AE96>(ctx);
+        auto wrapper = runtime_cast<DW_F2E7AE0D>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -550,14 +550,14 @@ template<>
 ABIOf<GluonTest::NamedDelegatesCB> ABIUtil<GluonTest::NamedDelegatesCB>::ToABI(const GluonTest::NamedDelegatesCB& x)
 {
     ABIOf<GluonTest::NamedDelegatesCB> x_abi;
-    x_abi.Fn = &DW_7451AE96::AbiFunc;
-    x_abi.Ctx = DW_7451AE96::GetWrapper(x);
+    x_abi.Fn = &DW_F2E7AE0D::AbiFunc;
+    x_abi.Ctx = DW_F2E7AE0D::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_61217487::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,char*)> inTest, IObject* inTest_context, fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>* outTest, IObject** outTest_context, fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>* refTest, IObject** refTest_context, fn_ptr<HRESULT(IObject*,int,int*)>* ___ret, IObject** ___ret_context)
+HRESULT DW_D744D573::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,char*)> inTest, IObject* inTest_context, fn_ptr<HRESULT(IObject*,fn_ptr<HRESULT(IObject*,int,int*)>,IObject*)>* outTest, IObject** outTest_context, fn_ptr<HRESULT(IObject*,char*,int,char***,int*)>* refTest, IObject** refTest_context, fn_ptr<HRESULT(IObject*,int,int*)>* ___ret, IObject** ___ret_context)
 {
-    auto ___del = runtime_cast<DW_61217487>(__i_);
+    auto ___del = runtime_cast<DW_D744D573>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -579,9 +579,9 @@ HRESULT DW_61217487::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,char*)> inTe
 template<>
 GluonTest::GenericDelegatesCB ABIUtil<GluonTest::GenericDelegatesCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_61217487::AbiFunc)
+    if (fptr == &DW_D744D573::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_61217487>(ctx);
+        auto wrapper = runtime_cast<DW_D744D573>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -609,14 +609,14 @@ template<>
 ABIOf<GluonTest::GenericDelegatesCB> ABIUtil<GluonTest::GenericDelegatesCB>::ToABI(const GluonTest::GenericDelegatesCB& x)
 {
     ABIOf<GluonTest::GenericDelegatesCB> x_abi;
-    x_abi.Fn = &DW_61217487::AbiFunc;
-    x_abi.Ctx = DW_61217487::GetWrapper(x);
+    x_abi.Fn = &DW_D744D573::AbiFunc;
+    x_abi.Ctx = DW_D744D573::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_2945414A::AbiFunc(IObject* __i_, int arg, int* ___ret)
+HRESULT DW_F757A1EB::AbiFunc(IObject* __i_, int arg, int* ___ret)
 {
-    auto ___del = runtime_cast<DW_2945414A>(__i_);
+    auto ___del = runtime_cast<DW_F757A1EB>(__i_);
     if (!___del) return E_FAIL;
 
     if(!___ret) return E_POINTER;
@@ -630,9 +630,9 @@ HRESULT DW_2945414A::AbiFunc(IObject* __i_, int arg, int* ___ret)
 template<>
 Delegate<int(int)> ABIUtil<Delegate<int(int)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_2945414A::AbiFunc)
+    if (fptr == &DW_F757A1EB::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_2945414A>(ctx);
+        auto wrapper = runtime_cast<DW_F757A1EB>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -652,14 +652,14 @@ template<>
 ABIOf<Delegate<int(int)>> ABIUtil<Delegate<int(int)>>::ToABI(const Delegate<int(int)>& x)
 {
     ABIOf<Delegate<int(int)>> x_abi;
-    x_abi.Fn = &DW_2945414A::AbiFunc;
-    x_abi.Ctx = DW_2945414A::GetWrapper(x);
+    x_abi.Fn = &DW_F757A1EB::AbiFunc;
+    x_abi.Ctx = DW_F757A1EB::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_5D02415A::AbiFunc(IObject* __i_, char* obj)
+HRESULT DW_5C0C3D4C::AbiFunc(IObject* __i_, char* obj)
 {
-    auto ___del = runtime_cast<DW_5D02415A>(__i_);
+    auto ___del = runtime_cast<DW_5C0C3D4C>(__i_);
     if (!___del) return E_FAIL;
 
     try {
@@ -671,9 +671,9 @@ HRESULT DW_5D02415A::AbiFunc(IObject* __i_, char* obj)
 template<>
 Delegate<void(string)> ABIUtil<Delegate<void(string)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_5D02415A::AbiFunc)
+    if (fptr == &DW_5C0C3D4C::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_5D02415A>(ctx);
+        auto wrapper = runtime_cast<DW_5C0C3D4C>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -690,14 +690,14 @@ template<>
 ABIOf<Delegate<void(string)>> ABIUtil<Delegate<void(string)>>::ToABI(const Delegate<void(string)>& x)
 {
     ABIOf<Delegate<void(string)>> x_abi;
-    x_abi.Fn = &DW_5D02415A::AbiFunc;
-    x_abi.Ctx = DW_5D02415A::GetWrapper(x);
+    x_abi.Fn = &DW_5C0C3D4C::AbiFunc;
+    x_abi.Ctx = DW_5C0C3D4C::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_5D02415B::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,int,int*)> obj, IObject* obj_context)
+HRESULT DW_5C0C3D4D::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,int,int*)> obj, IObject* obj_context)
 {
-    auto ___del = runtime_cast<DW_5D02415B>(__i_);
+    auto ___del = runtime_cast<DW_5C0C3D4D>(__i_);
     if (!___del) return E_FAIL;
 
     try {
@@ -709,9 +709,9 @@ HRESULT DW_5D02415B::AbiFunc(IObject* __i_, fn_ptr<HRESULT(IObject*,int,int*)> o
 template<>
 Delegate<void(const Delegate<int(int)>&)> ABIUtil<Delegate<void(const Delegate<int(int)>&)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_5D02415B::AbiFunc)
+    if (fptr == &DW_5C0C3D4D::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_5D02415B>(ctx);
+        auto wrapper = runtime_cast<DW_5C0C3D4D>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -729,14 +729,14 @@ template<>
 ABIOf<Delegate<void(const Delegate<int(int)>&)>> ABIUtil<Delegate<void(const Delegate<int(int)>&)>>::ToABI(const Delegate<void(const Delegate<int(int)>&)>& x)
 {
     ABIOf<Delegate<void(const Delegate<int(int)>&)>> x_abi;
-    x_abi.Fn = &DW_5D02415B::AbiFunc;
-    x_abi.Ctx = DW_5D02415B::GetWrapper(x);
+    x_abi.Fn = &DW_5C0C3D4D::AbiFunc;
+    x_abi.Ctx = DW_5C0C3D4D::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_2945414B::AbiFunc(IObject* __i_, char* arg, int arg_count, char*** ___ret, int* ___ret_count)
+HRESULT DW_F757A1EC::AbiFunc(IObject* __i_, char* arg, int arg_count, char*** ___ret, int* ___ret_count)
 {
-    auto ___del = runtime_cast<DW_2945414B>(__i_);
+    auto ___del = runtime_cast<DW_F757A1EC>(__i_);
     if (!___del) return E_FAIL;
 
     if(!___ret) return E_POINTER;
@@ -751,9 +751,9 @@ HRESULT DW_2945414B::AbiFunc(IObject* __i_, char* arg, int arg_count, char*** __
 template<>
 Delegate<Array<string>(Array<char>)> ABIUtil<Delegate<Array<string>(Array<char>)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_2945414B::AbiFunc)
+    if (fptr == &DW_F757A1EC::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_2945414B>(ctx);
+        auto wrapper = runtime_cast<DW_F757A1EC>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -777,14 +777,14 @@ template<>
 ABIOf<Delegate<Array<string>(Array<char>)>> ABIUtil<Delegate<Array<string>(Array<char>)>>::ToABI(const Delegate<Array<string>(Array<char>)>& x)
 {
     ABIOf<Delegate<Array<string>(Array<char>)>> x_abi;
-    x_abi.Fn = &DW_2945414B::AbiFunc;
-    x_abi.Ctx = DW_2945414B::GetWrapper(x);
+    x_abi.Fn = &DW_F757A1EC::AbiFunc;
+    x_abi.Ctx = DW_F757A1EC::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_2C74C8B4::AbiFunc(IObject* __i_, bool* inTest, int inTest_count, char** outTest, int* outTest_count, int** refTest, int* refTest_count, double** ___ret, int* ___ret_count)
+HRESULT DW_C30682FD::AbiFunc(IObject* __i_, bool* inTest, int inTest_count, char** outTest, int* outTest_count, int** refTest, int* refTest_count, double** ___ret, int* ___ret_count)
 {
-    auto ___del = runtime_cast<DW_2C74C8B4>(__i_);
+    auto ___del = runtime_cast<DW_C30682FD>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -806,9 +806,9 @@ HRESULT DW_2C74C8B4::AbiFunc(IObject* __i_, bool* inTest, int inTest_count, char
 template<>
 GluonTest::PrimitiveArraysCB ABIUtil<GluonTest::PrimitiveArraysCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_2C74C8B4::AbiFunc)
+    if (fptr == &DW_C30682FD::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_2C74C8B4>(ctx);
+        auto wrapper = runtime_cast<DW_C30682FD>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -836,14 +836,14 @@ template<>
 ABIOf<GluonTest::PrimitiveArraysCB> ABIUtil<GluonTest::PrimitiveArraysCB>::ToABI(const GluonTest::PrimitiveArraysCB& x)
 {
     ABIOf<GluonTest::PrimitiveArraysCB> x_abi;
-    x_abi.Fn = &DW_2C74C8B4::AbiFunc;
-    x_abi.Ctx = DW_2C74C8B4::GetWrapper(x);
+    x_abi.Fn = &DW_C30682FD::AbiFunc;
+    x_abi.Ctx = DW_C30682FD::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_1061E859::AbiFunc(IObject* __i_, char** inTest, int inTest_count, char*** outTest, int* outTest_count, char*** refTest, int* refTest_count, char*** ___ret, int* ___ret_count)
+HRESULT DW_B2F37841::AbiFunc(IObject* __i_, char** inTest, int inTest_count, char*** outTest, int* outTest_count, char*** refTest, int* refTest_count, char*** ___ret, int* ___ret_count)
 {
-    auto ___del = runtime_cast<DW_1061E859>(__i_);
+    auto ___del = runtime_cast<DW_B2F37841>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -865,9 +865,9 @@ HRESULT DW_1061E859::AbiFunc(IObject* __i_, char** inTest, int inTest_count, cha
 template<>
 GluonTest::StringArraysCB ABIUtil<GluonTest::StringArraysCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_1061E859::AbiFunc)
+    if (fptr == &DW_B2F37841::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_1061E859>(ctx);
+        auto wrapper = runtime_cast<DW_B2F37841>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -895,14 +895,14 @@ template<>
 ABIOf<GluonTest::StringArraysCB> ABIUtil<GluonTest::StringArraysCB>::ToABI(const GluonTest::StringArraysCB& x)
 {
     ABIOf<GluonTest::StringArraysCB> x_abi;
-    x_abi.Fn = &DW_1061E859::AbiFunc;
-    x_abi.Ctx = DW_1061E859::GetWrapper(x);
+    x_abi.Fn = &DW_B2F37841::AbiFunc;
+    x_abi.Ctx = DW_B2F37841::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_1C12DC57::AbiFunc(IObject* __i_, ::ABI::GluonTest::BlittableStruct* inTest, int inTest_count, ::ABI::GluonTest::BlittableStruct** outTest, int* outTest_count, ::ABI::GluonTest::BlittableStruct** refTest, int* refTest_count, ::ABI::GluonTest::BlittableStruct** ___ret, int* ___ret_count)
+HRESULT DW_B28180A5::AbiFunc(IObject* __i_, ::ABI::GluonTest::BlittableStruct* inTest, int inTest_count, ::ABI::GluonTest::BlittableStruct** outTest, int* outTest_count, ::ABI::GluonTest::BlittableStruct** refTest, int* refTest_count, ::ABI::GluonTest::BlittableStruct** ___ret, int* ___ret_count)
 {
-    auto ___del = runtime_cast<DW_1C12DC57>(__i_);
+    auto ___del = runtime_cast<DW_B28180A5>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -924,9 +924,9 @@ HRESULT DW_1C12DC57::AbiFunc(IObject* __i_, ::ABI::GluonTest::BlittableStruct* i
 template<>
 GluonTest::SimpleStructArraysCB ABIUtil<GluonTest::SimpleStructArraysCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_1C12DC57::AbiFunc)
+    if (fptr == &DW_B28180A5::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_1C12DC57>(ctx);
+        auto wrapper = runtime_cast<DW_B28180A5>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -954,14 +954,14 @@ template<>
 ABIOf<GluonTest::SimpleStructArraysCB> ABIUtil<GluonTest::SimpleStructArraysCB>::ToABI(const GluonTest::SimpleStructArraysCB& x)
 {
     ABIOf<GluonTest::SimpleStructArraysCB> x_abi;
-    x_abi.Fn = &DW_1C12DC57::AbiFunc;
-    x_abi.Ctx = DW_1C12DC57::GetWrapper(x);
+    x_abi.Fn = &DW_B28180A5::AbiFunc;
+    x_abi.Ctx = DW_B28180A5::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_14F875F7::AbiFunc(IObject* __i_, ::ABI::GluonTest::ComplexStruct* inTest, int inTest_count, ::ABI::GluonTest::ComplexStruct** outTest, int* outTest_count, ::ABI::GluonTest::ComplexStruct** refTest, int* refTest_count, ::ABI::GluonTest::ComplexStruct** ___ret, int* ___ret_count)
+HRESULT DW_EE6D3DFB::AbiFunc(IObject* __i_, ::ABI::GluonTest::ComplexStruct* inTest, int inTest_count, ::ABI::GluonTest::ComplexStruct** outTest, int* outTest_count, ::ABI::GluonTest::ComplexStruct** refTest, int* refTest_count, ::ABI::GluonTest::ComplexStruct** ___ret, int* ___ret_count)
 {
-    auto ___del = runtime_cast<DW_14F875F7>(__i_);
+    auto ___del = runtime_cast<DW_EE6D3DFB>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -983,9 +983,9 @@ HRESULT DW_14F875F7::AbiFunc(IObject* __i_, ::ABI::GluonTest::ComplexStruct* inT
 template<>
 GluonTest::ComplexStructArraysCB ABIUtil<GluonTest::ComplexStructArraysCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_14F875F7::AbiFunc)
+    if (fptr == &DW_EE6D3DFB::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_14F875F7>(ctx);
+        auto wrapper = runtime_cast<DW_EE6D3DFB>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1013,14 +1013,14 @@ template<>
 ABIOf<GluonTest::ComplexStructArraysCB> ABIUtil<GluonTest::ComplexStructArraysCB>::ToABI(const GluonTest::ComplexStructArraysCB& x)
 {
     ABIOf<GluonTest::ComplexStructArraysCB> x_abi;
-    x_abi.Fn = &DW_14F875F7::AbiFunc;
-    x_abi.Ctx = DW_14F875F7::GetWrapper(x);
+    x_abi.Fn = &DW_EE6D3DFB::AbiFunc;
+    x_abi.Ctx = DW_EE6D3DFB::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_A1A08E73::AbiFunc(IObject* __i_, ::ABI::GluonTest::DummyClass** inTest, int inTest_count, ::ABI::GluonTest::DummyClass*** outTest, int* outTest_count, ::ABI::GluonTest::DummyClass*** refTest, int* refTest_count, ::ABI::GluonTest::DummyClass*** ___ret, int* ___ret_count)
+HRESULT DW_4388047D::AbiFunc(IObject* __i_, ::ABI::GluonTest::DummyClass** inTest, int inTest_count, ::ABI::GluonTest::DummyClass*** outTest, int* outTest_count, ::ABI::GluonTest::DummyClass*** refTest, int* refTest_count, ::ABI::GluonTest::DummyClass*** ___ret, int* ___ret_count)
 {
-    auto ___del = runtime_cast<DW_A1A08E73>(__i_);
+    auto ___del = runtime_cast<DW_4388047D>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -1042,9 +1042,9 @@ HRESULT DW_A1A08E73::AbiFunc(IObject* __i_, ::ABI::GluonTest::DummyClass** inTes
 template<>
 GluonTest::ObjectArraysCB ABIUtil<GluonTest::ObjectArraysCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_A1A08E73::AbiFunc)
+    if (fptr == &DW_4388047D::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_A1A08E73>(ctx);
+        auto wrapper = runtime_cast<DW_4388047D>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1072,14 +1072,14 @@ template<>
 ABIOf<GluonTest::ObjectArraysCB> ABIUtil<GluonTest::ObjectArraysCB>::ToABI(const GluonTest::ObjectArraysCB& x)
 {
     ABIOf<GluonTest::ObjectArraysCB> x_abi;
-    x_abi.Fn = &DW_A1A08E73::AbiFunc;
-    x_abi.Ctx = DW_A1A08E73::GetWrapper(x);
+    x_abi.Fn = &DW_4388047D::AbiFunc;
+    x_abi.Ctx = DW_4388047D::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_B2A7C511::AbiFunc(IObject* __i_, ABI::DelegateBlob* inTest, int inTest_count, ABI::DelegateBlob** outTest, int* outTest_count, ABI::DelegateBlob** refTest, int* refTest_count, ABI::DelegateBlob** ___ret, int* ___ret_count)
+HRESULT DW_CCD79226::AbiFunc(IObject* __i_, ABI::DelegateBlob* inTest, int inTest_count, ABI::DelegateBlob** outTest, int* outTest_count, ABI::DelegateBlob** refTest, int* refTest_count, ABI::DelegateBlob** ___ret, int* ___ret_count)
 {
-    auto ___del = runtime_cast<DW_B2A7C511>(__i_);
+    auto ___del = runtime_cast<DW_CCD79226>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -1101,9 +1101,9 @@ HRESULT DW_B2A7C511::AbiFunc(IObject* __i_, ABI::DelegateBlob* inTest, int inTes
 template<>
 GluonTest::NamedDelegateArraysCB ABIUtil<GluonTest::NamedDelegateArraysCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_B2A7C511::AbiFunc)
+    if (fptr == &DW_CCD79226::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_B2A7C511>(ctx);
+        auto wrapper = runtime_cast<DW_CCD79226>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1131,14 +1131,14 @@ template<>
 ABIOf<GluonTest::NamedDelegateArraysCB> ABIUtil<GluonTest::NamedDelegateArraysCB>::ToABI(const GluonTest::NamedDelegateArraysCB& x)
 {
     ABIOf<GluonTest::NamedDelegateArraysCB> x_abi;
-    x_abi.Fn = &DW_B2A7C511::AbiFunc;
-    x_abi.Ctx = DW_B2A7C511::GetWrapper(x);
+    x_abi.Fn = &DW_CCD79226::AbiFunc;
+    x_abi.Ctx = DW_CCD79226::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_DC21B22B::AbiFunc(IObject* __i_, ABI::DelegateBlob* inTest, int inTest_count, ABI::DelegateBlob** outTest, int* outTest_count, ABI::DelegateBlob** refTest, int* refTest_count, ABI::DelegateBlob** ___ret, int* ___ret_count)
+HRESULT DW_F5BD3F9A::AbiFunc(IObject* __i_, ABI::DelegateBlob* inTest, int inTest_count, ABI::DelegateBlob** outTest, int* outTest_count, ABI::DelegateBlob** refTest, int* refTest_count, ABI::DelegateBlob** ___ret, int* ___ret_count)
 {
-    auto ___del = runtime_cast<DW_DC21B22B>(__i_);
+    auto ___del = runtime_cast<DW_F5BD3F9A>(__i_);
     if (!___del) return E_FAIL;
 
     if(!outTest) return E_POINTER;
@@ -1160,9 +1160,9 @@ HRESULT DW_DC21B22B::AbiFunc(IObject* __i_, ABI::DelegateBlob* inTest, int inTes
 template<>
 GluonTest::GenericDelegateArraysCB ABIUtil<GluonTest::GenericDelegateArraysCB>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_DC21B22B::AbiFunc)
+    if (fptr == &DW_F5BD3F9A::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_DC21B22B>(ctx);
+        auto wrapper = runtime_cast<DW_F5BD3F9A>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1190,14 +1190,14 @@ template<>
 ABIOf<GluonTest::GenericDelegateArraysCB> ABIUtil<GluonTest::GenericDelegateArraysCB>::ToABI(const GluonTest::GenericDelegateArraysCB& x)
 {
     ABIOf<GluonTest::GenericDelegateArraysCB> x_abi;
-    x_abi.Fn = &DW_DC21B22B::AbiFunc;
-    x_abi.Ctx = DW_DC21B22B::GetWrapper(x);
+    x_abi.Fn = &DW_F5BD3F9A::AbiFunc;
+    x_abi.Ctx = DW_F5BD3F9A::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_2945414C::AbiFunc(IObject* __i_, double arg, double* ___ret)
+HRESULT DW_F757A1ED::AbiFunc(IObject* __i_, double arg, double* ___ret)
 {
-    auto ___del = runtime_cast<DW_2945414C>(__i_);
+    auto ___del = runtime_cast<DW_F757A1ED>(__i_);
     if (!___del) return E_FAIL;
 
     if(!___ret) return E_POINTER;
@@ -1211,9 +1211,9 @@ HRESULT DW_2945414C::AbiFunc(IObject* __i_, double arg, double* ___ret)
 template<>
 Delegate<double(double)> ABIUtil<Delegate<double(double)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_2945414C::AbiFunc)
+    if (fptr == &DW_F757A1ED::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_2945414C>(ctx);
+        auto wrapper = runtime_cast<DW_F757A1ED>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1233,14 +1233,14 @@ template<>
 ABIOf<Delegate<double(double)>> ABIUtil<Delegate<double(double)>>::ToABI(const Delegate<double(double)>& x)
 {
     ABIOf<Delegate<double(double)>> x_abi;
-    x_abi.Fn = &DW_2945414C::AbiFunc;
-    x_abi.Ctx = DW_2945414C::GetWrapper(x);
+    x_abi.Fn = &DW_F757A1ED::AbiFunc;
+    x_abi.Ctx = DW_F757A1ED::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_2945414D::AbiFunc(IObject* __i_, char* arg, int arg_count, char** ___ret)
+HRESULT DW_F757A1EE::AbiFunc(IObject* __i_, char* arg, int arg_count, char** ___ret)
 {
-    auto ___del = runtime_cast<DW_2945414D>(__i_);
+    auto ___del = runtime_cast<DW_F757A1EE>(__i_);
     if (!___del) return E_FAIL;
 
     if(!___ret) return E_POINTER;
@@ -1254,9 +1254,9 @@ HRESULT DW_2945414D::AbiFunc(IObject* __i_, char* arg, int arg_count, char** ___
 template<>
 Delegate<string(Array<char>)> ABIUtil<Delegate<string(Array<char>)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_2945414D::AbiFunc)
+    if (fptr == &DW_F757A1EE::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_2945414D>(ctx);
+        auto wrapper = runtime_cast<DW_F757A1EE>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1277,14 +1277,14 @@ template<>
 ABIOf<Delegate<string(Array<char>)>> ABIUtil<Delegate<string(Array<char>)>>::ToABI(const Delegate<string(Array<char>)>& x)
 {
     ABIOf<Delegate<string(Array<char>)>> x_abi;
-    x_abi.Fn = &DW_2945414D::AbiFunc;
-    x_abi.Ctx = DW_2945414D::GetWrapper(x);
+    x_abi.Fn = &DW_F757A1EE::AbiFunc;
+    x_abi.Ctx = DW_F757A1EE::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_668509AD::AbiFunc(IObject* __i_, int a, int b, ::ABI::GluonTest::ITestClass** ___ret)
+HRESULT DW_FBC9C526::AbiFunc(IObject* __i_, int a, int b, ::ABI::GluonTest::ITestClass** ___ret)
 {
-    auto ___del = runtime_cast<DW_668509AD>(__i_);
+    auto ___del = runtime_cast<DW_FBC9C526>(__i_);
     if (!___del) return E_FAIL;
 
     if(!___ret) return E_POINTER;
@@ -1300,9 +1300,9 @@ HRESULT DW_668509AD::AbiFunc(IObject* __i_, int a, int b, ::ABI::GluonTest::ITes
 template<>
 GluonTest::AddSomeShit ABIUtil<GluonTest::AddSomeShit>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_668509AD::AbiFunc)
+    if (fptr == &DW_FBC9C526::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_668509AD>(ctx);
+        auto wrapper = runtime_cast<DW_FBC9C526>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1323,14 +1323,14 @@ template<>
 ABIOf<GluonTest::AddSomeShit> ABIUtil<GluonTest::AddSomeShit>::ToABI(const GluonTest::AddSomeShit& x)
 {
     ABIOf<GluonTest::AddSomeShit> x_abi;
-    x_abi.Fn = &DW_668509AD::AbiFunc;
-    x_abi.Ctx = DW_668509AD::GetWrapper(x);
+    x_abi.Fn = &DW_FBC9C526::AbiFunc;
+    x_abi.Ctx = DW_FBC9C526::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_827F05B2::AbiFunc(IObject* __i_, char arg1, int arg2, char** ___ret)
+HRESULT DW_6FD213D7::AbiFunc(IObject* __i_, char arg1, int arg2, char** ___ret)
 {
-    auto ___del = runtime_cast<DW_827F05B2>(__i_);
+    auto ___del = runtime_cast<DW_6FD213D7>(__i_);
     if (!___del) return E_FAIL;
 
     if(!___ret) return E_POINTER;
@@ -1346,9 +1346,9 @@ HRESULT DW_827F05B2::AbiFunc(IObject* __i_, char arg1, int arg2, char** ___ret)
 template<>
 Delegate<string(char, int)> ABIUtil<Delegate<string(char, int)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_827F05B2::AbiFunc)
+    if (fptr == &DW_6FD213D7::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_827F05B2>(ctx);
+        auto wrapper = runtime_cast<DW_6FD213D7>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1369,14 +1369,14 @@ template<>
 ABIOf<Delegate<string(char, int)>> ABIUtil<Delegate<string(char, int)>>::ToABI(const Delegate<string(char, int)>& x)
 {
     ABIOf<Delegate<string(char, int)>> x_abi;
-    x_abi.Fn = &DW_827F05B2::AbiFunc;
-    x_abi.Ctx = DW_827F05B2::GetWrapper(x);
+    x_abi.Fn = &DW_6FD213D7::AbiFunc;
+    x_abi.Ctx = DW_6FD213D7::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_2945414E::AbiFunc(IObject* __i_, char* arg, char* ___ret)
+HRESULT DW_F757A1EF::AbiFunc(IObject* __i_, char* arg, char* ___ret)
 {
-    auto ___del = runtime_cast<DW_2945414E>(__i_);
+    auto ___del = runtime_cast<DW_F757A1EF>(__i_);
     if (!___del) return E_FAIL;
 
     if(!___ret) return E_POINTER;
@@ -1390,9 +1390,9 @@ HRESULT DW_2945414E::AbiFunc(IObject* __i_, char* arg, char* ___ret)
 template<>
 Delegate<char(string)> ABIUtil<Delegate<char(string)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_2945414E::AbiFunc)
+    if (fptr == &DW_F757A1EF::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_2945414E>(ctx);
+        auto wrapper = runtime_cast<DW_F757A1EF>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1412,14 +1412,14 @@ template<>
 ABIOf<Delegate<char(string)>> ABIUtil<Delegate<char(string)>>::ToABI(const Delegate<char(string)>& x)
 {
     ABIOf<Delegate<char(string)>> x_abi;
-    x_abi.Fn = &DW_2945414E::AbiFunc;
-    x_abi.Ctx = DW_2945414E::GetWrapper(x);
+    x_abi.Fn = &DW_F757A1EF::AbiFunc;
+    x_abi.Ctx = DW_F757A1EF::GetWrapper(x);
     return x_abi;
 }
 
-HRESULT DW_5D02415C::AbiFunc(IObject* __i_, int obj)
+HRESULT DW_5C0C3D4E::AbiFunc(IObject* __i_, int obj)
 {
-    auto ___del = runtime_cast<DW_5D02415C>(__i_);
+    auto ___del = runtime_cast<DW_5C0C3D4E>(__i_);
     if (!___del) return E_FAIL;
 
     try {
@@ -1431,9 +1431,9 @@ HRESULT DW_5D02415C::AbiFunc(IObject* __i_, int obj)
 template<>
 Delegate<void(int)> ABIUtil<Delegate<void(int)>>::FromABI(void* fptr, IObject* ctx)
 {
-    if (fptr == &DW_5D02415C::AbiFunc)
+    if (fptr == &DW_5C0C3D4E::AbiFunc)
     {
-        auto wrapper = runtime_cast<DW_5D02415C>(ctx);
+        auto wrapper = runtime_cast<DW_5C0C3D4E>(ctx);
         if (!wrapper) throw Exception("Unexpected context type for delegate translation");
         return wrapper->Func;
     }
@@ -1450,8 +1450,8 @@ template<>
 ABIOf<Delegate<void(int)>> ABIUtil<Delegate<void(int)>>::ToABI(const Delegate<void(int)>& x)
 {
     ABIOf<Delegate<void(int)>> x_abi;
-    x_abi.Fn = &DW_5D02415C::AbiFunc;
-    x_abi.Ctx = DW_5D02415C::GetWrapper(x);
+    x_abi.Fn = &DW_5C0C3D4E::AbiFunc;
+    x_abi.Ctx = DW_5C0C3D4E::GetWrapper(x);
     return x_abi;
 }
 
