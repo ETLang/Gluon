@@ -24,8 +24,7 @@ namespace Gluon
 
     public enum CppMode
     {
-        Implementation,
-        PimplWrapper
+        Default,
     }
 
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -35,7 +34,7 @@ namespace Gluon
         public string ProjectFile { get; set; }
         public bool FullIntellisense { get; set; }
 
-        public GluonTargetCppAttribute(string targetID = "Cpp", CppMode mode = CppMode.Implementation)
+        public GluonTargetCppAttribute(string targetID = "Cpp", CppMode mode = CppMode.Default)
             : base(targetID, mode.ToString()) { }
     }
 

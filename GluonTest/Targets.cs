@@ -3,7 +3,7 @@
 [assembly: GluonLibraryDefinition]
 
 // The C++ project that implements the locator. It builds a static .lib
-[assembly: GluonTargetCpp("Cpp", CppMode.Implementation,
+[assembly: GluonTargetCpp("Cpp", CppMode.Default,
     OutputFolder = @"..\..\..\GluonTestResults\cpp",
     ProjectName = "GluonTest",
     ProjectFile = @"..\..\..\GluonTestResults\GluonTestResults.vcxproj",

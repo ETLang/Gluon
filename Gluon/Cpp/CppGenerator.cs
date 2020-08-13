@@ -73,26 +73,16 @@ namespace Gluon
 
         public override void GenerateAll()
         {
-            if (Settings.Mode != CppMode.PimplWrapper)
-            {
-                if (!Directory.Exists(PublicFolder))
-                    Directory.CreateDirectory(PublicFolder);
+            if (!Directory.Exists(PublicFolder))
+                Directory.CreateDirectory(PublicFolder);
 
-                CopyBaseFiles();
-            }
+            CopyBaseFiles();
 
             if (!Directory.Exists(Settings.OutputFolder))
                 Directory.CreateDirectory(Settings.OutputFolder);
 
-            switch (Settings.Mode)
-            {
-                case CppMode.Implementation:
-                    GeneratePrivate();
-                    break;
-                case CppMode.PimplWrapper:
-                    GeneratePimplWrappers();
-                    break;
-            }
+            GeneratePrivate();
+            GeneratePimplWrappers();
 
             ModifyProjectFile(Settings.ProjectFile);
 
@@ -139,7 +129,7 @@ namespace Gluon
                 {
                     GenerateCommonImplementation(writer);
                     GenerateValueTypeConverters(writer);
-                    GenerateDelegateConvertersImplementation(writer);
+                    GenerateDelegateConvertersImplementation(writer, false);
 
                     if (AllGeneratedTasks.Count != 0)
                         GenerateTaskWrappersImplementation(writer);
@@ -189,7 +179,7 @@ namespace Gluon
 
                 WriteFile(Path.Combine(Settings.OutputFolder, ValueTypesHeader), false, false, GenerateValueTypesHeader);
                 WriteFile(Path.Combine(Settings.OutputFolder, ValueTypesConverters), false, false, GenerateValueTypeConverters);
-                WriteFile(Path.Combine(Settings.OutputFolder, DelegateConverters), false, false, GenerateDelegateConvertersImplementation);
+                WriteFile(Path.Combine(Settings.OutputFolder, DelegateConverters), false, false, file => GenerateDelegateConvertersImplementation(file, false));
 
                 if (AllGeneratedTasks.Count != 0)
                     WriteFile(Path.Combine(Settings.OutputFolder, TaskWrappers), false, false, GenerateTaskWrappersImplementation);
@@ -219,7 +209,7 @@ namespace Gluon
         {
             if (Settings.ConsolidateFiles)
             {
-                WriteFile(Path.Combine(Settings.OutputFolder, PublicLibraryHeader), false, false, file =>
+                WriteFile(Path.Combine(PublicFolder, PublicLibraryHeader), false, false, file =>
                 {
                     GeneratePublicLibraryHeader(file);
                     GenerateValueTypesHeader(file);
@@ -227,40 +217,40 @@ namespace Gluon
                         GenerateDelegateConvertersHeader(file, del);
                 });
 
-                WriteFile(Path.Combine(Settings.OutputFolder, PublicLibraryImplementation), false, false, file =>
+                WriteFile(Path.Combine(PublicFolder, PublicLibraryImplementation), false, false, file =>
                 {
                     file.IncludeLocal(PublicLibraryHeader);
                     foreach (var type in AllGeneratedClasses)
                         GenerateClassPimplImplementation(file, type);
-                    GenerateDelegateConvertersImplementation(file);
+                    GenerateDelegateConvertersImplementation(file, true);
                     GenerateValueTypeConverters(file);
                 });
             }
             else
             {
-                WriteFile(Path.Combine(Settings.OutputFolder, ValueTypesHeader), false, false, GenerateValueTypesHeader);
-                WriteFile(Path.Combine(Settings.OutputFolder, ValueTypesConverters), false, false, GenerateValueTypeConverters);
+                WriteFile(Path.Combine(PublicFolder, ValueTypesHeader), false, false, GenerateValueTypesHeader);
+                WriteFile(Path.Combine(PublicFolder, ValueTypesConverters), false, false, GenerateValueTypeConverters);
 
-                WriteFile(Path.Combine(Settings.OutputFolder, PublicLibraryHeader), false, false, file =>
+                WriteFile(Path.Combine(PublicFolder, PublicLibraryHeader), false, false, file =>
                 {
                     GeneratePublicLibraryHeader(file);
                 });
 
-                WriteFile(Path.Combine(Settings.OutputFolder, PimplDelegatesHeader), false, false, file =>
+                WriteFile(Path.Combine(PublicFolder, PimplDelegatesHeader), false, false, file =>
                 {
                     foreach (var del in AllTranslatedDelegateSignatures)
                         GenerateDelegateConvertersHeader(file, del);
                 });
 
-                WriteFile(Path.Combine(Settings.OutputFolder, PimplDelegates), false, false, file =>
+                WriteFile(Path.Combine(PublicFolder, PimplDelegates), false, false, file =>
                 {
-                    GenerateDelegateConvertersImplementation(file);
+                    GenerateDelegateConvertersImplementation(file, true);
 
                 });
 
                 foreach (var type in AllGeneratedClasses)
                 {
-                    var cppPath = Path.Combine(Settings.OutputFolder, type.Name + ".cpp");
+                    var cppPath = Path.Combine(PublicFolder, type.Name + ".cpp");
                     WriteFile(cppPath, true, false, file =>
                     {
                         file.IncludeLocal(PublicLibraryHeader);
@@ -271,12 +261,8 @@ namespace Gluon
             
             foreach (var type in AllGeneratedClasses)
             {
-                var headerPath = Path.Combine(Settings.OutputFolder, type.Name + ".h");
-
-                if (File.Exists(headerPath))
-                    ModifyPimplClassHeader(headerPath, type);
-                else
-                    WriteFile(headerPath, true, false, file => GenerateClassPimplHeader(file, type));
+                var headerPath = Path.Combine(PublicFolder, type.Name + ".h");
+                WriteFile(headerPath, true, false, file => GenerateClassPimplHeader(file, type));
             }
         }
 
@@ -360,11 +346,6 @@ namespace Gluon
                 file.IncludeLocal(PimplDelegatesHeader);
         }
 
-        public void ModifyPimplClassHeader(string path, AST.Object type)
-        {
-            // TODO This.
-        }
-
         public void GenerateClassPimplHeader(CppTreeWriter file, AST.Object type)
         {
             if (type.BaseType != null)
@@ -399,9 +380,9 @@ namespace Gluon
             });
         }
 
-        public void GenerateDelegateConvertersImplementation(CppTreeWriter file)
+        public void GenerateDelegateConvertersImplementation(CppTreeWriter file, bool pimpl)
         {
-            if (Settings.Mode == CppMode.PimplWrapper)
+            if (pimpl)
                 file.IncludeLocal(PublicLibraryHeader);
             else
                 file.IncludeLocal("Public/" + Settings.ProjectName + ".public.abi.h");
@@ -1080,7 +1061,7 @@ void {0}_Initialize()", Settings.ProjectName, Definition.Assembly.Name.Replace('
             writer.WorkingNamespace = type.Namespace;
             writer.Strata = ApiStrata.Normal;
             writer.FullIntellisense = Settings.FullIntellisense;
-            writer.PimplMode = Settings.Mode == CppMode.PimplWrapper;
+            writer.PimplMode = false;
 
             var cpp = new CppTreeWriter(Settings);
 
@@ -1415,7 +1396,7 @@ void {0}_Initialize()", Settings.ProjectName, Definition.Assembly.Name.Replace('
             return writer;
         }
 
-        private void WriteFile(string path, bool modifiable, bool abi, Action<CppTreeWriter> dostuff)
+        private void WriteFile(string path, bool modifiable, bool abi, Action<CppTreeWriter> dostuff, bool pimpl = false)
         {
             var file = CreateSourceFile(modifiable);
             file.Strata = abi ? ApiStrata.ABI : ApiStrata.Normal;
@@ -1425,14 +1406,14 @@ void {0}_Initialize()", Settings.ProjectName, Definition.Assembly.Name.Replace('
                 file.Directive("#pragma once");
 
             dostuff(file);
-            Render(file, path);
+            Render(file, path, pimpl);
         }
 
-        private void Render(PascalTreeWriter treeWriter, string path)
+        private void Render(PascalTreeWriter treeWriter, string path, bool pimpl = false)
         {
             var writer = new CppRender();
             writer.FullIntellisense = Settings.FullIntellisense;
-            writer.PimplMode = Settings.Mode == CppMode.PimplWrapper;
+            writer.PimplMode = pimpl;
 
             treeWriter.InsertUsings();
             treeWriter.Tree.Resolve(writer);
