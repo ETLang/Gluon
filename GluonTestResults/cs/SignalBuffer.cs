@@ -7,6 +7,7 @@ using System;
 using System.Runtime.InteropServices;
 using ABI.GluonTest;
 using ABI.Gluon;
+using GluonTest;
 
 namespace GluonTest
 {

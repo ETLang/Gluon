@@ -118,6 +118,15 @@ namespace Gluon
             nsm.AddNamespace("x", csns);
 
             var projectRoot = proj.SelectSingleNode("x:Project", nsm);
+
+            if (projectRoot == null)
+            {
+                var testNetCoreProject = proj.SelectSingleNode("Project");
+
+                if (testNetCoreProject != null)
+                    return;     // .Net Core projects take their contents from the folder structure; there's nothing to do here.
+            }
+
             var generatedGroup = proj.SelectSingleNode("x:Project/x:ItemGroup[@Label='Gluon Generated']", nsm) as XmlElement;
 
             if (generatedGroup == null)

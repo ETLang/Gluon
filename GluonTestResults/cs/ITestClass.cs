@@ -26,7 +26,7 @@ namespace GluonTest
             StaticInit();
         }
 
-        public ITestClass() : this(new AbiPtr(Make())) { _BigEvent_abi = D_5D02415F.Unwrap(_Call_BigEvent);  Init(); }  
+        public ITestClass() : this(new AbiPtr(Make())) { _BigEvent_abi = D_5C0C3D51.Unwrap(_Call_BigEvent);  Init(); }  
 
         protected override void OnDispose(bool finalizing)
         {
@@ -77,8 +77,8 @@ namespace GluonTest
 
         public AddSomeShit Adder
         {
-            get {  Check(); IntPtr x_abi_fn; IntPtr x_abi_ctx; Native.Throw(_vt.GetAdder(IPtr, out x_abi_fn, out x_abi_ctx)); return D_668509AE.Wrap(x_abi_fn, x_abi_ctx); }   
-            set {  Check(); var value_abi = D_668509AE.Unwrap(value); Native.Throw(_vt.SetAdder(IPtr, value_abi.Fn, value_abi.Ctx)); }  
+            get {  Check(); IntPtr x_abi_fn; IntPtr x_abi_ctx; Native.Throw(_vt.GetAdder(IPtr, out x_abi_fn, out x_abi_ctx)); return D_FBC9C527.Wrap(x_abi_fn, x_abi_ctx); }   
+            set {  Check(); var value_abi = D_FBC9C527.Unwrap(value); Native.Throw(_vt.SetAdder(IPtr, value_abi.Fn, value_abi.Ctx)); }  
         }
 
         public int Property
@@ -91,20 +91,20 @@ namespace GluonTest
 
         public TestStruct[] HardProperty
         {
-            get {  Check(); ArrayBlob x_abi; Native.Throw(_vt.GetHardProperty(IPtr, out x_abi.Ptr, out x_abi.Count)); return MConv.FromABI_463C8217(x_abi.Ptr, x_abi.Count); }   
+            get {  Check(); ArrayBlob x_abi; Native.Throw(_vt.GetHardProperty(IPtr, out x_abi.Ptr, out x_abi.Count)); return MConv.FromABI_5E297C84(x_abi.Ptr, x_abi.Count); }   
             set {  Check(); var value_abi = ABI.GluonTest.TestStruct.ToABI_Array(value); Native.Throw(_vt.SetHardProperty(IPtr, value_abi, value_abi.Length)); }  
         }
 
         public Func<char,int,string>[] HarderProperty
         {
-            get {  Check(); ArrayBlob x_abi; Native.Throw(_vt.GetHarderProperty(IPtr, out x_abi.Ptr, out x_abi.Count)); return MConv.FromABI_827F05B4(x_abi.Ptr, x_abi.Count); }   
-            set {  Check(); var value_abi = D_827F05B4.ToABI_Array(value); Native.Throw(_vt.SetHarderProperty(IPtr, value_abi, value_abi.Length)); }  
+            get {  Check(); ArrayBlob x_abi; Native.Throw(_vt.GetHarderProperty(IPtr, out x_abi.Ptr, out x_abi.Count)); return MConv.FromABI_6FD213D9(x_abi.Ptr, x_abi.Count); }   
+            set {  Check(); var value_abi = D_6FD213D9.ToABI_Array(value); Native.Throw(_vt.SetHarderProperty(IPtr, value_abi, value_abi.Length)); }  
         }
 
         public Func<string,char> DumbDelegate
         {
-            get {  Check(); IntPtr x_abi_fn; IntPtr x_abi_ctx; Native.Throw(_vt.GetDumbDelegate(IPtr, out x_abi_fn, out x_abi_ctx)); return D_29454153.Wrap(x_abi_fn, x_abi_ctx); }   
-            set {  Check(); var value_abi = D_29454153.Unwrap(value); Native.Throw(_vt.SetDumbDelegate(IPtr, value_abi.Fn, value_abi.Ctx)); }  
+            get {  Check(); IntPtr x_abi_fn; IntPtr x_abi_ctx; Native.Throw(_vt.GetDumbDelegate(IPtr, out x_abi_fn, out x_abi_ctx)); return D_F757A1F4.Wrap(x_abi_fn, x_abi_ctx); }   
+            set {  Check(); var value_abi = D_F757A1F4.Unwrap(value); Native.Throw(_vt.SetDumbDelegate(IPtr, value_abi.Fn, value_abi.Ctx)); }  
         }
 
         public void Methody()
@@ -173,7 +173,7 @@ namespace GluonTest
             Marshal.Release(iptr);
             IPtr = iptr;
             _vt = VTUnknown.GetVTable<ABI.GluonTest.ITestClass>(IPtr);
-            _BigEvent_abi = D_5D02415F.Unwrap(_Call_BigEvent);
+            _BigEvent_abi = D_5C0C3D51.Unwrap(_Call_BigEvent);
 
             Init();
         }

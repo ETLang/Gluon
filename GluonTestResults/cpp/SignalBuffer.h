@@ -25,12 +25,15 @@ namespace GluonTest {
 
     private:
 #ifndef __INTELLISENSE__
+        METHOD GetObjectTypeId(UUID* outID) { if(!outID) return E_POINTER; *outID = _uuidof(::ABI::GluonTest::SignalBuffer); return S_OK; }
+        METHOD GetObjectTypeName(const char** outStr) { if(!outStr) return E_POINTER; *outStr = "GluonTest.SignalBuffer"; return S_OK; }
         METHOD _CopyTo(double* arr, int arr_count, int* ___ret);
         METHOD _CopyTo_1(float* arr, int arr_count, int* ___ret);
         METHOD _CopyTo_2(short* arr, int arr_count, int* ___ret);
 
         METHOD _GetChannelCount(int* ___ret);
         METHOD _GetSampleCount(int* ___ret);
+
 #endif
     // clang-format on
     #pragma endregion

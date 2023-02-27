@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "SampleImageFilterApi": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Code\\Gluon\\Gluon\\bin\\Debug\\Gluon.exe",
+      "commandLineArgs": "SampleImageFilterApi.dll",
+      "workingDirectory": "C:\\Code\\Gluon\\Samples\\ImageFilter\\SampleImageFilterApi\\bin\\Debug\\net452"
+    }
+  }
+}

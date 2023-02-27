@@ -43,6 +43,8 @@ namespace GluonTest {
 
     private:
 #ifndef __INTELLISENSE__
+        METHOD GetObjectTypeId(UUID* outID) { if(!outID) return E_POINTER; *outID = _uuidof(::ABI::GluonTest::NoiseEngine); return S_OK; }
+        METHOD GetObjectTypeName(const char** outStr) { if(!outStr) return E_POINTER; *outStr = "GluonTest.NoiseEngine"; return S_OK; }
         METHOD _Play();
         METHOD _Pause();
         METHOD _GetPlot(double durationSeconds, PlotType type, ::ABI::GluonTest::SignalBuffer** ___ret);
@@ -59,6 +61,7 @@ namespace GluonTest {
         METHOD _SetDistribution(NoiseDistribution value);
         METHOD _GetIsFilterEnabled(bool* ___ret);
         METHOD _SetIsFilterEnabled(bool value);
+
 #endif
     // clang-format on
     #pragma endregion

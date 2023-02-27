@@ -15,7 +15,10 @@ namespace GluonTest {
 
     private:
 #ifndef __INTELLISENSE__
+        METHOD GetObjectTypeId(UUID* outID) { if(!outID) return E_POINTER; *outID = _uuidof(::ABI::GluonTest::Waveform); return S_OK; }
+        METHOD GetObjectTypeName(const char** outStr) { if(!outStr) return E_POINTER; *outStr = "GluonTest.Waveform"; return S_OK; }
         METHOD _Phase(double t, double* ___ret);
+
 #endif
     // clang-format on
     #pragma endregion

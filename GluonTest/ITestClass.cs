@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace GluonTest
 {
-    // Supported constructs:
+    // Supported constructs: 
     // Constructors
     // Methods
     // Properties

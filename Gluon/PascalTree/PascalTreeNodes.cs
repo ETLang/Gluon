@@ -241,7 +241,7 @@ namespace Gluon.PascalTreeNodes
         public AST.Type Type { get; private set; }
         public bool? Abi { get; set; }
 
-        public IEnumerable<AST.Type> ReferencedTypes { get { return Type.SelectReferencedTypes(); } }
+        public IEnumerable<AST.Type> ReferencedTypes { get { return Type.SelectReferencedTypes().Union(new AST.Type[] { Type }); } }
 
         public TypeRefNode(AST.Type type, bool? abi = null) { Type = type; Abi = abi; }
         public TypeRefNode(AST.IVariable variable, bool? abi = null) { Variable = variable; Type = Variable.Type; Abi = abi; }

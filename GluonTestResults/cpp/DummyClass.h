@@ -18,8 +18,11 @@ namespace GluonTest {
 
     private:
 #ifndef __INTELLISENSE__
+        METHOD GetObjectTypeId(UUID* outID) { if(!outID) return E_POINTER; *outID = _uuidof(::ABI::GluonTest::DummyClass); return S_OK; }
+        METHOD GetObjectTypeName(const char** outStr) { if(!outStr) return E_POINTER; *outStr = "GluonTest.DummyClass"; return S_OK; }
         METHOD _GetNugget(char** ___ret);
         METHOD _SetNugget(char* value);
+
 #endif
     // clang-format on
     #pragma endregion

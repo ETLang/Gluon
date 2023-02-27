@@ -15,6 +15,8 @@ void GluonTest_Initialize();
 
 namespace GluonTest
 {
+    using namespace GluonInternal;
+
     struct BlittableStruct;
 }
 
@@ -47,6 +49,7 @@ namespace ABI
 {
     namespace System
     {
+        using namespace GluonInternal;
     }
 }
 

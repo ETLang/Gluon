@@ -22,7 +22,7 @@ void GTone::SetFrequency(double value)
 
 Waveform* GTone::GetWaveform() const
 {
-    return DEFAULT_(Waveform_t);
+    return DEFAULT_(Waveform_t*);
 }
 
 void GTone::SetWaveform(Waveform_t* value)

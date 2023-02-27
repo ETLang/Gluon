@@ -14,14 +14,14 @@ using Gluon;
 //{
 //    interface Locator
 //    {
-//        void GenerateFaceImages(int sizeCentimeters, string outFolder);
+//        void GenerateFaceImages(int sizeCentimeters, string outFolder); 
 
 //        Vector2 FocalLength { get; set; }
-//        Vector2 PrincipalPoint { get; set; }
+//        Vector2 PrincipalPoint { get; set; } 
 //        Vector3 RadialDistortion { get; set; }
 //        Vector2 TangentialDistortion { get; set; }
 
 //        Vector3 LatestPosition { get; set; }
 //        Quaternion LatestRotation { get; set; }
 //    }
-//}
+//} 

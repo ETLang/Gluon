@@ -15,6 +15,7 @@ namespace Gluon
         public CppTreeWriter(GeneratorSettingsCpp settings) { Settings = settings; }
         public CppTreeWriter(PascalTree tree, GeneratorSettingsCpp settings) : base(tree) { Settings = settings; }
         public GeneratorSettingsCpp Settings { get; private set; }
+        public bool PimplMode { get; set; }
 
         public string TargetPath { get; set; }
 
@@ -62,7 +63,7 @@ namespace Gluon
             Insert(new IncludeNode(path, true));
         }
 
-        public void LocalTranslationsBlock(Dictionary<AST.Type,string> translations, Action content)
+        public void LocalTranslationsBlock(Dictionary<AST.Type, string> translations, Action content)
         {
             InsertAndPushTarget(new LocalTranslationsBlock(translations));
             content();
@@ -104,7 +105,7 @@ namespace Gluon
         {
             foreach (var arg in m.GetABIParametersCpp())
             {
-                if(arg.IsWriteable())
+                if (arg.IsWriteable())
                     Line("if(!{0}) return E_POINTER;", arg.Name);
             }
             Spacer();
@@ -260,11 +261,11 @@ namespace Gluon
 
                         Spacer();
 
-                    // Default constructor
-                    Line("{0}() {{ }}", type.Name);
+                        // Default constructor
+                        Line("{0}() {{ }}", type.Name);
 
-                    // Full constructor
-                    var constructorArgs = fields.Select(f => f.Morph("_" + f.Name, AST.VariableContext.In));
+                        // Full constructor
+                        var constructorArgs = fields.Select(f => f.Morph("_" + f.Name, AST.VariableContext.In));
                         if (strata == ApiStrata.ABI)
                             constructorArgs = constructorArgs.GetABIParametersCpp();
 
@@ -297,12 +298,9 @@ namespace Gluon
                 Line(@"IS_VALUETYPE({0}::{1}::{2}, ""{3}"");", prefix, type.Namespace.FullName("::"), type.Name, id);
         }
 
-        public void GenerateInterfaceMembers(AST.Object type, bool pure, bool fullIntellisense = false)
+        public void GenerateInterfaceMembers(AST.Object type, bool pure)
         {
             var suffix = pure ? " = 0" : "";
-
-            if (!fullIntellisense)
-                Directive("#ifndef __INTELLISENSE__");
 
             Region(() =>
             {
@@ -332,9 +330,6 @@ namespace Gluon
                     declare(ev.CreateRemover());
                 }
             });
-
-            if (!fullIntellisense)
-                Directive("#endif");
         }
 
         public void DeclareABIConstructors(AST.Object type)
@@ -353,7 +348,13 @@ namespace Gluon
             Line($"cominterface comid(\"{type.Id}\") {type.Name} : public IUnknown");
             Block(() =>
             {
-                GenerateInterfaceMembers(type, true, fullIntellisense);
+                if (!fullIntellisense)
+                    Directive("#ifndef __INTELLISENSE__");
+
+                GenerateInterfaceMembers(type, true);
+
+                if (!fullIntellisense)
+                    Directive("#endif");
             }, ";");
         }
 
@@ -364,8 +365,10 @@ namespace Gluon
 
             // Class Signature
             Line($"class comid(\"{type.PrivateId}\")");
-            Code("{0} : public ComObject<{0}, {1}, {2}",
-                type.Name, type.BaseType != null ? TypeRef(type.BaseType) : "Object", TypeRef(type, true));
+            Code("{0} : public ComObject<{0}, {1}, ::ABI::IGluonObject, {2}",
+                type.Name,
+                type.BaseType != null ? TypeRef(type.BaseType) : "Object",
+                TypeRef(type, true));
 
             foreach (var iface in type.Interfaces)
                 Code($", {TypeRef(iface, true)}");
@@ -395,11 +398,78 @@ $@"class comid(""{type.Id}"") {name} : public ComObject<{name}, Object>, public 
 public:");
             Indent++;
             Line($"DW{type.ShortId}(const Delegate<{dSig}>& d) : DBase(d) {{ }}");
-            Line($"static Delegate<{dSig}> Lookup({TypeRef(type)} fptr, IObject* ctx);");
-            Line($"static HRESULT __stdcall AbiFunc({DeclParameters(type.GetABIParametersCpp(true))});");
+            //Line($"static Delegate<{dSig}> Lookup({TypeRef(type)} fptr, IObject* ctx);");
+            Code($"static HRESULT __stdcall AbiFunc({DeclParameters(type.GetABIParametersCpp(true))})");
+
+            if (PimplMode)
+            {
+                Block(() =>
+                {
+                    Code("return __P_AbiFunc(");
+                    List(CodeListStyle.SingleLine, () =>
+                    {
+                        foreach (var p in type.GetABIParametersCpp(true))
+                            ListItem(p.Name);
+                    });
+                    Line(");");
+                });
+            }
+            else
+                Line(";");
+
             Indent--;
+
+            if (PimplMode)
+            {
+                Line("private:");
+                Indent++;
+                Line("template<typename = void>");
+                Line($"static HRESULT __P_AbiFunc({DeclParameters(type.GetABIParametersCpp(true))});");
+                Indent--;
+            }
+
             Line("};");
             Spacer();
+        }
+
+        public void GenerateDelegateConverterUtilDeclaration(AST.Delegate type, AST.Namespace converterNS)
+        {
+            var typeRef = TypeRef(type, false);
+
+            Strata = ApiStrata.Normal;
+            Line($"template<> struct ABIUtil<{typeRef}> : public ABIUtilForDelegates<{Signature(type)}>");
+            Block(() =>
+            {
+                Line($"typedef {converterNS.FullName("::")}::DW{type.ShortId} DW{type.ShortId};");
+                Spacer();
+                
+                //Line($"Delegate<{Signature(type, false)}> DW{type.ShortId}::Lookup({TypeRef(type)} fptr, IObject* ctx)");
+                Code($"static {typeRef} FromABI(void* fptr, IObject* ctx)");
+                if (PimplMode)
+                {
+                    Line();
+                    DelegateFromAbiImplementation(type);
+                    Spacer();
+                }
+                else
+                    Line(";");
+
+                Code($"static ABI::DelegateBlob ToABI(const {typeRef}& x)");
+                if (PimplMode)
+                {
+                    Line();
+                    DelegateToAbiImplementation(type);
+                    Spacer();
+                }
+                else
+                    Line(";");
+
+                Line($"static {typeRef} FromABI(const ABI::DelegateBlob& abi)");
+                Block(() =>
+                {
+                    Line($"return FromABI(abi.Fn, abi.Ctx);");
+                });
+            }, ";");
         }
 
         public void GenerateDelegateConverterImplementation(AST.Delegate type)
@@ -410,7 +480,9 @@ public:");
             var typeRef = TypeRef(type, false);
             var typeRefABI = TypeRef(type, true);
 
-            Line($"HRESULT DW{type.ShortId}::AbiFunc({DeclParameters(type.GetABIParametersCpp(true))})");
+            if (PimplMode)
+                Line("template<typename>");
+            Line($"HRESULT DW{type.ShortId}::{(PimplMode ? "__P_" : "")}AbiFunc({DeclParameters(type.GetABIParametersCpp(true))})");
             Block(() =>
             {
                 Line($"auto {dName} = runtime_cast<DW{type.ShortId}>(__i_);");
@@ -420,13 +492,30 @@ public:");
                 ABIWrappedCall(type, null, $"{dName}->Func");
             });
             Spacer();
+        }
 
-            Strata = ApiStrata.Normal;
-            Line("template<>");
-            Line($"{TypeRef(type, false)} ABIUtil<{typeRef}>::FromABI(void* fptr, IObject* ctx)");
-            //Line($"Delegate<{Signature(type, false)}> DW{type.ShortId}::Lookup({TypeRef(type)} fptr, IObject* ctx)");
+        public void GenerateDelegateConverterUtilImplementation(AST.Delegate type)
+        {
+            var typeRef = TypeRef(type, false);
+
+            var staticness = PimplMode ? "static " : "";
+
+            Line($"{staticness}{typeRef} GluonInternal::ABIUtil<{typeRef}>::FromABI(void* fptr, IObject* ctx)");
+            DelegateFromAbiImplementation(type);
+            Spacer();
+
+            Line($"{staticness}ABIOf<{typeRef}> GluonInternal::ABIUtil<{typeRef}>::ToABI(const {typeRef}& x)");
+            DelegateToAbiImplementation(type);
+            Spacer();
+        }
+
+        public void DelegateFromAbiImplementation(AST.Delegate type)
+        {
             Block(() =>
             {
+                var originalStrata = Strata;
+                Strata = ApiStrata.Normal;
+
                 Line(
 $@"if (fptr == &DW{type.ShortId}::AbiFunc)
 {{
@@ -435,43 +524,39 @@ $@"if (fptr == &DW{type.ShortId}::AbiFunc)
     return wrapper->Func;
 }}
 
-return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(type.Parameters)})");
+return [fn = ({TypeRef(type, true)})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(type.Parameters)})");
 
                 if (!type.Return.IsVoid)
-                    Code("    -> {0} ", VariableType(type.Return, AST.VariableContext.Return));
+                    Code($"    -> {VariableType(type.Return, AST.VariableContext.Return)} ");
 
                 Block(() =>
                 {
                     CallToABIMethodBody(type.Rename("fn"), "cp.Get()");
                 }, ";");
-            });
-            Spacer();
 
-            Line("template<>");
-            Line("ABIOf<{0}> ABIUtil<{0}>::ToABI(const {0}& x)", typeRef);
+                Strata = originalStrata;
+            });
+        }
+
+        public void DelegateToAbiImplementation(AST.Delegate type)
+        {
             Block(() =>
             {
-                Line($"ABIOf<{typeRef}> x_abi;");
+                Line($"ABIOf<{TypeRef(type, false)}> x_abi;");
                 Line($"x_abi.Fn = &DW{type.ShortId}::AbiFunc;");
                 Line($"x_abi.Ctx = DW{type.ShortId}::GetWrapper(x);");
                 Line("return x_abi;");
             });
         }
 
-        public void GenerateWrapperDeclaration(AST.Object type, Action additionalDeclarations = null)
+        public void GenerateWrapperDeclaration(AST.Object type, bool fullIntellisense, Action additionalDeclarations = null)
         {
             Strata = ApiStrata.Normal;
 
-            foreach (var ctor in type.Constructors.Where(c => c.Access == AST.Access.Public))
-            {
-                WriteXmlDocumentation(ctor.XmlDoc);
-                Line($"{type.Name} Create{type.Name}({DeclParameters(ctor.Parameters)});");
-            }
-            Spacer();
             WriteXmlDocumentation(type.XmlDoc);
-            Line($"class {type.Name} : public {(type.BaseType != null ? TypeRef(type.BaseType) : "ABI::Wrapper")}");
+            Line($"class _P_{type.Name} : public {(type.BaseType != null ? ("_P_" + TypeRef(type.BaseType)) : "ABI::Wrapper")}");
             Line("{");
-            GenerateWrapperHeaderMembers(type);
+            GenerateWrapperHeaderMembers(type, fullIntellisense);
 
             if (additionalDeclarations != null)
             {
@@ -479,18 +564,43 @@ return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(typ
                 additionalDeclarations();
             }
             Code("};");
+
+            Spacer();
+            foreach (var ctor in type.Constructors.Where(c => c.Access == AST.Access.Public))
+            {
+                WriteXmlDocumentation(ctor.XmlDoc);
+                Line($"template<typename = void>");
+                Line($"{type.Name} Create{type.Name}({DeclParameters(ctor.Parameters)})");
+                Block(() =>
+                {
+
+                    Code($"return _P_{type.Name}::__P_Create(");
+                    List(CodeListStyle.SingleLine, () =>
+                    {
+                        foreach (var p in ctor.Parameters)
+                            ListItem(p.Name);
+                    });
+                    Line(");");
+                });
+                Spacer();
+            }
         }
 
-        public void GenerateWrapperHeaderMembers(AST.Object type)
+        public void GenerateWrapperHeaderMembers(AST.Object type, bool fullIntellisense)
         {
-            Line("#pragma region Gluon Maintained");
-            Line("// clang-format off");
-            Line($"    typedef {(type.BaseType == null ? "ABI::Wrapper" : TypeRef(type.BaseType))} Base;");
-            Line($"    WRAPPER_CORE({type.Name}, ::ABI::{type.FullName("::")})");
+            //Line("#pragma region Gluon Maintained");
+            //Line("// clang-format off");
+
+            Indent++;
+
+            foreach (var ctor in type.Constructors.Where(c => c.Access == AST.Access.Public))
+                Line($"template<typename> friend {type.Name} Create{type.Name}({DeclParameters(ctor.Parameters)});");
+
+            Line($"typedef {(type.BaseType == null ? "ABI::Wrapper" : ("_P_" + TypeRef(type.BaseType)))} Base;");
+            Line($"WRAPPER_CORE(_P_{type.Name}, ::ABI::{type.FullName("::")})");
 
             AST.Construct currentConstruct = AST.Construct.Constructor;
 
-            Indent++;
             Region(() =>
             {
                 var localTranslations = GenerateLocalTranslations(type);
@@ -498,11 +608,6 @@ return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(typ
 
                 LocalTranslationsBlock(localTranslations, () =>
                 {
-                    //Spacer();
-                    //Line($"{type.Name}();");
-                    //Line($"{type.Name}(std::nullptr_t);");
-                    //Line($"{type.Name}(const {type.Name}& copy);");
-                    //Line($"{type.Name}({type.Name}&& move);");
                     var currentAccess = AST.Access.Private;
 
                     foreach (var member in type.Members/*.Where(m => m.Access == AST.Access.Public)*/.OrderBy(m => m.ConstructType).OrderBy(m => m.Access))
@@ -532,8 +637,8 @@ return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(typ
                                 //Line("{0}({1});", type.Name, DeclParameters(true, constructor.Parameters));
                                 break;
                             case AST.Event ev:
-                                Line($"VirtualEvent<{Signature(ev)}, {type.Name}> {ev.Name}");
-                                Line("    {{ this, &{0}::Add{1}Handler, &{0}::Remove{1}Handler }};", type.Name, ev.Name);
+                                Line($"VirtualEvent<{Signature(ev)}, _P_{type.Name}> {ev.Name}");
+                                Line("    {{ this, &_P_{0}::Add{1}Handler, &_P_{0}::Remove{1}Handler }};", type.Name, ev.Name);
                                 break;
                             case AST.Property prop:
                                 Line("PROPERTY{0}({1}, {2});", prop.IsReadOnly ? "_READONLY" : "",
@@ -553,69 +658,92 @@ return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(typ
                         }
                     }
 
-                    var allEvents = type.Members.Where(m => m.Access == AST.Access.Public).OfType<AST.Event>().ToArray();
-
-                    if (allEvents != null && allEvents.Length > 0)
+                    if (currentAccess != AST.Access.Private)
                     {
                         Spacer();
                         Indent--;
-                        Line("private:");
+                        Line($"private:");
                         Indent++;
-                        Spacer();
-
-                        foreach (var ev in allEvents)
-                        {
-                            GenerateMethodDeclaration(type, ev.CreateAdder().AsConst());
-                            GenerateMethodDeclaration(type, ev.CreateRemover().AsConst());
-                        }
+                        currentAccess = AST.Access.Private;
                     }
+
+                    foreach (var ev in type.Events.Where(m => m.Access == AST.Access.Public))
+                    {
+                        GenerateMethodDeclaration(type, ev.CreateAdder().AsConst());
+                        GenerateMethodDeclaration(type, ev.CreateRemover().AsConst());
+                    }
+
+                    if (!fullIntellisense)
+                        Directive("#ifndef __INTELLISENSE__");
+
+                    foreach (var ctor in type.Constructors)
+                    {
+                        Line("template<typename = void>");
+                        Line($"static {type.Name} __P_Create({DeclParameters(ctor.Parameters)});");
+                        Spacer();
+                    }
+
+                    var abiparam = $"{VariableType(type.ToVariable(AST.VariableContext.In), true)} abi";
+
+                    foreach (var member in type.SyntaxExpandedMethods.Where(m => m.Access == AST.Access.Public).OrderBy(m => m.ConstructType))
+                    {
+                        Line("template<typename = void>");
+                        Line($"{TypeRef(member.Return)} __P_{member.Name}({DeclParameters(/*abiparam,*/ member.Parameters)}) const;");
+                        Spacer();
+                    }
+
+                    if (!fullIntellisense)
+                        Directive("#endif");
                 });
 
             });
             Indent--;
             Spacer();
 
-            Line("// clang-format on");
-            Line("#pragma endregion");
+            //Line("// clang-format on");
+            //Line("#pragma endregion");
         }
 
         public void GenerateWrapperImplementation(AST.Object type)
         {
+            Strata = ApiStrata.Normal;
 
-            var localTranslations = CppRender.GetLocalTranslations(type);
-
-            LocalTranslationsBlock(localTranslations, () =>
+            Namespace(type.Namespace, false, () =>
             {
-                foreach (var ctor in type.Constructors.Where(c => c.Access == AST.Access.Public))
+                var localTranslations = CppRender.GetLocalTranslations(type);
+                LocalTranslationsBlock(localTranslations, () =>
                 {
-                    WrapperConstructorImplementation(ctor, type);
-                }
-
-                Spacer();
-
-                foreach (var member in type.Members.OrderBy(m => m.ConstructType))
-                {
-                    switch (member)
+                    foreach (var ctor in type.Constructors.Where(c => c.Access == AST.Access.Public))
                     {
-                        case AST.Constructor ctor:
-                            break;
-                        case AST.Property prop:
-                            MethodImplementation(prop.CreateGetter().AsConst(), type);
-
-                            if (!prop.IsReadOnly)
-                                MethodImplementation(prop.CreateSetter().AsConst(), type);
-                            break;
-                        case AST.Event ev:
-                            MethodImplementation(ev.CreateAdder().AsConst(), type);
-                            MethodImplementation(ev.CreateRemover().AsConst(), type);
-                            break;
-                        case AST.Method method:
-                            MethodImplementation(method.AsConst(), type);
-                            break;
-                        default:
-                            throw new Exception("Oops, unhandled member type: " + member.ConstructType.ToString());
+                        WrapperConstructorImplementation(ctor, type);
                     }
-                }
+
+                    Spacer();
+
+                    foreach (var member in type.Members.OrderBy(m => m.ConstructType))
+                    {
+                        switch (member)
+                        {
+                            case AST.Constructor ctor:
+                                break;
+                            case AST.Property prop:
+                                MethodImplementation(prop.CreateGetter().AsConst(), type);
+
+                                if (!prop.IsReadOnly)
+                                    MethodImplementation(prop.CreateSetter().AsConst(), type);
+                                break;
+                            case AST.Event ev:
+                                MethodImplementation(ev.CreateAdder().AsConst(), type);
+                                MethodImplementation(ev.CreateRemover().AsConst(), type);
+                                break;
+                            case AST.Method method:
+                                MethodImplementation(method.AsConst(), type);
+                                break;
+                            default:
+                                throw new Exception("Oops, unhandled member type: " + member.ConstructType.ToString());
+                        }
+                    }
+                });
             });
         }
 
@@ -786,17 +914,29 @@ return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(typ
                         currentAccess = AST.Access.Private;
                     }
 
+                    if (!fullIntellisense)
+                        Directive("#ifndef __INTELLISENSE__");
+
+                    Line($"METHOD GetObjectTypeId(UUID* outID) {{ if(!outID) return E_POINTER; *outID = _uuidof({TypeRef(type, true)}); return S_OK; }}");
+                    Line($"METHOD GetObjectTypeName(const char** outStr) {{ if(!outStr) return E_POINTER; *outStr = \"{type.FullName(".")}\"; return S_OK; }}");
+                    Spacer();
+
+                    //METHOD GetObjectTypeId(UUID* outID) = 0;
+                    //METHOD GetObjectTypeName(const char** outStr) = 0;
                     // ABI interface members
-                    GenerateInterfaceMembers(type, false, fullIntellisense);
+                    GenerateInterfaceMembers(type, false);
                     Spacer();
 
                     foreach (var iface in type.Interfaces)
                     {
                         if (iface.Origin == TypeOrigin.Native) continue;
 
-                        GenerateInterfaceMembers(iface, false, fullIntellisense);
+                        GenerateInterfaceMembers(iface, false);
                         Spacer();
                     }
+
+                    if (!fullIntellisense)
+                        Directive("#endif");
 
                     Strata = ApiStrata.Normal;
                 });
@@ -824,23 +964,44 @@ return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(typ
                 Code(" const");
 
             if (isOverride)
-                Line(" override;");
+                Code(" override");
             else if (method.IsAbstract)
-                Line(" = 0;");
+                Code(" = 0");
+
+            if (Strata == ApiStrata.Normal && PimplMode == true)
+            {
+                Line();
+                Block(() =>
+                {
+                    if (!method.Return.IsVoid)
+                        Code("return ");
+
+                    Code($"__P_{method.Name}(");
+
+                    List(CodeListStyle.SingleLine, () =>
+                    {
+                        foreach (var p in method.Parameters)
+                            ListItem(p.Name);
+                    });
+
+                    Line(");");
+                });
+            }
             else
                 Line(";");
         }
 
         public void WrapperConstructorImplementation(AST.Constructor c, AST.Object owner)
         {
-            Line($"{TypeRef(owner)} {owner.Namespace.FullName("::")}::Create{owner.Name}({DeclParameters(c.Parameters)})");
+            Line("template<typename>");
+            Line($"{TypeRef(owner)} _P_{owner.Name}::__P_Create({DeclParameters(c.Parameters)})");
             Block(() =>
             {
                 Line($"{TypeRef(owner, true)}* instance;");
 
                 CallToABIMethodBody(c.Rename(c.GetABIConstructorName(owner)));
 
-                Line($"return ::ABI::Wrap<{TypeRef(owner)}>(instance);");
+                Line($"return ::ABI::Wrapper::Of<{TypeRef(owner)}>(instance);");
             });
         }
 
@@ -856,7 +1017,7 @@ return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(typ
 
                     List(() =>
                     {
-                        if (Settings.Mode == CppMode.PimplWrapper)
+                        if (PimplMode)
                             Line($"{owner.BaseType.Name}(nullptr)");
                         else
                         {
@@ -936,7 +1097,11 @@ return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(typ
             if (Strata == ApiStrata.Normal)
             {
                 UseLocalTranslations = false;
-                Code("{0} {1}::{2}(", VariableType(m.Return), TypeRef(type), m.Name);
+
+                if (PimplMode)
+                    Line("template<typename>");
+
+                Code($"{VariableType(m.Return)} {(PimplMode ? "_P_" : "")}{TypeRef(type)}::{(PimplMode ? "__P_" : "")}{m.Name}(");
                 UseLocalTranslations = true;
                 Code(DeclParameters(m.Parameters));
 
@@ -949,7 +1114,7 @@ return [fn = ({typeRefABI})fptr, cp = com_ptr<IObject>(ctx)]({DeclParameters(typ
                 {
                     if (implementation != null)
                         implementation();
-                    else if (Settings.Mode == CppMode.PimplWrapper)
+                    else if (PimplMode)
                         CallToABIMethodBody(m.Rename("_abi->_" + m.GetComCompatibleName()));
                     else
                         PlaceholderMethodBody(m);

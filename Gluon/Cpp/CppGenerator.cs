@@ -40,7 +40,6 @@ namespace Gluon
         public string CommonLibraryHeader { get; private set; }
         public string CommonLibraryImplementation { get; private set; }
         public string PublicLibraryHeader { get; private set; }
-        public string PublicLibraryImplementation { get; private set; }
 
         public List<AST.Type> AllGeneratedTypes { get; private set; } = new List<AST.Type>();
         public List<AST.Object> AllGeneratedClasses { get; private set; } = new List<AST.Object>();
@@ -60,8 +59,7 @@ namespace Gluon
 
             CommonLibraryHeader = Settings.ProjectName + ".Common.h";
             CommonLibraryImplementation = Settings.ProjectName + ".abi.cpp";
-            PublicLibraryHeader = Settings.ProjectName + ".Wrappers.h";
-            PublicLibraryImplementation = Settings.ProjectName + ".Wrappers.cpp";
+            PublicLibraryHeader = Settings.ProjectName + ".h";
 
             PreprocessDefinition();
         }
@@ -73,26 +71,16 @@ namespace Gluon
 
         public override void GenerateAll()
         {
-            if (Settings.Mode != CppMode.PimplWrapper)
-            {
-                if (!Directory.Exists(PublicFolder))
-                    Directory.CreateDirectory(PublicFolder);
+            if (!Directory.Exists(PublicFolder))
+                Directory.CreateDirectory(PublicFolder);
 
-                CopyBaseFiles();
-            }
+            CopyBaseFiles();
 
             if (!Directory.Exists(Settings.OutputFolder))
                 Directory.CreateDirectory(Settings.OutputFolder);
 
-            switch (Settings.Mode)
-            {
-                case CppMode.Implementation:
-                    GeneratePrivate();
-                    break;
-                case CppMode.PimplWrapper:
-                    GeneratePimplWrappers();
-                    break;
-            }
+            GeneratePrivate();
+            GeneratePimplWrappers();
 
             ModifyProjectFile(Settings.ProjectFile);
 
@@ -217,67 +205,62 @@ namespace Gluon
 
         public void GeneratePimplWrappers()
         {
-            if (Settings.ConsolidateFiles)
+            WriteFile(Path.Combine(PublicFolder, PublicLibraryHeader), false, false, file =>
             {
-                WriteFile(Path.Combine(Settings.OutputFolder, PublicLibraryHeader), false, false, file =>
-                {
-                    GeneratePublicLibraryHeader(file);
-                    GenerateValueTypesHeader(file);
-                    foreach(var del in AllTranslatedDelegateSignatures)
-                        GenerateDelegateConvertersHeader(file, del);
-                });
+                file.PimplMode = true;
 
-                WriteFile(Path.Combine(Settings.OutputFolder, PublicLibraryImplementation), false, false, file =>
-                {
-                    file.IncludeLocal(PublicLibraryHeader);
-                    foreach (var type in AllGeneratedClasses)
-                        GenerateClassPimplImplementation(file, type);
-                    GenerateDelegateConvertersImplementation(file);
-                    GenerateValueTypeConverters(file);
-                });
-            }
-            else
-            {
-                WriteFile(Path.Combine(Settings.OutputFolder, ValueTypesHeader), false, false, GenerateValueTypesHeader);
-                WriteFile(Path.Combine(Settings.OutputFolder, ValueTypesConverters), false, false, GenerateValueTypeConverters);
+                file.IncludeLocal(Settings.ProjectName + ".public.abi.h");
 
-                WriteFile(Path.Combine(Settings.OutputFolder, PublicLibraryHeader), false, false, file =>
-                {
-                    GeneratePublicLibraryHeader(file);
-                });
-
-                WriteFile(Path.Combine(Settings.OutputFolder, PimplDelegatesHeader), false, false, file =>
-                {
-                    foreach (var del in AllTranslatedDelegateSignatures)
-                        GenerateDelegateConvertersHeader(file, del);
-                });
-
-                WriteFile(Path.Combine(Settings.OutputFolder, PimplDelegates), false, false, file =>
-                {
-                    GenerateDelegateConvertersImplementation(file);
-
-                });
+                GeneratePrototypes(file);
+                GenerateValueTypesHeader(file);
 
                 foreach (var type in AllGeneratedClasses)
-                {
-                    var cppPath = Path.Combine(Settings.OutputFolder, type.Name + ".cpp");
-                    WriteFile(cppPath, true, false, file =>
-                    {
-                        file.IncludeLocal(PublicLibraryHeader);
-                        GenerateClassPimplImplementation(file, type);
-                    });
-                }
-            }
-            
-            foreach (var type in AllGeneratedClasses)
-            {
-                var headerPath = Path.Combine(Settings.OutputFolder, type.Name + ".h");
+                    GenerateClassPimplHeader(file, type);
 
-                if (File.Exists(headerPath))
-                    ModifyPimplClassHeader(headerPath, type);
-                else
-                    WriteFile(headerPath, true, false, file => GenerateClassPimplHeader(file, type));
-            }
+                if (AllTranslatedDelegateSignatures.Count != 0)
+                {
+                    file.Namespace(_projectDetailsNamespace, false, () =>
+                    {
+                        file.Line("using namespace CS;");
+                        file.Spacer();
+                        foreach (var del in AllTranslatedDelegateSignatures)
+                            file.GenerateDelegateConverterDeclaration(del);
+                    });
+
+                }
+                
+                // Delegate converter ABIUtil declaration
+
+                file.Namespace(_gluonInternalNamespace, false, () =>
+                {
+                    foreach (var del in AllTranslatedDelegateSignatures)
+                        file.GenerateDelegateConverterUtilDeclaration(del, _projectDetailsNamespace);
+                });
+
+                GenerateValueTypeConverters(file);
+                GenerateDelegateConvertersImplementation(file);
+
+                // PIMPL function implementations
+                //GenerateCommonImplementation(file);
+                //GenerateClassABIImplementation(file, type);
+                foreach (var type in AllGeneratedClasses)
+                    file.GenerateWrapperImplementation(type);
+            });
+
+            //WriteFile(Path.Combine(PublicFolder, PublicLibraryImplementation), false, false, file =>
+            //{
+            //    file.IncludeLocal(PublicLibraryHeader);
+            //    foreach (var type in AllGeneratedClasses)
+            //        GenerateClassPimplImplementation(file, type);
+            //    GenerateDelegateConvertersImplementation(file, true);
+            //    GenerateValueTypeConverters(file);
+            //});
+            
+            //foreach (var type in AllGeneratedClasses)
+            //{
+            //    var headerPath = Path.Combine(PublicFolder, type.Name + ".h");
+            //    WriteFile(headerPath, true, false, file => GenerateClassPimplHeader(file, type));
+            //}
         }
 
         public void ModifyProjectFile(string path)
@@ -360,21 +343,16 @@ namespace Gluon
                 file.IncludeLocal(PimplDelegatesHeader);
         }
 
-        public void ModifyPimplClassHeader(string path, AST.Object type)
-        {
-            // TODO This.
-        }
-
         public void GenerateClassPimplHeader(CppTreeWriter file, AST.Object type)
         {
-            if (type.BaseType != null)
-                file.IncludeLocal(type.BaseType.Name + ".h");
-            foreach (var iface in type.Interfaces)
-                file.IncludeLocal(iface.Name + ".h");
+            //if (type.BaseType != null)
+            //    file.IncludeLocal(type.BaseType.Name + ".h");
+            //foreach (var iface in type.Interfaces)
+            //    file.IncludeLocal(iface.Name + ".h");
 
             file.Namespace(type.Namespace, false, () =>
             {
-                file.GenerateWrapperDeclaration(type);
+                file.GenerateWrapperDeclaration(type, Settings.FullIntellisense);
             });
 
             file.Line($"IS_VALUETYPE({file.TypeRef(type)}, \"{type.Id}\")");
@@ -397,28 +375,34 @@ namespace Gluon
                 file.Spacer();
                 file.GenerateDelegateConverterDeclaration(type);
             });
+
+            file.Namespace(_gluonInternalNamespace, false, () =>
+            {
+                file.GenerateDelegateConverterUtilDeclaration(type, _projectDetailsNamespace);
+            });
         }
 
         public void GenerateDelegateConvertersImplementation(CppTreeWriter file)
         {
-            if (Settings.Mode == CppMode.PimplWrapper)
-                file.IncludeLocal(PublicLibraryHeader);
-            else
+            if (!file.PimplMode)
+            {
                 file.IncludeLocal("Public/" + Settings.ProjectName + ".public.abi.h");
+                file.Use(_projectDetailsNamespace);
+                file.Use(Definition.LookupNamespace("GluonInternal"));
+                file.Spacer();
+            }
 
-            file.Use(_projectDetailsNamespace);
-            file.Use(Definition.LookupNamespace("GluonInternal"));
-            file.Spacer();
+            file.Namespace(_projectDetailsNamespace, false, () =>
+            {
+                foreach (var del in AllTranslatedDelegateSignatures)
+                    file.GenerateDelegateConverterImplementation(del);
+            });
 
-            file.Line("template<typename Wrapper, typename Signature>");
-            file.Line("std::unordered_map<ABI::DelegateKeyContainer<Signature>, CS::weak_ptr<Wrapper>> ABI::DelegateWrapperBase<Wrapper, Signature>::_ActiveDelegates;");
-            file.Spacer();
-            file.Line("template<typename Wrapper, typename Signature>");
-            file.Line("CriticalSection ABI::DelegateWrapperBase<Wrapper, Signature>::_CSec;");
-            file.Spacer();
-
-            foreach (var del in AllTranslatedDelegateSignatures)
-                file.GenerateDelegateConverterImplementation(del);
+            file.Namespace(_gluonInternalNamespace, false, () =>
+            {
+                foreach (var del in AllTranslatedDelegateSignatures)
+                    file.GenerateDelegateConverterUtilImplementation(del);
+            });
         }
 
         public void GenerateLibraryABIHeader(CppTreeWriter file)
@@ -476,16 +460,38 @@ namespace Gluon
             var useabi = file.Strata == ApiStrata.ABI;
             var prototypeKeyword = useabi ? "cominterface" : "class";
 
+            var touchedNamespaces = new HashSet<AST.Namespace>();
+
             if (useabi)
             {
                 foreach (var type in SelectGeneratedTypes().Where(t => t.IsStruct && !CppRender.RequiresABITranslation(t.ToVariable())))
-                    file.Namespace(type.Namespace, false, () => file.Line("struct {0};", type.Name));
+                {
+
+                    file.Namespace(type.Namespace, false, () =>
+                    {
+                        if (!touchedNamespaces.Contains(type.Namespace))
+                        {
+                            touchedNamespaces.Add(type.Namespace);
+                            file.Line("using namespace GluonInternal;");
+                            file.Spacer();
+                        }
+
+                        file.Line("struct {0};", type.Name);
+                    });
+                }
             }
 
             foreach (var type in SelectGeneratedTypes().Where(t => (t.IsStruct || t.IsObject || t.IsDelegate)).OrderBy(t => t.ConstructType))
             {
                 file.Namespace(type.Namespace, useabi, () =>
                 {
+                    if (!touchedNamespaces.Contains(type.Namespace))
+                    {
+                        touchedNamespaces.Add(type.Namespace);
+                        file.Line("using namespace GluonInternal;");
+                        file.Spacer();
+                    }
+
                     if (type.IsStruct)
                     {
                         if (useabi && !CppRender.RequiresABITranslation(type.ToVariable()))
@@ -494,7 +500,16 @@ namespace Gluon
                             file.Line("struct {0};", type.Name);
                     }
                     else if (type.IsObject)
-                        file.Line("{0} {1};", prototypeKeyword, type.Name);
+                    {
+                        if (file.PimplMode)
+                        {
+                            file.Line("{0} _P_{1};", prototypeKeyword, type.Name);
+                            file.Line($"typedef comid(\"{type.Id}\") ::ABI::PimplPtr<_P_{type.Name}> {type.Name};");
+                            file.Spacer();
+                        }
+                        else
+                            file.Line("{0} {1};", prototypeKeyword, type.Name);
+                    }
                 });
             }
         }
@@ -594,7 +609,7 @@ namespace Gluon
             }
             file.Spacer();
 
-            if (strata != ApiStrata.ABI)
+            if (strata != ApiStrata.ABI && !file.PimplMode)
                 foreach (var x in AllGeneratedStructs)
                 {
                     if (!CppRender.RequiresABITranslation(x.ToVariable())) continue;
@@ -731,53 +746,76 @@ void {0}_Initialize()", Settings.ProjectName, Definition.Assembly.Name.Replace('
                 {
                     var typename = file.TypeRef(x, false);
                     var abitypename = file.TypeRef(x, true);
-                    file.Line("{0} ABIUtil<{0}>::FromABI(const {1}& x)", typename, abitypename);
-                    file.Block(() =>
-                    {
-                        file.Line("return {0}(", typename);
-                        file.Indent++;
-                        file.List(CodeListStyle.MultiLine, () =>
+
+                    Action fromAbiBody = () =>
+                        file.Block(() =>
+                        {
+                            file.Line("return {0}(", typename);
+                            file.Indent++;
+                            file.List(CodeListStyle.MultiLine, () =>
+                            {
+                                foreach (var field in x.Fields)
+                                {
+                                    if (CppRender.RequiresABITranslation(field))
+                                        file.ListItem("ABIUtil<{0}>::FromABI(x.{1})", file.TypeRef(field), field.Name);
+                                    else
+                                        file.ListItem("x.{0}", field.Name);
+                                }
+                            });
+                            file.Line(");");
+                            file.Indent--;
+                        });
+                    
+                    Action toAbiBody = () =>
+                        file.Block(() =>
                         {
                             foreach (var field in x.Fields)
-                            {
-                                if (CppRender.RequiresABITranslation(field))
-                                    file.ListItem("ABIUtil<{0}>::FromABI(x.{1})", file.TypeRef(field), field.Name);
-                                else
-                                    file.ListItem("x.{0}", field.Name);
-                            }
-                        });
-                        file.Line(");");
-                        file.Indent--;
-                    });
+                                if (field.IsArray || field.Type.IsDelegate)
+                                    file.Line($"auto {field.Name}_ = ABIUtil<{file.TypeRef(field)}>::ToABI(x.{field.Name});");
 
-                    file.Line("{0} ABIUtil<{1}>::ToABI(const {1}& x)", abitypename, typename);
-                    file.Block(() =>
+                            file.Line($"return {abitypename}(");
+                            file.Indent++;
+                            file.List(CodeListStyle.MultiLine, () =>
+                            {
+                                foreach (var field in x.Fields)
+                                {
+                                    if (field.IsArray)
+                                        file.ListItem($"{field.Name}_.begin(), (int){field.Name}_.size()");
+                                    else if (field.Type.IsDelegate)
+                                        file.ListItem($"({file.TypeRef(field, true)}){field.Name}_.Fn, {field.Name}_.Ctx");
+                                    else if (CppRender.RequiresABITranslation(field))
+                                        file.ListItem($"ABIUtil<{file.TypeRef(field)}>::ToABI(x.{field.Name})");
+                                    else
+                                        file.ListItem($"x.{field.Name}");
+                                }
+                            });
+                            file.Line(");");
+                            file.Indent--;
+                        });
+
+
+                    if (file.PimplMode)
                     {
-                        foreach (var field in x.Fields)
-                            if (field.IsArray || field.Type.IsDelegate)
-                            {
-                                file.Line("auto {1}_ = ABIUtil<{2}>::ToABI(x.{1});", file.TypeRef(field.Type), field.Name, file.TypeRef(field));
-                            }
-
-                        file.Line("return {0}(", abitypename);
-                        file.Indent++;
-                        file.List(CodeListStyle.MultiLine, () =>
+                        file.Line($"template<> struct ABIUtil<{typename}> : public StructABI<{typename}, {abitypename}>");
+                        file.Block(() =>
                         {
-                            foreach (var field in x.Fields)
-                            {
-                                if (field.IsArray)
-                                    file.ListItem("{0}_.begin(), (int){0}_.size()", field.Name);
-                                else if (field.Type.IsDelegate)
-                                    file.ListItem("({0}){1}_.Fn, {1}_.Ctx", file.TypeRef(field, true), field.Name);
-                                else if (CppRender.RequiresABITranslation(field))
-                                    file.ListItem("ABIUtil<{0}>::ToABI(x.{1})", file.TypeRef(field), field.Name);
-                                else
-                                    file.ListItem("x.{0}", field.Name);
-                            }
-                        });
-                        file.Line(");");
-                        file.Indent--;
-                    });
+                            file.Line($"static {typename} FromABI(const {abitypename}& x)");
+                            fromAbiBody();
+
+                            file.Spacer();
+                            file.Line($"static {abitypename} ToABI(const {typename}& x)");
+                            toAbiBody();
+                        }, ";");
+                    }
+                    else
+                    {
+                        file.Line($"{typename} ABIUtil<{typename}>::FromABI(const {abitypename}& x)");
+                        fromAbiBody();
+
+                        file.Spacer();
+                        file.Line($"{abitypename} ABIUtil<{typename}>::ToABI(const {typename}& x)");
+                        toAbiBody();
+                    }
                 }
             });
         }
@@ -1080,7 +1118,7 @@ void {0}_Initialize()", Settings.ProjectName, Definition.Assembly.Name.Replace('
             writer.WorkingNamespace = type.Namespace;
             writer.Strata = ApiStrata.Normal;
             writer.FullIntellisense = Settings.FullIntellisense;
-            writer.PimplMode = Settings.Mode == CppMode.PimplWrapper;
+            writer.PimplMode = false;
 
             var cpp = new CppTreeWriter(Settings);
 
@@ -1146,6 +1184,11 @@ void {0}_Initialize()", Settings.ProjectName, Definition.Assembly.Name.Replace('
                         existingBaseTypes[1] = baseType;
                     else
                         existingBaseTypes.Add(baseType);
+
+                    if (existingBaseTypes.Count > 2)
+                        existingBaseTypes[2] = "::ABI::IGluonObject";
+                    else
+                        existingBaseTypes.Add("::ABI::IGluonObject");
 
                     var abiBaseType = writer.TypeName(type, true);
 
@@ -1428,12 +1471,11 @@ void {0}_Initialize()", Settings.ProjectName, Definition.Assembly.Name.Replace('
             Render(file, path);
         }
 
-        private void Render(PascalTreeWriter treeWriter, string path)
+        private void Render(CppTreeWriter treeWriter, string path)
         {
             var writer = new CppRender();
             writer.FullIntellisense = Settings.FullIntellisense;
-            writer.PimplMode = Settings.Mode == CppMode.PimplWrapper;
-
+            writer.PimplMode = treeWriter.PimplMode;
             treeWriter.InsertUsings();
             treeWriter.Tree.Resolve(writer);
             U.WriteFileIfModified(path, writer.ToString());
@@ -1495,6 +1537,7 @@ void {0}_Initialize()", Settings.ProjectName, Definition.Assembly.Name.Replace('
             {
                 var builder = new AST.Builder(Definition);
                 _projectDetailsNamespace = builder.Resolve(Settings.ProjectName + "::Details");
+                _gluonInternalNamespace = builder.Resolve("GluonInternal");
             }
 
             foreach (var type in SelectGeneratedTypes())
@@ -1561,6 +1604,7 @@ void {0}_Initialize()", Settings.ProjectName, Definition.Assembly.Name.Replace('
         }
 
         private AST.Namespace _projectDetailsNamespace;
+        private AST.Namespace _gluonInternalNamespace;
 
         #endregion
     }

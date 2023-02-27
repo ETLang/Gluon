@@ -73,7 +73,7 @@
       <Filter>Public Headers</Filter>
     </ClInclude>
     <ClInclude Include="cpp\Public\GluonTest.public.abi.h">
-      <Filter>Header Files</Filter>
+      <Filter>Public Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

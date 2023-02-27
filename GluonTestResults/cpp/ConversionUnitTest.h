@@ -112,6 +112,8 @@ namespace GluonTest {
 
     private:
 #ifndef __INTELLISENSE__
+        METHOD GetObjectTypeId(UUID* outID) { if(!outID) return E_POINTER; *outID = _uuidof(::ABI::GluonTest::ConversionUnitTest); return S_OK; }
+        METHOD GetObjectTypeName(const char** outStr) { if(!outStr) return E_POINTER; *outStr = "GluonTest.ConversionUnitTest"; return S_OK; }
         METHOD _Primitives(bool inTest, char* outOutTest, int* inoutRefTest, double* ___ret);
         METHOD _Strings(char* inTest, char** outOutTest, char** inoutRefTest, char** ___ret);
         METHOD _SimpleStructs(::ABI::GluonTest::BlittableStruct inTest, ::ABI::GluonTest::BlittableStruct* outOutTest, ::ABI::GluonTest::BlittableStruct* inoutRefTest, ::ABI::GluonTest::BlittableStruct* ___ret);
@@ -165,6 +167,7 @@ namespace GluonTest {
         METHOD _SetGenericDelegateArraysCB(fn_ptr<HRESULT(IObject*,ABI::DelegateBlob*,int,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*,ABI::DelegateBlob**,int*)> value, IObject* value_context);
         METHOD _GetStructMembers(::ABI::GluonTest::StructMemberTest* ___ret);
         METHOD _SetStructMembers(::ABI::GluonTest::StructMemberTest value);
+
 #endif
     // clang-format on
     #pragma endregion

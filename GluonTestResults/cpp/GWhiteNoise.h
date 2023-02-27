@@ -19,6 +19,9 @@ namespace GluonTest
 
     private:
 #ifndef __INTELLISENSE__
+        METHOD GetObjectTypeId(UUID* outID) { if(!outID) return E_POINTER; *outID = _uuidof(::ABI::GluonTest::GWhiteNoise); return S_OK; }
+        METHOD GetObjectTypeName(const char** outStr) { if(!outStr) return E_POINTER; *outStr = "GluonTest.GWhiteNoise"; return S_OK; }
+
 #endif
     // clang-format on
     #pragma endregion

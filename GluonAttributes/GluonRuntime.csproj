@@ -46,6 +46,7 @@
     <Compile Include="MappedNamespaceAttribute.cs" />
     <Compile Include="MappedTypeAttribute.cs" />
     <Compile Include="ModifierAttributes.cs" />
+    <Compile Include="Mono\VTGluonObject.cs" />
     <Compile Include="Mono\VTTaskABI.cs" />
     <Compile Include="NativeAttribute.cs" />
     <Compile Include="GluonGeneratedAttribute.cs" />

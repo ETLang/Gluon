@@ -49,7 +49,7 @@ namespace Gluon
             set { base.Mode = value.ToString(); }
         }
 
-        public GeneratorSettingsCpp(string id) : base("Cpp", id) { Mode = CppMode.Implementation; }
+        public GeneratorSettingsCpp(string id) : base("Cpp", id) { Mode = CppMode.Default; }
 
         public override bool CleanAndValidate(string assemblyName)
         {

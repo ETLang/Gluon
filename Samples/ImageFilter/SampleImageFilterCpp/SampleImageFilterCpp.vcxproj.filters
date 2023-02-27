@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Public">
+      <UniqueIdentifier>{1d4b2581-0f1d-4a9e-a339-b82aa793e6bd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="SampleImageFilterApi.abi.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Public\GluonNative.h" />
+    <ClInclude Include="SampleImageFilterApi.Common.h" />
+    <ClInclude Include="Public\SampleImageFilterApi.public.abi.h" />
+    <ClInclude Include="Public\SampleImageFilterApi.h" />
+  </ItemGroup>
+</Project>

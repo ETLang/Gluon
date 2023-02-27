@@ -33,12 +33,15 @@ namespace GluonTest
 
     private:
 #ifndef __INTELLISENSE__
+        METHOD GetObjectTypeId(UUID* outID) { if(!outID) return E_POINTER; *outID = _uuidof(::ABI::GluonTest::GTone); return S_OK; }
+        METHOD GetObjectTypeName(const char** outStr) { if(!outStr) return E_POINTER; *outStr = "GluonTest.GTone"; return S_OK; }
         METHOD _GetFrequency(double* ___ret);
         METHOD _SetFrequency(double value);
         METHOD _GetWaveform(::ABI::GluonTest::Waveform** ___ret);
         METHOD _SetWaveform(::ABI::GluonTest::Waveform* value);
         METHOD _GetAmplitude(double* ___ret);
         METHOD _SetAmplitude(double value);
+
 #endif
     // clang-format on
     #pragma endregion

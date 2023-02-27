@@ -3,7 +3,7 @@
 [assembly: GluonLibraryDefinition]
 
 // The C++ project that implements the locator. It builds a static .lib
-[assembly: GluonTargetCpp("Cpp", CppMode.Implementation,
+[assembly: GluonTargetCpp("Cpp", CppMode.Default,
     OutputFolder = @"..\..\..\GluonTestResults\cpp",
     ProjectName = "GluonTest",
     ProjectFile = @"..\..\..\GluonTestResults\GluonTestResults.vcxproj",
@@ -14,7 +14,8 @@
 [assembly: GluonTargetCSharp("UWP", CSharpMode.Default,
     OutputFolder = @"..\..\..\GluonTestResults\cs",
     ProjectFile = @"..\..\..\GluonTestResultsCs\GluonTestResults.csproj",
-    ImportedDll = "GluonTestResultsCpp.dll")]
+    ImportedDll = "GluonTestResultsCpp.dll",
+    ConsolidateFiles = false)]
 
 // Generates wrapper classes for the Locator UWP DLL, which can be deployed to the HoloLens.
 [assembly: GluonTargetCSharp("UWPConsolidated", CSharpMode.Default,

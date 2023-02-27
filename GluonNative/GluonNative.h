@@ -45,13 +45,8 @@
     public:                                                                         \
         typedef TA ABIType;                                                         \
         operator ABIType*() const { return _abi.Get(); }                            \
-        TW() { }                                                                    \
-        TW(std::nullptr_t) : Base(nullptr) { }                                      \
-        TW(const TW& copy) : Base(copy), _abi(copy._abi) { }                        \
-        TW(TW&& move) : Base(move), _abi(move._abi) { move._abi = nullptr; }        \
-        TW& operator=(const TW& x) { Wrap(x._unk); return *this; }                  \
-        TW& operator=(nullptr_t) { _abi = nullptr; Base::operator=(nullptr); return *this; } \
-        TW& operator=(TW&& x) { _abi = x._abi; x._abi = nullptr; Base::operator=(x); return *this; }    \
+        TW(const TW& copy) = delete;                                                \
+        TW(TW&& move) = delete;                                                     \
     protected:                                                                      \
         virtual void Wrap(IUnknown* abi) { _abi = abi; Base::Wrap(_abi.Get()); }    \
     private:                                                                        \
@@ -119,19 +114,26 @@ namespace CS
 
 namespace ABI
 {
+    cominterface comid("1c4bc992-f5ad-4af7-ae86-c7f6a7474d91") IGluonObject : public CS::IObject
+    {
+        METHOD GetObjectTypeId(UUID * outID) = 0;
+        METHOD GetObjectTypeName(const char** outStr) = 0;
+    };
+    IS_INTERFACE(IGluonObject);
+
     template<typename Sig>
     struct fn_ptr_container;
 
-    template<typename... P>
-    struct fn_ptr_container<HRESULT(P...)>
+    template<typename Ret, typename... P>
+    struct fn_ptr_container<Ret(P...)>
     {
-        typedef HRESULT(__stdcall *ptr_type)(P...);
+        typedef Ret(__stdcall* ptr_type)(P...);
     };
 
-    template<typename... P>
-    struct fn_ptr_container<HRESULT(__stdcall*)(P...)>
+    template<typename Ret, typename... P>
+    struct fn_ptr_container<Ret(__stdcall*)(P...)>
     {
-        typedef HRESULT(__stdcall *ptr_type)(P...);
+        typedef Ret(__stdcall* ptr_type)(P...);
     };
 
     template<typename T>
@@ -266,6 +268,132 @@ namespace ABI
         CS::IObject** _ctx;
     };
 
+    class Wrapper;
+
+    class PimplPtrBase { };
+
+    template<typename Pimpl>
+    class PimplPtr : public PimplPtrBase
+    {
+    public:
+        typedef Pimpl WrapperType;
+
+        PimplPtr() : _ptr(nullptr) { }
+        PimplPtr(nullptr_t) : _ptr(nullptr) { }
+        PimplPtr(Pimpl* ptr) : _ptr(ptr) { DoAddRef(); }
+        PimplPtr(const PimplPtr<Pimpl>& copy) : _ptr(copy._ptr) { DoAddRef(); }
+        PimplPtr(PimplPtr<Pimpl>&& move) : _ptr(move._ptr) { move._ptr = nullptr; }
+        ~PimplPtr() { DoRelease(); }
+
+        PimplPtr<Pimpl>& operator =(nullptr_t) { DoRelease(); _ptr = nullptr; return *this; }
+        PimplPtr<Pimpl>& operator =(Pimpl* ptr) { DoRelease(); _ptr = ptr; DoAddRef(); return *this; }
+        //PimplPtr<Pimpl>& operator =(const PimplPtr<Pimpl>& rhs) { DoRelease(); _ptr = rhs._ptr; DoAddRef(); return *this; }
+
+        template<typename U, typename = std::enable_if_t<std::is_base_of_v<Pimpl, U>, int>>
+        PimplPtr<Pimpl>& operator =(const PimplPtr<U>& rhs) { DoRelease(); _ptr = static_cast<Pimpl*>(rhs._ptr); DoAddRef(); return *this; }
+
+        Pimpl* Get() const { return _ptr; }
+        void Reset() { DoRelease(); _ptr = nullptr; }
+
+        bool operator!() const { return !_ptr; }
+        operator bool() const { return (bool)_ptr; }
+
+        bool operator ==(nullptr_t) const { return _ptr == nullptr; }
+        bool operator ==(Pimpl* ptr) const { return _ptr == ptr; }
+        bool operator ==(const PimplPtr<Pimpl>& rhs) const { return _ptr == rhs._ptr; }
+
+        template<typename U, typename = std::enable_if_t<std::is_base_of_v<U, Pimpl>, int>>
+        bool operator ==(const PimplPtr<U>& rhs) const { return _ptr == rhs._ptr; }
+
+        bool operator != (nullptr_t) const { return _ptr != nullptr; }
+        bool operator !=(Pimpl* ptr) const { return _ptr != ptr; }
+        bool operator !=(const PimplPtr<Pimpl>& rhs) const { return _ptr != rhs._ptr; }
+
+        template<typename U, typename = std::enable_if_t<std::is_base_of_v<U, Pimpl>, int>>
+        bool operator !=(const PimplPtr<U>& rhs) const { return _ptr != rhs._ptr; }
+
+        bool operator <(Pimpl* ptr) const { return _ptr < ptr; }
+        bool operator <(const PimplPtr<Pimpl>& rhs) const { return _ptr < rhs._ptr; }
+
+        Pimpl* operator ->() const { return _ptr; }
+
+        //template<typename U, typename = std::enable_if_t<std::is_base_of_v<Wrapper, U> && !std::is_base_of_v<U, Pimpl>, int>>
+        //operator PimplPtr<U>() 
+        //{
+        //    if (!_ptr)
+        //        return nullptr;
+        //    else
+        //        return Wrapper::Of<U>((IUnknown*)_ptr);
+        //}
+
+        //template<typename U, typename = std::enable_if_t<std::is_base_of_v<Wrapper, U> && std::is_base_of_v<U, Pimpl>, int>>
+        //operator PimplPtr<U>()
+        //{
+        //    if (!_ptr)
+        //        return nullptr;
+        //    else
+        //        return PimplPtr<U>(static_cast<U*>(_ptr));
+        //}
+
+        template<typename U, typename = std::enable_if_t<std::is_base_of_v<Wrapper, U>, int>>
+        operator PimplPtr<U>()
+        {
+            if (!_ptr)
+                return nullptr;
+            else
+                return A<U>()(_ptr);
+        }
+
+        //template<typename U, typename = std::enable_if_t<std::is_base_of_v<Wrapper, U>&& std::is_base_of_v<U, Pimpl>, int>>
+        //operator PimplPtr<U>()
+        //{
+        //    if (!_ptr)
+        //        return nullptr;
+        //    else
+        //        return A<U>();
+        //}
+
+        template<typename U, typename N>
+        struct A;
+
+        template<typename U>
+        struct A<U, std::enable_if_t<!std::is_base_of_v<U, Pimpl>, int>>
+        {
+            PimplPtr<U> operator()(Pimpl* ptr)
+            {
+                return Wrapper::Of<U>((IUnknown*)ptr);
+            }
+        };
+
+        template<typename U>
+        struct A<U, std::enable_if_t<std::is_base_of_v<U, Pimpl>, int>>
+        {
+            PimplPtr<U> operator()(Pimpl* ptr)
+            {
+                return PimplPtr<U>(static_cast<U*>(ptr));
+            }
+        };
+
+        void Attach(Pimpl* ptr)
+        {
+            DoRelease();
+            _ptr = ptr;
+        }
+
+        Pimpl* Detach()
+        {
+            auto tmp = _ptr;
+            _ptr = nullptr;
+            return tmp;
+        }
+
+    private:
+        void DoAddRef() { if (_ptr) _ptr->AddRef(); }
+        void DoRelease() { if (_ptr) _ptr->Release(); }
+
+        Pimpl* _ptr;
+    };
+
     template<typename ABIT>
     class WrapperPtr
     {
@@ -312,10 +440,24 @@ namespace ABI
         friend void Wrap(T* abi, Wrapper& wrapper);
 
     public:
-        Wrapper() : _unk(nullptr) { }
-        Wrapper(std::nullptr_t) : _unk(nullptr) { }
-        Wrapper(Wrapper&& rhs) : _unk(rhs._unk) { rhs._unk = nullptr; }
-        Wrapper(const Wrapper& rhs) : _unk(rhs._unk) { if (_unk) _unk->AddRef(); }
+        Wrapper() : _unk(nullptr), _rc(1) { }
+        Wrapper(Wrapper&& rhs) = delete;
+        Wrapper(const Wrapper& rhs) = delete;
+
+        UINT AddRef()
+        {
+            return InterlockedIncrement(&_rc);
+        }
+
+        UINT Release()
+        {
+            auto rc = InterlockedDecrement(&_rc);
+
+            if (rc == 0)
+                delete this;
+
+            return rc;
+        }
 
         virtual ~Wrapper() { if (_unk) _unk->Release(); }
 
@@ -332,7 +474,7 @@ namespace ABI
         bool operator ==(const Wrapper& rhs) const { return _unk == rhs._unk; }
         bool operator !=(const Wrapper& rhs) const { return _unk != rhs._unk; }
 
-        operator IUnknown*() const { return _unk; }
+        operator IUnknown* () const { return _unk; }
 
         template<typename T, typename = typename std::enable_if<true, typename T::ABIType>::type>
         operator T() const
@@ -340,6 +482,57 @@ namespace ABI
             T ret;
             ret.DoWrap(_unk);
             return ret;
+        }
+
+        template<typename T>
+        static T Of(IUnknown* abi)
+        {
+            if (!abi)
+                return nullptr;
+
+            com_ptr<IGluonObject> gluonObj;
+            abi->QueryInterface(_uuidof(IGluonObject), &gluonObj);
+
+            return Of<T>(gluonObj.Get());
+        }
+
+        template<typename T>
+        static T Of(IGluonObject* gluonObj)
+        {
+            if (!gluonObj)
+                return nullptr;
+
+            auto iter = _AllWrappers.find(gluonObj);
+            if (iter == _AllWrappers.end())
+            {
+                UUID typeId;
+                gluonObj->GetObjectTypeId(&typeId);
+
+                auto newWrapper = _Factories[typeId](gluonObj);
+
+                if (!newWrapper)
+                    return nullptr;
+
+                _AllWrappers[gluonObj] = newWrapper;
+                T ptr;
+                ptr.Attach(static_cast<typename T::WrapperType*>(newWrapper));
+                return ptr;
+            }
+            else
+            {
+                return static_cast<typename T::WrapperType*>(iter->second);
+            }
+        }
+
+        static void Register(const UUID& id, fn_ptr<Wrapper* (IGluonObject*)> factory)
+        {
+            _Factories[id] = factory;
+        }
+
+        template<typename T>
+        static void Register()
+        {
+            Registrar<T>()();
         }
 
     protected:
@@ -365,21 +558,50 @@ namespace ABI
         }
 
         IUnknown* _unk;
+
+    private:
+        template<typename T>
+        struct Registrar;
+
+        template<typename T>
+        struct Registrar<PimplPtr<T>>
+        {
+            void operator ()()
+            {
+                _Factories[_uuidof(T)] = &StandardFactory<T>;
+            }
+        };
+
+        template<typename T>
+        static Wrapper* StandardFactory(IGluonObject* abi)
+        {
+            auto wrapper = new T();
+            wrapper->Wrap(abi);
+            return wrapper;
+        }
+
+        volatile UINT _rc;
+
+        static std::unordered_map<IGluonObject*, Wrapper*> _AllWrappers;
+        static std::unordered_map<UUID, fn_ptr<Wrapper* (IGluonObject*)>> _Factories;
     };
 
-    template<typename T>
-    void Wrap(T* abi, Wrapper& wrapper)
-    {
-        wrapper.Wrap(abi);
-    }
+    __declspec(selectany) std::unordered_map<IGluonObject*, Wrapper*> Wrapper::_AllWrappers;
+    __declspec(selectany) std::unordered_map<UUID, fn_ptr<Wrapper* (IGluonObject*)>> Wrapper::_Factories;
 
-    template<typename T>
-    T Wrap(typename T::ABIType* abi)
-    {
-        T ret;
-        Wrap(abi, ret);
-        return ret;
-    }
+    //template<typename T>
+    //void Wrap(T* abi, Wrapper& wrapper)
+    //{
+    //    wrapper.Wrap(abi);
+    //}
+
+    //template<typename T>
+    //T Wrap(typename T::ABIType* abi)
+    //{
+    //    T ret;
+    //    Wrap(abi, ret);
+    //    return ret;
+    //}
 
     template<typename Signature>
     struct DelegateKeyContainer
@@ -434,6 +656,12 @@ namespace ABI
         static std::unordered_map<DelegateKeyContainer<Signature>, CS::weak_ptr<Wrapper>> _ActiveDelegates;
         static CriticalSection _CSec;
     };
+
+    template<typename Wrapper, typename Signature>
+    __declspec(selectany) std::unordered_map<ABI::DelegateKeyContainer<Signature>, CS::weak_ptr<Wrapper>> ABI::DelegateWrapperBase<Wrapper, Signature>::_ActiveDelegates;
+
+    template<typename Wrapper, typename Signature>
+    __declspec(selectany) CriticalSection ABI::DelegateWrapperBase<Wrapper, Signature>::_CSec;
 }
 
 namespace std
@@ -454,7 +682,7 @@ namespace GluonInternal
     class comid("CD849D44-0E94-4428-9403-EF8009561A61") DelegateContext : public CS::ComObject<DelegateContext<Sig>, CS::Object>
     {
     public:
-        DelegateContext(const CS::Delegate<Sig>& d) : _d(d) { }
+        DelegateContext(const CS::Delegate<Sig> & d) : _d(d) { }
         const CS::Delegate<Sig>& Get() const { return _d; }
     private:
         CS::Delegate<Sig> _d;
@@ -465,7 +693,7 @@ namespace GluonInternal
     {
         PrimitiveRefConverter(T*& ref) : _ref(ref) { }
 
-        operator T&() { return *_ref; }
+        operator T& () { return *_ref; }
 
     private:
         T*& _ref;
@@ -476,7 +704,7 @@ namespace GluonInternal
     {
         PrimitiveRefCallbackConverter(T& ref) : _ref(ref) { }
 
-        operator T*() { return &_ref; }
+        operator T* () { return &_ref; }
 
     private:
         T& _ref;
@@ -502,7 +730,7 @@ namespace GluonInternal
             memcpy_s(*_ref, sz, &_conv[0], sz - sizeof(char));
         }
 
-        operator std::string&() { return _conv; }
+        operator std::string& () { return _conv; }
 
     private:
         char**& _ref;
@@ -526,7 +754,7 @@ namespace GluonInternal
             CoTaskMemFree(_conv);
         }
 
-        operator char**() { return &_conv; }
+        operator char** () { return &_conv; }
 
     private:
         std::string& _ref;
@@ -546,7 +774,7 @@ namespace GluonInternal
             *_ref = static_cast<ABI*>(_conv.Detach());
         }
 
-        operator CS::com_ptr<T>&() { return _conv; }
+        operator CS::com_ptr<T>& () { return _conv; }
 
     private:
         ABI** _ref;
@@ -569,56 +797,102 @@ namespace GluonInternal
             }
         }
 
-        operator ABI**() { return &_conv; }
+        operator ABI** () { return &_conv; }
 
     private:
         CS::com_ptr<T>& _ref;
         ABI* _conv;
     };
 
-    template<typename T, typename TABI>
+
+    template<typename ABI, typename T>
     struct PimplWrapperRefConverter
     {
-        PimplWrapperRefConverter(TABI** ref) : _ref(ref), _conv(ABIUtil<T>::FromABI(*ref))
+        PimplWrapperRefConverter(ABI** ref) : _ref(ref), _conv(ABIUtil<T>::FromABI(*ref))
         {
         }
 
         ~PimplWrapperRefConverter()
         {
-            if ((TABI*)_conv != *_ref)
-            {
-                *ref = (TABI*)_conv;
-            }
+            if (_conv)
+                *_ref = (ABI*)(*_conv.Detach());
+            else
+                *_ref = nullptr;
         }
 
-        operator T&() { return _conv; }
+        operator CS::com_ptr<T>& () { return _conv; }
 
     private:
-        TABI** _ref;
-        T _conv;
+        ABI** _ref;
+        ::ABI::PimplPtr<T> _conv;
     };
 
-    template<typename T, typename TABI>
+    template<typename ABI, typename T>
     struct PimplWrapperRefCallbackConverter
     {
-        PimplWrapperRefCallbackConverter(T& ref) : _ref(ref), _conv(ref)
+        PimplWrapperRefCallbackConverter(::ABI::PimplPtr<T>& ref) : _ref(ref)
         {
+            if (ref)
+                _conv = (ABI*)(*_ref.Get());
+            else
+                _conv = nullptr;
         }
 
         ~PimplWrapperRefCallbackConverter()
         {
-            if (_conv != (TABI*)_ref)
-            {
-                ABI::Wrap(_conv, _ref);
-            }
+            _ref = ABIUtil<T>::FromABI(_conv);
         }
 
-        operator TABI**() { return &_conv; }
+        operator ABI** () { return &_conv; }
 
     private:
-        T& _ref;
-        TABI* _conv;
+        ::ABI::PimplPtr<T>& _ref;
+        ABI* _conv;
     };
+
+    //template<typename T, typename TABI>
+    //struct PimplWrapperRefConverter
+    //{
+    //    PimplWrapperRefConverter(TABI** ref) : _ref(ref), _conv(ABIUtil<T>::FromABI(*ref))
+    //    {
+    //    }
+
+    //    ~PimplWrapperRefConverter()
+    //    {
+    //        if ((TABI*)_conv.Get() != *_ref)
+    //        {
+    //            *_ref = (TABI*)_conv.Get();
+    //        }
+    //    }
+
+    //    operator T& () { return _conv; }
+
+    //private:
+    //    TABI** _ref;
+    //    T _conv;
+    //};
+
+    //template<typename T, typename TABI>
+    //struct PimplWrapperRefCallbackConverter
+    //{
+    //    PimplWrapperRefCallbackConverter(T& ref) : _ref(ref), _conv(ref)
+    //    {
+    //    }
+
+    //    ~PimplWrapperRefCallbackConverter()
+    //    {
+    //        if (_conv != (TABI*)_ref)
+    //        {
+    //            ABI::Wrap(_conv, _ref);
+    //        }
+    //    }
+
+    //    operator TABI** () { return &_conv; }
+
+    //private:
+    //    T& _ref;
+    //    TABI* _conv;
+    //};
 
 
     template<typename T, typename TABI>
@@ -639,7 +913,7 @@ namespace GluonInternal
             *_ref = ABIUtil<concurrency::task<T>>::ToABI(_conv);
         }
 
-        operator concurrency::task<T>&() { return _conv; }
+        operator concurrency::task<T>& () { return _conv; }
 
     private:
         TABI** _ref;
@@ -665,7 +939,7 @@ namespace GluonInternal
                 _conv->Release();
         }
 
-        operator TABI**() { return &_conv; }
+        operator TABI** () { return &_conv; }
 
     private:
         concurrency::task<T>& _ref;
@@ -688,7 +962,7 @@ namespace GluonInternal
             *_ref = ABIUtil<T>::ToABI(_conv);
         }
 
-        operator T&() { return _conv; }
+        operator T& () { return _conv; }
 
     private:
         ABI* _ref;
@@ -707,7 +981,7 @@ namespace GluonInternal
             *_ref = ABIUtil<T>::FromABI(_conv);
         }
 
-        operator ABI*() { return &_conv; }
+        operator ABI* () { return &_conv; }
 
     private:
         T* _ref;
@@ -721,7 +995,7 @@ namespace GluonInternal
 
         ~StructRefPassthrough() { }
 
-        operator T&() { return *_ref; }
+        operator T& () { return *_ref; }
 
     private:
         T* _ref;
@@ -734,7 +1008,7 @@ namespace GluonInternal
 
         ~StructRefCallbackPassthrough() { }
 
-        operator T*() { return _ref; }
+        operator T* () { return _ref; }
 
     private:
         T* _ref;
@@ -768,7 +1042,7 @@ namespace GluonInternal
                 (*_ptr)[i] = ABIUtil<T>::ToABI(_conv[i]);
         }
 
-        operator CS::Array<typename ABIUtil<T>::ElementType>&() { return _conv; }
+        operator CS::Array<typename ABIUtil<T>::ElementType>& () { return _conv; }
     private:
         typename ABIUtil<T>::ABIElementType** _ptr;
         int* _count;
@@ -829,8 +1103,8 @@ namespace GluonInternal
             }
         }
 
-        operator CS::Delegate<Sig>*() { return &_conv; }
-        operator CS::Delegate<Sig>&() { return _conv; }
+        operator CS::Delegate<Sig>* () { return &_conv; }
+        operator CS::Delegate<Sig>& () { return _conv; }
 
     private:
         void** _fn;
@@ -941,7 +1215,7 @@ namespace GluonInternal
     };
 
     template<typename T>
-    struct ABIUtil<T, typename std::enable_if<std::is_base_of<ABI::Wrapper, T>::value, void>::type>
+    struct ABIUtil<ABI::PimplPtr<T>>
     {
         typedef typename T::ABIType ABIType;
         typedef typename T::ABIType* ABIElementType;
@@ -950,19 +1224,20 @@ namespace GluonInternal
         typedef PimplWrapperRefCallbackConverter<T, ABIType> CBRef;
         // TODO reference conversion??
 
-        static T FromABI(ABIType* x)
+        static ABI::PimplPtr<T> FromABI(ABIType* x)
         {
-            auto ret = ABI::Wrap<T>(x);
+            auto ret = ABI::Wrapper::Of<ABI::PimplPtr<T>>(x);
 
-            if (x)
-                x->Release();
+            if (x) x->Release();
 
             return ret;
         }
 
-        static ABIType* ToABI(const T& x)
+        static ABIType* ToABI(const ABI::PimplPtr<T>& x)
         {
-            return (ABIType*)x;
+            if (!x) return nullptr;
+
+            return (ABIType*)(*x.Get());
         }
     };
 
@@ -1001,7 +1276,7 @@ namespace GluonInternal
         {
             if (!x) return nullptr;
 
-            T::ABIType* r;
+            typename T::ABIType* r;
             reinterpret_cast<IUnknown*>(x)->QueryInterface(&r);
             return r;
         }
@@ -1010,7 +1285,7 @@ namespace GluonInternal
         {
             if (!x) return nullptr;
 
-            T::ABIType* r;
+            typename T::ABIType* r;
             reinterpret_cast<IUnknown*>(x.Get())->QueryInterface(&r);
             return r;
         }
@@ -1198,7 +1473,7 @@ namespace GluonInternal
     using ABICallbackRef = typename ABIUtil<T>::CBRef;
 
     template<typename Sig>
-    struct ABIUtil<CS::Delegate<Sig>>
+    struct ABIUtilForDelegates
     {
         const char* Designation = "Delegate";
         const bool DirectRef = false;
@@ -1208,15 +1483,28 @@ namespace GluonInternal
         typedef ABI::DelegateBlob ABIType;
         typedef ABI::DelegateBlob ABIElementType;
         typedef CS::Delegate<Sig> ElementType;
-
-        static CS::Delegate<Sig> FromABI(void* fptr, CS::IObject* ctx);
-        static ABIType ToABI(const CS::Delegate<Sig>& x);
-
-        static CS::Delegate<Sig> FromABI(const ABIType& x)
-        {
-            return FromABI(x.Fn, x.Ctx);
-        }
     };
+
+    //template<typename Sig>
+    //struct ABIUtil<CS::Delegate<Sig>>
+    //{
+    //    const char* Designation = "Delegate";
+    //    const bool DirectRef = false;
+
+    //    typedef DelegateRefConverter<Sig> Ref;
+    //    typedef DelegateRefCallbackConverter<Sig> CBRef;
+    //    typedef ABI::DelegateBlob ABIType;
+    //    typedef ABI::DelegateBlob ABIElementType;
+    //    typedef CS::Delegate<Sig> ElementType;
+
+    //    static CS::Delegate<Sig> FromABI(void* fptr, CS::IObject* ctx);
+    //    static ABIType ToABI(const CS::Delegate<Sig>& x);
+
+    //    static CS::Delegate<Sig> FromABI(const ABIType& x)
+    //    {
+    //        return FromABI(x.Fn, x.Ctx);
+    //    }
+    //};
 
     template<typename T>
     struct is_task
@@ -1235,6 +1523,7 @@ namespace GluonInternal
         std::is_class<T>::value &&
         !std::is_base_of<IUnknown, T>::value &&
         !std::is_base_of<ABI::Wrapper, T>::value &&
+        !std::is_base_of<ABI::PimplPtrBase, T>::value &&
         !is_task<T>::value &&
         !std::is_same<std::true_type, decltype(ArrayCheck(T()))>::value &&
         !std::is_base_of<CS::DelegateBase, T>::value>::type>
@@ -1271,6 +1560,18 @@ namespace GluonInternal {                                        \
         static void FreeABI(const ABI_T& x);                     \
     };                                                           \
  }
+
+namespace std
+{
+    template<typename Pimpl>
+    struct hash<::ABI::PimplPtr<Pimpl>>
+    {
+        size_t operator()(::ABI::PimplPtr<Pimpl> const& x) const
+        {
+            return std::hash<Pimpl*>()(x.Get());
+        }
+    };
+}
 
 
 IS_GENERIC_REFTYPE(1, GluonInternal::DelegateContext, "CD849D44-0E94-4428-9403-EF8009561A61");
